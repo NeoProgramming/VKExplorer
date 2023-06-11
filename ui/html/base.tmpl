@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="/static/css/vkexplorer.css">
+    <script type="text/javascript" src="/static/js/vkexporer.js"></script>
+    <title>{{ .Title }}</title>
+</head>
+<body>
+<header>
+    <nav>
+        <a href="/">Home</a>
+        <a href="/users?page=1">Users</a>
+        <a href="/groups?page=1">Groups</a>
+        <a href="/tasks?page=1">Tasks</a>
+        <a href="/about">About</a>
+    </nav>
+    <div id="tasksctl">
+        <button id="controlbtn">START</button>
+        <span id="statusbar">undefined</span>
+    </div>
+</header>
+<main>
+    {{block "content" .}} no content {{end}}
+</main>
+<footer>
+    <br><br><br><br><br>
+    <hr>
+    Site created using <strong>Golang</strong>
+</footer>
+</body>
+</html>

@@ -1,0 +1,33 @@
+{{define "content"}}
+<h1>HOME</h1>
+<h3>If you run this app form new IP, follow this link, enable app, copy URL and paste this into input form</h3>
+<form>
+Your App ID:<br>
+<input type="text" id="app_id" placeholder="Enter App ID" value="{{.AppID}}"></input>
+<button  type="button" onclick="openURL(event)">Open VK auth link</button>
+</form>
+<h3>Input URL from browser address line to input form:</h3>
+<form>
+Input VK URL:<br>
+    <textarea id="app_url" style="width: 50%;" rows="5"></textarea>
+    <br><button onclick="postURL(event)">Authorize</button>
+</form>
+<h3>Your data</h3>
+<table border='1' style='border-collapse: collapse;'>
+    <tr><td>Access Token</td><td>{{.AppURL}}</td></tr>
+    <tr><td>Recent IP</td><td>{{.RecentIP}}</td></tr>
+    <tr><td>Current IP</td><td>{{.CurrentIP}}</td></tr>
+    <tr><td>DB connected</td><td>{{.DBConnected}}</td></tr>
+    <tr><td>DB tables</td><td>{{.DBTables}}</td></tr>
+</table>
+<h3>Tasks</h3>
+<button type="button" onclick="updateMyFriends()">Update My Friends</button>
+<button type="button" onclick="updateMyGroups()">Update My Groups</button>
+<button type="button" onclick="updateMyBookmarks()">Update My Bookmarks</button>
+
+<p><hr></p>
+<form action="/stopapp" method="post">
+    <input type="submit" value="Stop Server">
+</form>
+
+{{end}}

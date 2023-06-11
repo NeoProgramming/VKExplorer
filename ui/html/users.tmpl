@@ -1,0 +1,56 @@
+{{define "content"}}
+<h1>USERS: {{ .Count }}</h1>
+<button type="button" onclick="updateUsrFriends()">Update UserFriends</button>
+<button type="button" onclick="updateUsrGroups()">Update UserGroups</button>
+<p/>
+<div>
+    Page {{.CurrentPage}} :
+    {{if gt .CurrentPage 1}}
+    <a href="?page=1">First (1)</a>
+    <a href="?page={{.PrevPage}}">Prev ({{.PrevPage}})</a>
+    {{else}}
+    <span>First</span>
+    <span>Prev</span>
+    {{end}}
+    <a href="?page=0">All</a>
+    {{if lt .CurrentPage .TotalPages}}
+    <a href="?page={{.NextPage}}">Next ({{.NextPage}})</a>
+    <a href="?page={{.TotalPages}}">Last ({{.TotalPages}})</a>
+    {{else}}
+    <span>Next</span>
+    <span>Last</span>
+    {{end}}
+</div>
+<table border='1' style='border-collapse: collapse;' width='100%'>
+    <tr>
+        <th><input type="checkbox" id="all" name="all"/></th>
+        <th>URL</th>
+        <th>Name</th>
+    </tr>
+    {{range .Items}}
+    <tr>
+        <td><input type="checkbox" id="{{.Uid}}" name="{{.Uid}}"/></td>
+        <td><a href="https://vk.com/id{{.Uid}}" target="_blank">{{.Uid}}</a></td>
+        <td>&nbsp;{{.Name}}</td>
+    </tr>
+    {{end}}
+</table>
+<div>
+    Page {{.CurrentPage}} :
+    {{if gt .CurrentPage 1}}
+    <a href="?page=1">First (1)</a>
+    <a href="?page={{.PrevPage}}">Prev ({{.PrevPage}})</a>
+    {{else}}
+    <span>First</span>
+    <span>Prev</span>
+    {{end}}
+    <a href="?page=0">All</a>
+    {{if lt .CurrentPage .TotalPages}}
+    <a href="?page={{.NextPage}}">Next ({{.NextPage}})</a>
+    <a href="?page={{.TotalPages}}">Last ({{.TotalPages}})</a>
+    {{else}}
+    <span>Next</span>
+    <span>Last</span>
+    {{end}}
+</div>
+{{end}}
