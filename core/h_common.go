@@ -2,7 +2,7 @@ package core
 
 import (
 	"fmt"
-	"github.com/getlantern/systray"
+//	"github.com/getlantern/systray"
 	"net/http"
 )
 
@@ -15,7 +15,7 @@ func (app *Application) stop(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprint(w, "Shutting down the server...")
 		//fmt.Fprint(w, "Reload main page: http://127.0.0.1:8080")
 		go func() {
-			systray.Quit()
+//			systray.Quit()
 			fmt.Fprintln(w, "Server stopped.")
 		}()
 	} else {

@@ -1,9 +1,19 @@
 package core
 
-import "net/http"
+import (
+	"net/http"
+	"fmt"
+	)
 
 func (app *Application) routes() *http.ServeMux {
+	
+	fmt.Println("routes init")
+	
 	mux := http.NewServeMux()
+	
+	fileServer := http.FileServer(http.Dir("./ui/static"))
+	mux.Handle("/static/", http.StripPrefix("/static/", fileServer))
+	
 	mux.HandleFunc("/", app.home)
 	mux.HandleFunc("/users", app.users)
 	mux.HandleFunc("/groups", app.groups)
@@ -24,8 +34,7 @@ func (app *Application) routes() *http.ServeMux {
 	mux.HandleFunc("/updateusrfriends", app.updateUsrFriends)
 	mux.HandleFunc("/updateusrgroups", app.updateUsrGroups)
 
-	fileServer := http.FileServer(http.Dir("./ui/static/"))
-	mux.Handle("/static/", http.StripPrefix("/static", fileServer))
+	
 
 	return mux
 }

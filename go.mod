@@ -5,7 +5,6 @@ go 1.18
 require (
 	github.com/BurntSushi/toml v1.2.1
 	github.com/SevereCloud/vksdk/v2 v2.15.0
-	github.com/getlantern/systray v1.2.1
 	github.com/gin-gonic/gin v1.8.2
 	github.com/jinzhu/gorm v1.9.16
 	github.com/skratchdot/open-golang v0.0.0-20200116055534-eef842397966

@@ -79,7 +79,10 @@ func InitDatabase() {
 }
 
 func quitDatabase() {
-	App.db.Close()
+	if App.db != nil {
+		App.db.Close()
+		fmt.Println("Database vk.db closed")
+	}
 }
 
 type TableInfo struct {

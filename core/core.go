@@ -3,7 +3,7 @@ package core
 import (
 	"fmt"
 	"github.com/SevereCloud/vksdk/v2/api"
-	"github.com/getlantern/systray"
+	//"github.com/getlantern/systray"
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 	"log"
@@ -16,8 +16,8 @@ type Application struct {
 	config                             Configuration
 	errorLog                           *log.Logger
 	infoLog                            *log.Logger
-	mShow, mHide, mHome, mAbout, mQuit *systray.MenuItem
-	mFox                               *systray.MenuItem
+	//mShow, mHide, mHome, mAbout, mQuit *systray.MenuItem
+	//mFox                               *systray.MenuItem
 	r                                  *gin.Engine
 	srv                                *http.Server
 	db                                 *gorm.DB
@@ -48,14 +48,11 @@ func InitCore() {
 }
 
 func StartCore() {
-	InitTray()
-	go HandleTray()
+	//InitTray()
+	//go HandleTray()
 
 	InitDatabase()
 	//go handleDatabase()
-
-	//initWebGin()
-	//go handleWebGin()
 
 	InitWeb()
 	go HandleWeb()
