@@ -310,3 +310,13 @@ func (app *Application) UpsertFriendship(uid1 int, uid2 int) {
 	// save
 	app.db.Save(&friend)
 }
+
+func (app *Application) QueueUser(uid string) {
+	// add or update user by text id
+
+}
+
+func (app *Application) QueueGroup(gid string) {
+	// add or update group by text id
+
+}

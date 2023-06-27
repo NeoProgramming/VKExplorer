@@ -164,3 +164,29 @@ func (app *Application) updateUsrGroups(w http.ResponseWriter, r *http.Request) 
 		app.QueueUserGroups(uid)
 	}
 }
+
+func (app *Application) updateUserInfo(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("updateUserInfo")
+	if err := r.ParseForm(); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	userId := r.FormValue("user")
+	fmt.Println(userId)
+	//if i, err := strconv.Atoi(userId); err == nil {
+	app.QueueUser(userId)
+	//}
+}
+
+func (app *Application) updateGroupInfo(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("updateGroupInfo")
+	if err := r.ParseForm(); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	groupId := r.FormValue("group")
+	fmt.Println(groupId)
+	//if i, err := strconv.Atoi(groupId); err == nil {
+	app.QueueGroup(groupId)
+	//}
+}

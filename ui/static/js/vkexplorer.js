@@ -71,6 +71,18 @@ function sendUpdateQuery(url) {
     xhr.send();
 }
 
+function sendUpdateQueryARG(url, argname, argvalue) {
+    // prepare AJAX
+    let xhr = new XMLHttpRequest();
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+    const data = argname + "=" + argvalue;
+
+    console.log(url);
+    xhr.send(data);
+}
+
 function sendUpdateQueryCB(url) {
     // prepare AJAX
     let xhr = new XMLHttpRequest();
@@ -111,6 +123,18 @@ function updateUsrFriends() {
 
 function updateUsrGroups() {
     sendUpdateQueryCB("/updateusrgroups")
+}
+
+function updateUserInfo() {
+    let id = document.getElementById("user_id").value;
+    console.log("updateUserInfo: " + id);
+    sendUpdateQueryARG("/updateuserinfo", "user", id)
+}
+
+function updateGroupInfo() {
+    let id = document.getElementById("group_id").value;
+    console.log("updateGroupInfo: " + id);
+    sendUpdateQueryARG("/updategroupinfo", "group", id)
 }
 
 // GLOBAL AREA

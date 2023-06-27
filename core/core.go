@@ -13,19 +13,17 @@ import (
 )
 
 type Application struct {
-	config                             Configuration
-	errorLog                           *log.Logger
-	infoLog                            *log.Logger
-	//mShow, mHide, mHome, mAbout, mQuit *systray.MenuItem
-	//mFox                               *systray.MenuItem
-	r                                  *gin.Engine
-	srv                                *http.Server
-	db                                 *gorm.DB
-	dbaseConnected                     bool
-	vk                                 *api.VK
-	counter                            int
-	running                            bool
-	wg                                 sync.WaitGroup
+	config         Configuration
+	errorLog       *log.Logger
+	infoLog        *log.Logger
+	r              *gin.Engine
+	srv            *http.Server
+	db             *gorm.DB
+	dbaseConnected bool
+	vk             *api.VK
+	counter        int
+	running        bool
+	wg             sync.WaitGroup
 }
 
 var App Application
