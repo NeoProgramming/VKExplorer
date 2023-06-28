@@ -198,3 +198,66 @@ func (app *Application) loadUserGroups(task *Task) {
 	}
 	fmt.Println("UserGroups updated")
 }
+
+func (app *Application) loadGroupWall(task *Task) {
+	offset := 0
+	count := 1000
+	for {
+		// make a request to the site
+		fmt.Println("Request for group wall: ", offset)
+		
+		wall, err := app.vk.WallGet(api.Params{
+			"owner_id": -task.Xid,
+			"offset":  offset,
+			"count":   count,
+		})
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+		fmt.Println("Received: ", len(wall.Items), " Total: ", wall.Count)
+		
+		// adding downloaded groups to the database
+		
+		
+		// next offset
+		offset += count
+		// if the received number of elements is less than the number in the package, then the package is the last
+		if len(wall.Items) < count {
+			break
+		}
+	}
+	fmt.Println("GroupWall updated")
+}
+
+func (app *Application) loadUserWall(task *Task) {
+	offset := 0
+	count := 1000
+	for {
+		// make a request to the site
+		fmt.Println("Request for user wall: ", offset)
+		
+		wall, err := app.vk.WallGet(api.Params{
+			"owner_id": task.Xid,
+			"offset":  offset,
+			"count":   count,
+		})
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+		fmt.Println("Received: ", len(wall.Items), " Total: ", wall.Count)
+		
+		// adding downloaded groups to the database
+		
+		
+		// next offset
+		offset += count
+		// if the received number of elements is less than the number in the package, then the package is the last
+		if len(wall.Items) < count {
+			break
+		}
+	}
+	fmt.Println("UserWall updated")
+}
+

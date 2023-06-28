@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/jinzhu/gorm"
 	"time"
+	"strconv"
 )
 
 const VkCount = 50
@@ -72,5 +73,16 @@ func (app *Application) executeTask(task *Task) {
 		app.loadUserFriends(task)
 	case UserGroups:
 		app.loadUserGroups(task)
+	case GroupWall:
+		app.loadGroupWall(task);
+	case UserWall:
+		app.loadUserWall(task);
 	}
 }
+
+func (app *Application) GetStatus() string {
+	app.counter++
+	//fmt.Println("GetStatus ", app.counter)
+	return strconv.Itoa(app.counter)
+}
+

@@ -11,6 +11,7 @@ import (
 type TaskType int
 
 // task types
+// add 
 const (
 	MyFriends TaskType = iota + 1
 	MyGroups
@@ -18,6 +19,8 @@ const (
 	GroupMembers
 	UserFriends
 	UserGroups
+	GroupWall
+	UserWall
 )
 
 type Task struct {
@@ -65,6 +68,17 @@ type Member struct {
 	Gid int
 }
 
+// post on wall
+type Post struct {
+	gorm.Model
+	Pid int
+	Oid int		// wall owner
+	Fid int		// commenter 
+	Date int
+	Text string
+	Rpid int	// reply pid
+}
+
 func InitDatabase() {
 	db, err := gorm.Open("sqlite3", "./vk.db") //rename to vk.db
 	if err != nil {
@@ -74,7 +88,7 @@ func InitDatabase() {
 	App.dbaseConnected = true
 	App.db = db
 
-	App.db.AutoMigrate(&User{}, &Task{}, &Group{}, &Bookmark{}, &Friend{}, &Member{})
+	App.db.AutoMigrate(&User{}, &Task{}, &Group{}, &Bookmark{}, &Friend{}, &Member{}, &Post{})
 	fmt.Println("Database vk.db opened")
 }
 
@@ -199,71 +213,6 @@ func getGroupName(db *gorm.DB, gid int) string {
 	return group.Name
 }
 
-func (app *Application) QueueMyGroups() {
-	// add task "my groups"
-	var task Task
-	err := app.db.First(&task, "Type = ?", MyGroups).Error
-	if err != nil {
-		// handle error / not found?
-		// create a new record
-		task = Task{Type: MyGroups, Name: "MyGroups", Offset: 0}
-		app.db.Create(&task)
-	} else {
-		// found
-		// task already in queue
-	}
-}
-
-func (app *Application) QueueMyFriends() {
-	// add task "my friends"
-	var task Task
-	err := app.db.First(&task, "Type = ?", MyFriends).Error
-	if err != nil {
-		// handle error / not found?
-		if err == gorm.ErrRecordNotFound {
-			// create a new record
-			task = Task{Type: MyFriends, Name: "MyFriends", Offset: 0}
-			app.db.Create(&task)
-		}
-	} else {
-		// found
-		// task already in queue
-	}
-}
-
-func (app *Application) QueueMyBookmarks() {
-
-}
-
-func (app *Application) QueueGroupMembers(gid int) {
-	// add task "group members"
-	var task Task
-	err := app.db.First(&task, "Type = ? AND Xid = ?", GroupMembers, gid).Error
-	if err != nil {
-		task = Task{Type: GroupMembers, Name: "GroupMembers " + getGroupName(app.db, gid), Xid: gid, Offset: 0}
-		app.db.Create(&task)
-	}
-}
-
-func (app *Application) QueueUserFriends(uid int) {
-	// add task "user friends"
-	var task Task
-	err := app.db.First(&task, "Type = ? AND Xid = ?", UserFriends, uid).Error
-	if err != nil {
-		task = Task{Type: UserFriends, Name: "UserFriends " + getUserName(app.db, uid), Xid: uid, Offset: 0}
-		app.db.Create(&task)
-	}
-}
-
-func (app *Application) QueueUserGroups(uid int) {
-	// add task "user groups"
-	var task Task
-	err := app.db.First(&task, "Type = ? AND Xid = ?", UserGroups, uid).Error
-	if err != nil {
-		task = Task{Type: UserGroups, Name: "UserGroups " + getUserName(app.db, uid), Xid: uid, Offset: 0}
-		app.db.Create(&task)
-	}
-}
 
 func (app *Application) UpsertUser(uid int, name string, attrs int) {
 	// update or add User record
@@ -309,14 +258,4 @@ func (app *Application) UpsertFriendship(uid1 int, uid2 int) {
 	// ...
 	// save
 	app.db.Save(&friend)
-}
-
-func (app *Application) QueueUser(uid string) {
-	// add or update user by text id
-
-}
-
-func (app *Application) QueueGroup(gid string) {
-	// add or update group by text id
-
 }

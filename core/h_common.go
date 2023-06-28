@@ -9,7 +9,7 @@ import (
 // handlers are registered in routes.go
 
 // stop handler
-func (app *Application) stop(w http.ResponseWriter, r *http.Request) {
+func (app *Application) exit(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
 		w.WriteHeader(200)
 		fmt.Fprint(w, "Shutting down the server...")

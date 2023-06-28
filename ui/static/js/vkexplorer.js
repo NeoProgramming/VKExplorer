@@ -8,7 +8,7 @@ function openURL(event) {
     window.open(appUrl, "_blank");
     // prepare AJAX
     let xhr = new XMLHttpRequest();
-    xhr.open("POST", "/setappid", true);
+    xhr.open("POST", "/set-app-id", true);
     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     // handler
     xhr.onreadystatechange = function() {
@@ -29,7 +29,7 @@ function postURL(event) {
     // window.open("https://google.com", "_blank");
     // prepare AJAX
     let xhr = new XMLHttpRequest();
-    xhr.open("POST", "/setappurl", true);
+    xhr.open("POST", "/set-app-url", true);
     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     // handler
     xhr.onreadystatechange = function() {
@@ -52,6 +52,8 @@ function openTestURL(ibase) {
     let url = base + token;
     window.open(url, "_blank");
 }
+
+// HELPERS FOR UPDATE DB QUERIES
 
 function sendUpdateQuery(url) {
     // prepare AJAX
@@ -100,41 +102,74 @@ function sendUpdateQueryCB(url) {
     xhr.send(data);
     console.log(url);
  }
+ 
+// UPDATE DB QUERIES
 
 function updateMyFriends() {
-    sendUpdateQuery("/updatemyfriends")
+    sendUpdateQuery("/update-my-friends")
 }
 
 function updateMyGroups() {
-    sendUpdateQuery("/updatemygroups")
+    sendUpdateQuery("/update-my-groups")
 }
 
 function updateMyBookmarks() {
-    sendUpdateQuery("/updatemybookmarks")
+    sendUpdateQuery("/update-my-bookmarks")
 }
 
-function updateGrMembers() {
-    sendUpdateQueryCB("/updategrmembers")
+function updateCheckedGroupMembers() {
+    sendUpdateQueryCB("/update-checked-group-members")
 }
 
-function updateUsrFriends() {
-    sendUpdateQueryCB("/updateusrfriends")
+function updateCheckedGroupWall() {
+    sendUpdateQueryCB("/update-checked-group-wall")
 }
 
-function updateUsrGroups() {
-    sendUpdateQueryCB("/updateusrgroups")
+function updateCheckedUserFriends() {
+    sendUpdateQueryCB("/update-checked-user-friends")
+}
+
+function updateCheckedUserWall() {
+    sendUpdateQueryCB("/update-checked-user-wall")
+}
+
+function updateCheckedUserGroups() {
+    sendUpdateQueryCB("/update-checked-user-groups")
 }
 
 function updateUserInfo() {
     let id = document.getElementById("user_id").value;
-    console.log("updateUserInfo: " + id);
-    sendUpdateQueryARG("/updateuserinfo", "user", id)
+    sendUpdateQueryARG("/update-user-info", "user", id)
+}
+
+function updateUserFriends() {
+	let id = document.getElementById("user_id").value;
+	sendUpdateQueryARG("/update-user-friends", "user", id)
+}
+
+function updateUserGroups() {
+	let id = document.getElementById("user_id").value;
+	sendUpdateQueryARG("/update-user-groups", "user", id)
+}
+
+function updateUserWall() {
+	let id = document.getElementById("user_id").value;
+	sendUpdateQueryARG("/updateuserwall", "user", id)
 }
 
 function updateGroupInfo() {
     let id = document.getElementById("group_id").value;
-    console.log("updateGroupInfo: " + id);
-    sendUpdateQueryARG("/updategroupinfo", "group", id)
+    sendUpdateQueryARG("/update-group-info", "group", id)
+}
+
+function updateGroupMembers() {
+    let id = document.getElementById("group_id").value;
+    sendUpdateQueryARG("/update-group-members", "group", id)
+}
+
+function updateGroupWall() {
+    let id = document.getElementById("group_id").value;
+    sendUpdateQueryARG("/update-group-wall", "group", id)
 }
 
 // GLOBAL AREA
@@ -145,7 +180,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     let statusbar = document.getElementById('statusbar');
 
     // Update the status in the HTML
-    let source = new EventSource("http://localhost:8080/updatestatus");
+    let source = new EventSource("http://localhost:8080/get-server-status");
     source.onmessage = function(event) {
         statusbar.textContent = event.data;
     };
@@ -156,7 +191,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
     // Get the initial state of the goroutine
     let xhr = new XMLHttpRequest();
-    xhr.open("GET", "/workerstate");
+    xhr.open("GET", "/get-worker-status");
     xhr.onload = function() {
         if (xhr.status === 200) {
             started = (xhr.responseText === "true");
@@ -172,7 +207,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
             btn.textContent = "STOPPING...";
             // Stop the goroutine
             let xhr = new XMLHttpRequest();
-            xhr.open("POST", "http://127.0.0.1:8080/stopworker");
+            xhr.open("POST", "http://127.0.0.1:8080/stop-worker");
             xhr.onload = function() {
                 console.log("Worker stopped.");
                 started = false;
@@ -187,7 +222,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
             btn.textContent = "STARTING...";
             // Start the goroutine
             let xhr = new XMLHttpRequest();
-            xhr.open("POST", "http://127.0.0.1:8080/startworker");
+            xhr.open("POST", "http://127.0.0.1:8080/start-worker");
             xhr.onload = function() {
                 console.log("Worker started.");
                 started = true;

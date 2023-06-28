@@ -25,15 +25,21 @@ Input VK URL:<br>
 <button type="button" onclick="updateMyGroups()">Update My Groups</button>
 <button type="button" onclick="updateMyBookmarks()">Update My Bookmarks</button>
 <p>
-<button type="button" onclick="updateUserInfo()">Update User Info</button>
 <input type="text" id="user_id" placeholder="Enter User ID" value=""></input>
+<button type="button" onclick="updateUserFriends()">Update User Friends</button>
+<button type="button" onclick="updateUserGroups()">Update User Groups</button>
+<button type="button" onclick="updateUserWall()">Update User Wall</button>
+<button type="button" onclick="updateUserInfo()">Update User Info</button>
+
 <p>
-<button type="button" onclick="updateGroupInfo()">Update Group Info</button>
 <input type="text" id="group_id" placeholder="Enter Group ID" value=""></input>
+<button type="button" onclick="updateGroupMembers()">Update Group Members</button>
+<button type="button" onclick="updateGroupWall()">Update Group Wall</button>
+<button type="button" onclick="updateGroupInfo()">Update Group Info</button>
 
 <p><hr></p>
-<form action="/stopapp" method="post">
-    <input type="submit" value="Stop Server">
+<form action="/exit" method="post">
+    <input type="submit" value="Exit Server App">
 </form>
 
 {{end}}
