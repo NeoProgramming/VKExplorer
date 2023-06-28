@@ -3,8 +3,8 @@ package core
 import (
 	"fmt"
 	"github.com/jinzhu/gorm"
-	"time"
 	"strconv"
+	"time"
 )
 
 const VkCount = 50
@@ -74,9 +74,19 @@ func (app *Application) executeTask(task *Task) {
 	case UserGroups:
 		app.loadUserGroups(task)
 	case GroupWall:
-		app.loadGroupWall(task);
+		app.loadGroupWall(task)
 	case UserWall:
-		app.loadUserWall(task);
+		app.loadUserWall(task)
+	case UserFriendsByName:
+		app.loadUserFriendsByName(task)
+	case UserGroupsByName:
+		app.loadUserGroupsByName(task)
+	case UserWallByName:
+		app.loadUserWallByName(task)
+	case GroupMembersByName:
+		app.loadGroupMembersByName(task)
+	case GroupWallByName:
+		app.loadGroupWallByName(task)
 	}
 }
 
@@ -85,4 +95,3 @@ func (app *Application) GetStatus() string {
 	//fmt.Println("GetStatus ", app.counter)
 	return strconv.Itoa(app.counter)
 }
-

@@ -3,8 +3,6 @@ package core
 import (
 	"fmt"
 	"net/http"
-	"strconv"
-	"strings"
 	"time"
 )
 
@@ -41,7 +39,7 @@ func (app *Application) setAppToken(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusMethodNotAllowed)
 }
 
-//  SSE - get server status 
+//  SSE - get server status
 func (app *Application) getServerStatus(w http.ResponseWriter, r *http.Request) {
 	// Set response headers for SSE
 	w.Header().Set("Content-Type", "text/event-stream")
@@ -99,7 +97,3 @@ func (app *Application) stopWorker(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("Worker stopped manually")
 	}
 }
-
-
-
-

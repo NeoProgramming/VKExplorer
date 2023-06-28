@@ -28,6 +28,46 @@ func extractAccessToken(urlStr string) string {
 	return accessToken
 }
 
+func (app *Application) loadUserData(task *Task) int {
+	fmt.Println("Request for user data ")
+	data, err := app.vk.UsersGet(api.Params{
+		"user_ids": task.Name,
+		"fields":   "id,first_name,last_name,is_closed,can_access_closed",
+	})
+	if err != nil {
+		fmt.Println(err)
+		return 0
+	}
+	size := len(data)
+	fmt.Println("Received: ", size)
+	if size == 0 {
+		return 0
+	}
+	app.UpsertUser(data[0].ID, data[0].FirstName+" "+data[0].LastName, 0)
+	fmt.Println("User updated")
+	return data[0].ID
+}
+
+func (app *Application) loadGroupData(task *Task) int {
+	fmt.Println("Request for group data ")
+	data, err := app.vk.GroupsGetByID(api.Params{
+		"group_id": task.Name,
+		"fields":   "id,name,is_closed",
+	})
+	if err != nil {
+		fmt.Println(err)
+		return 0
+	}
+	size := len(data)
+	fmt.Println("Received: ", size)
+	if size == 0 {
+		return 0
+	}
+	app.UpsertGroup(data[0].ID, data[0].Name, 0)
+	fmt.Println("Group updated")
+	return data[0].ID
+}
+
 func (app *Application) loadMyFriends(task *Task) {
 	offset := 0
 	count := 1000 // or any other value you want to set
@@ -205,21 +245,20 @@ func (app *Application) loadGroupWall(task *Task) {
 	for {
 		// make a request to the site
 		fmt.Println("Request for group wall: ", offset)
-		
+
 		wall, err := app.vk.WallGet(api.Params{
 			"owner_id": -task.Xid,
-			"offset":  offset,
-			"count":   count,
+			"offset":   offset,
+			"count":    count,
 		})
 		if err != nil {
 			fmt.Println(err)
 			return
 		}
 		fmt.Println("Received: ", len(wall.Items), " Total: ", wall.Count)
-		
+
 		// adding downloaded groups to the database
-		
-		
+
 		// next offset
 		offset += count
 		// if the received number of elements is less than the number in the package, then the package is the last
@@ -236,21 +275,20 @@ func (app *Application) loadUserWall(task *Task) {
 	for {
 		// make a request to the site
 		fmt.Println("Request for user wall: ", offset)
-		
+
 		wall, err := app.vk.WallGet(api.Params{
 			"owner_id": task.Xid,
-			"offset":  offset,
-			"count":   count,
+			"offset":   offset,
+			"count":    count,
 		})
 		if err != nil {
 			fmt.Println(err)
 			return
 		}
 		fmt.Println("Received: ", len(wall.Items), " Total: ", wall.Count)
-		
+
 		// adding downloaded groups to the database
-		
-		
+
 		// next offset
 		offset += count
 		// if the received number of elements is less than the number in the package, then the package is the last
@@ -261,3 +299,37 @@ func (app *Application) loadUserWall(task *Task) {
 	fmt.Println("UserWall updated")
 }
 
+func (app *Application) loadUserFriendsByName(task *Task) {
+	uid := app.loadUserData(task)
+	if uid != 0 {
+		app.QueueUserFriends(uid)
+	}
+}
+
+func (app *Application) loadUserGroupsByName(task *Task) {
+	uid := app.loadUserData(task)
+	if uid != 0 {
+		app.QueueUserGroups(uid)
+	}
+}
+
+func (app *Application) loadUserWallByName(task *Task) {
+	uid := app.loadUserData(task)
+	if uid != 0 {
+		app.QueueUserWall(uid)
+	}
+}
+
+func (app *Application) loadGroupMembersByName(task *Task) {
+	gid := app.loadGroupData(task)
+	if gid != 0 {
+		app.QueueGroupMembers(gid)
+	}
+}
+
+func (app *Application) loadGroupWallByName(task *Task) {
+	gid := app.loadGroupData(task)
+	if gid != 0 {
+		app.QueueGroupWall(gid)
+	}
+}

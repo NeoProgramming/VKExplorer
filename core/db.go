@@ -11,7 +11,7 @@ import (
 type TaskType int
 
 // task types
-// add 
+// add
 const (
 	MyFriends TaskType = iota + 1
 	MyGroups
@@ -21,12 +21,19 @@ const (
 	UserGroups
 	GroupWall
 	UserWall
+	UserData
+	GroupData
+	UserFriendsByName
+	UserGroupsByName
+	UserWallByName
+	GroupMembersByName
+	GroupWallByName
 )
 
 type Task struct {
 	gorm.Model
 	Type   TaskType
-	Name   string
+	Name   string // visible task name; also user/group short_name
 	Xid    int
 	Offset int
 	Status int
@@ -71,12 +78,12 @@ type Member struct {
 // post on wall
 type Post struct {
 	gorm.Model
-	Pid int
-	Oid int		// wall owner
-	Fid int		// commenter 
+	Pid  int
+	Oid  int // wall owner
+	Fid  int // commenter
 	Date int
 	Text string
-	Rpid int	// reply pid
+	Rpid int // reply (parent) pid
 }
 
 func InitDatabase() {
@@ -212,7 +219,6 @@ func getGroupName(db *gorm.DB, gid int) string {
 	}
 	return group.Name
 }
-
 
 func (app *Application) UpsertUser(uid int, name string, attrs int) {
 	// update or add User record
