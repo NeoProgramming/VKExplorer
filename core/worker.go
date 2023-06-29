@@ -61,31 +61,36 @@ func (app *Application) worker() {
 
 func (app *Application) executeTask(task *Task) {
 	switch task.Type {
-	case MyFriends:
+	case TT_MyFriends:
 		app.loadMyFriends(task)
-	case MyGroups:
+	case TT_MyGroups:
 		app.loadMyGroups(task)
-	case MyBookmarks:
+	case TT_MyBookmarks:
 		app.loadMyBookmarks(task)
-	case GroupMembers:
+	case TT_GroupMembers:
 		app.loadGroupMembers(task)
-	case UserFriends:
+	case TT_UserFriends:
 		app.loadUserFriends(task)
-	case UserGroups:
+	case TT_UserGroups:
 		app.loadUserGroups(task)
-	case GroupWall:
+	case TT_GroupWall:
 		app.loadGroupWall(task)
-	case UserWall:
+	case TT_UserWall:
 		app.loadUserWall(task)
-	case UserFriendsByName:
+		
+	case TT_UserDataByName:
+		app.loadUserDataByName(task)
+	case TT_UserFriendsByName:
 		app.loadUserFriendsByName(task)
-	case UserGroupsByName:
+	case TT_UserGroupsByName:
 		app.loadUserGroupsByName(task)
-	case UserWallByName:
+	case TT_UserWallByName:
 		app.loadUserWallByName(task)
-	case GroupMembersByName:
+	case TT_GroupDataByName:
+		app.loadGroupDataByName(task)
+	case TT_GroupMembersByName:
 		app.loadGroupMembersByName(task)
-	case GroupWallByName:
+	case TT_GroupWallByName:
 		app.loadGroupWallByName(task)
 	}
 }

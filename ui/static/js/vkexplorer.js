@@ -137,9 +137,9 @@ function updateCheckedUserGroups() {
     sendUpdateQueryCB("/update-checked-user-groups")
 }
 
-function updateUserInfo() {
+function updateUserData() {
     let id = document.getElementById("user_id").value;
-    sendUpdateQueryARG("/update-user-info", "user", id)
+    sendUpdateQueryARG("/update-user-data", "user", id)
 }
 
 function updateUserFriends() {
@@ -157,9 +157,9 @@ function updateUserWall() {
 	sendUpdateQueryARG("/updateuserwall", "user", id)
 }
 
-function updateGroupInfo() {
+function updateGroupData() {
     let id = document.getElementById("group_id").value;
-    sendUpdateQueryARG("/update-group-info", "group", id)
+    sendUpdateQueryARG("/update-group-data", "group", id)
 }
 
 function updateGroupMembers() {

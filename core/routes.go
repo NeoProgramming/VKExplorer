@@ -22,6 +22,8 @@ func (app *Application) routes() *http.ServeMux {
 	mux.HandleFunc("/", app.home)
 	mux.HandleFunc("/users", app.users)
 	mux.HandleFunc("/groups", app.groups)
+	mux.HandleFunc("/user/", app.user)
+	mux.HandleFunc("/group/", app.group)
 	mux.HandleFunc("/tasks", app.tasks)
 	mux.HandleFunc("/exit", app.exit)
 
@@ -38,7 +40,7 @@ func (app *Application) routes() *http.ServeMux {
 	
 	mux.HandleFunc("/update-group-members", app.updateGroupMembers)
 	mux.HandleFunc("/update-group-wall", app.updateGroupWall)
-	mux.HandleFunc("/update-group-info", app.updateGroupInfo)
+	mux.HandleFunc("/update-group-data", app.updateGroupData)
 	
 	mux.HandleFunc("/update-checked-group-members", app.updateCheckedGroupMembers)
 	mux.HandleFunc("/update-checked-group-wall", app.updateCheckedGroupWall)
@@ -46,7 +48,7 @@ func (app *Application) routes() *http.ServeMux {
 	mux.HandleFunc("/update-user-friends", app.updateUserFriends)
 	mux.HandleFunc("/update-user-groups", app.updateUserGroups)
 	mux.HandleFunc("/update-user-wall", app.updateUserWall)
-	mux.HandleFunc("/update-user-info", app.updateUserInfo)	
+	mux.HandleFunc("/update-user-data", app.updateUserData)	
 	
 	mux.HandleFunc("/update-checked-user-friends", app.updateCheckedUserFriends)
 	mux.HandleFunc("/update-checked-user-groups", app.updateCheckedUserGroups)

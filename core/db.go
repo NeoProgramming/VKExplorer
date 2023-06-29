@@ -11,30 +11,30 @@ import (
 type TaskType int
 
 // task types
-// add
 const (
-	MyFriends TaskType = iota + 1
-	MyGroups
-	MyBookmarks
-	GroupMembers
-	UserFriends
-	UserGroups
-	GroupWall
-	UserWall
-	UserData
-	GroupData
-	UserFriendsByName
-	UserGroupsByName
-	UserWallByName
-	GroupMembersByName
-	GroupWallByName
+	TT_MyFriends TaskType = iota + 1
+	TT_MyGroups
+	TT_MyBookmarks
+	TT_GroupMembers
+	TT_UserFriends
+	TT_UserGroups
+	TT_GroupWall
+	TT_UserWall
+	
+	TT_UserDataByName
+	TT_UserFriendsByName
+	TT_UserGroupsByName
+	TT_UserWallByName
+	TT_GroupDataByName
+	TT_GroupMembersByName
+	TT_GroupWallByName
 )
 
 type Task struct {
 	gorm.Model
 	Type   TaskType
-	Name   string // visible task name; also user/group short_name
-	Xid    int
+	Name   string 	// visible task name; also user/group short_name
+	Xid    int		// object id; also future tasks mask
 	Offset int
 	Status int
 }
@@ -218,6 +218,14 @@ func getGroupName(db *gorm.DB, gid int) string {
 		return "!NOTFOUND: " + strconv.Itoa(gid)
 	}
 	return group.Name
+}
+
+func getUserData(db *gorm.DB, uid int) (string, error) {
+	return getUserName(db, uid), nil
+}
+
+func getGroupData(db *gorm.DB, gid int) (string, error) {
+	return getGroupName(db, gid), nil
 }
 
 func (app *Application) UpsertUser(uid int, name string, attrs int) {

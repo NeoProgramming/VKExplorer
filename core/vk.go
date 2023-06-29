@@ -28,7 +28,7 @@ func extractAccessToken(urlStr string) string {
 	return accessToken
 }
 
-func (app *Application) loadUserData(task *Task) int {
+func (app *Application) loadUserDataByName(task *Task) int {
 	fmt.Println("Request for user data ")
 	data, err := app.vk.UsersGet(api.Params{
 		"user_ids": task.Name,
@@ -48,7 +48,7 @@ func (app *Application) loadUserData(task *Task) int {
 	return data[0].ID
 }
 
-func (app *Application) loadGroupData(task *Task) int {
+func (app *Application) loadGroupDataByName(task *Task) int {
 	fmt.Println("Request for group data ")
 	data, err := app.vk.GroupsGetByID(api.Params{
 		"group_id": task.Name,
@@ -258,6 +258,7 @@ func (app *Application) loadGroupWall(task *Task) {
 		fmt.Println("Received: ", len(wall.Items), " Total: ", wall.Count)
 
 		// adding downloaded groups to the database
+		// todo
 
 		// next offset
 		offset += count
@@ -288,6 +289,7 @@ func (app *Application) loadUserWall(task *Task) {
 		fmt.Println("Received: ", len(wall.Items), " Total: ", wall.Count)
 
 		// adding downloaded groups to the database
+		// todo
 
 		// next offset
 		offset += count
@@ -300,36 +302,36 @@ func (app *Application) loadUserWall(task *Task) {
 }
 
 func (app *Application) loadUserFriendsByName(task *Task) {
-	uid := app.loadUserData(task)
+	uid := app.loadUserDataByName(task)
 	if uid != 0 {
-		app.QueueUserFriends(uid)
+		app.QueueById(TT_UserFriends, uid, "UserFriends")
 	}
 }
 
 func (app *Application) loadUserGroupsByName(task *Task) {
-	uid := app.loadUserData(task)
+	uid := app.loadUserDataByName(task)
 	if uid != 0 {
-		app.QueueUserGroups(uid)
+		app.QueueById(TT_UserGroups, uid, "UserGroups")
 	}
 }
 
 func (app *Application) loadUserWallByName(task *Task) {
-	uid := app.loadUserData(task)
+	uid := app.loadUserDataByName(task)
 	if uid != 0 {
-		app.QueueUserWall(uid)
+		app.QueueById(TT_UserWall, uid, "UserWall")
 	}
 }
 
 func (app *Application) loadGroupMembersByName(task *Task) {
-	gid := app.loadGroupData(task)
+	gid := app.loadGroupDataByName(task)
 	if gid != 0 {
-		app.QueueGroupMembers(gid)
+		app.QueueById(TT_GroupMembers, gid, "GroupMembers")
 	}
 }
 
 func (app *Application) loadGroupWallByName(task *Task) {
-	gid := app.loadGroupData(task)
+	gid := app.loadGroupDataByName(task)
 	if gid != 0 {
-		app.QueueGroupWall(gid)
+		app.QueueById(TT_GroupWall, gid, "GroupWall")
 	}
 }

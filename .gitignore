@@ -11,3 +11,5 @@ dist/
 *.wmv
 *.toml
 *.db
+*.geany
+vkexplorer
