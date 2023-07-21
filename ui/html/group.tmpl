@@ -1,4 +1,20 @@
 {{define "content"}}
 <h1>GROUP: {{ .Name}}</h1>
 
+<h2>Friends</h2>
+<table border='1' style='border-collapse: collapse;' width='100%'>
+    <tr>
+        <th><input type="checkbox" id="all" name="all" onclick="checkAll()"/></th>
+        <th>URL</th>
+        <th>Name</th>
+    </tr>
+    {{range .Members}}
+    <tr>
+        <td><input type="checkbox" id="{{.Uid}}" name="{{.Uid}}"/></td>
+        <td><a href="https://vk.com/id{{.Uid}}" target="_blank">{{.Uid}}</a></td>
+        <td><a href="/user/{{.Uid}}">&nbsp;{{.Name}}</a></td>
+    </tr>
+    {{end}}
+</table>
+
 {{end}}

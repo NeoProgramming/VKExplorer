@@ -13,3 +13,6 @@ dist/
 *.db
 *.geany
 vkexplorer
+/*.db-shm
+/*.db-wal
+/*.zip

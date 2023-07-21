@@ -235,3 +235,15 @@ document.addEventListener("DOMContentLoaded", function(event) {
         }
     });
 });
+
+function checkAll()
+{
+    const mainCheckbox = document.getElementById('all');
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+
+    mainCheckbox.addEventListener('click', function() {
+        checkboxes.forEach(function(checkbox) {
+            checkbox.checked = mainCheckbox.checked;
+        });
+    });
+}

@@ -1,23 +1,17 @@
 package core
 
 import (
+	"fmt"
 	"html/template"
 	"net/http"
-	"fmt"
+	"vkexplorer/views"
 )
-
-// group data
-type ViewGroupData struct {
-	Gid  int
-	Name string
-	Title string
-}
 
 // Handler for displaying a group content
 func (app *Application) group(w http.ResponseWriter, r *http.Request) {
-	
+
 	groupID := Atoi(r.URL.Path[len("/group/"):])
-    fmt.Printf("Group ID: %d", groupID)
+	fmt.Printf("Group ID: %d", groupID)
 
 	files := []string{
 		"./ui/html/base.tmpl",
@@ -38,9 +32,25 @@ func (app *Application) group(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	page := 0
+	pageSize := 10
+
+	// get Members list
+	members, err := getMembers(app.db, groupID, page, pageSize)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
 	// fill in the list of groups
-	var t ViewGroupData	
+	var t views.GroupData
+	t.Gid = groupID
 	t.Name = group
+	t.Members = make([]views.UserRec, len(members))
+	for i, elem := range members {
+		t.Members[i].Uid = elem.Uid
+		t.Members[i].Name = elem.Name
+	}
 
 	// execute templates
 	err = ts.Execute(w, t)

@@ -2,13 +2,19 @@ package core
 
 import (
 	"html/template"
+	"math"
 	"net/http"
 	"strconv"
 )
 
 type ViewTask struct {
-	Title string
-	Names []string
+	Title       string
+	Names       []string
+	Count       int
+	CurrentPage int
+	TotalPages  int
+	PrevPage    int
+	NextPage    int
 }
 
 // Handler for displaying a list of tasks
@@ -52,6 +58,11 @@ func (app *Application) tasks(w http.ResponseWriter, r *http.Request) {
 		t.Names[i] = elem.Name
 	}
 	t.Title = "Tasks"
+	t.Count = getTasksCount(app.db)
+	t.CurrentPage = page
+	t.NextPage = page + 1
+	t.PrevPage = page - 1
+	t.TotalPages = int(math.Ceil(float64(t.Count) / float64(pageSize)))
 
 	// execute templates
 	err = ts.Execute(w, t)

@@ -5,22 +5,8 @@ import (
 	"math"
 	"net/http"
 	"strconv"
+	"vkexplorer/views"
 )
-
-type ViewUser struct {
-	Uid  int
-	Name string
-}
-
-type ViewUsersList struct {
-	Title       string
-	Items       []ViewUser
-	Count       int
-	CurrentPage int
-	TotalPages  int
-	PrevPage    int
-	NextPage    int
-}
 
 // Handler for displaying a list of users
 func (app *Application) users(w http.ResponseWriter, r *http.Request) {
@@ -57,8 +43,8 @@ func (app *Application) users(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// fill Users list
-	var t ViewUsersList
-	t.Items = make([]ViewUser, len(users))
+	var t views.UsersList
+	t.Items = make([]views.UserRec, len(users))
 	for i, elem := range users {
 		t.Items[i].Uid = elem.Uid
 		t.Items[i].Name = elem.Name

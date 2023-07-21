@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/SevereCloud/vksdk/v2/api"
 	"net/url"
+	"time"
 )
 
 type RecordAttrs int
@@ -138,11 +139,12 @@ func (app *Application) loadMyBookmarks(task *Task) {
 }
 
 func (app *Application) loadGroupMembers(task *Task) {
+	fmt.Println("loadGroupMembers for group ", task.Xid)
 	offset := 0
 	count := 1000 // or any other value you want to set
 	for {
 		// make a request to the site
-		fmt.Println("Request for group members: ", offset)
+		fmt.Println("Request for group members: offset=", offset)
 		members, err := app.vk.GroupsGetMembersFields(api.Params{
 			"group_id": task.Xid,
 			"offset":   offset,
@@ -155,12 +157,30 @@ func (app *Application) loadGroupMembers(task *Task) {
 		}
 		fmt.Println("Received: ", len(members.Items), " Total: ", members.Count)
 		// add downloaded users to the database
+		//app.db.Begin()
+		start := time.Now()
 		for _, member := range members.Items {
 			name := member.FirstName + " " + member.LastName
 			fmt.Println(name)
 			app.UpsertUser(member.ID, name, RA_MEMBER)
+			//app.UpsertMembership(member.ID, task.Xid)
+		}
+		elapsed := time.Since(start)
+		fmt.Println("UpsertUser: ", elapsed)
+		//app.db.Commit()
+
+		//app.db.Begin()
+		start = time.Now()
+		for _, member := range members.Items {
+			//name := member.FirstName + " " + member.LastName
+			//fmt.Println(name)
+			//app.UpsertUser(member.ID, name, RA_MEMBER)
 			app.UpsertMembership(member.ID, task.Xid)
 		}
+		elapsed = time.Since(start)
+		fmt.Println("UpsertMembership: ", elapsed)
+		//app.db.Commit()
+
 		// next offset
 		offset += count
 		// if the received number of elements is less than the number in the package, then the package is the last

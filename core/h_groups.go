@@ -5,24 +5,8 @@ import (
 	"math"
 	"net/http"
 	"strconv"
+	"vkexplorer/views"
 )
-
-// table row
-type ViewGroup struct {
-	Gid  int
-	Name string
-}
-
-// visible table
-type ViewGroupsList struct {
-	Title       string
-	Items       []ViewGroup
-	Count       int
-	CurrentPage int
-	TotalPages  int
-	PrevPage    int
-	NextPage    int
-}
 
 // Handler for displaying a list of groups
 func (app *Application) groups(w http.ResponseWriter, r *http.Request) {
@@ -59,8 +43,8 @@ func (app *Application) groups(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// fill in the list of groups
-	var t ViewGroupsList
-	t.Items = make([]ViewGroup, len(groups))
+	var t views.GroupsList
+	t.Items = make([]views.GroupRec, len(groups))
 	for i, elem := range groups {
 		t.Items[i].Gid = elem.Gid
 		t.Items[i].Name = elem.Name

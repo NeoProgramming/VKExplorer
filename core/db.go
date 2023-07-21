@@ -20,7 +20,7 @@ const (
 	TT_UserGroups
 	TT_GroupWall
 	TT_UserWall
-	
+
 	TT_UserDataByName
 	TT_UserFriendsByName
 	TT_UserGroupsByName
@@ -33,8 +33,8 @@ const (
 type Task struct {
 	gorm.Model
 	Type   TaskType
-	Name   string 	// visible task name; also user/group short_name
-	Xid    int		// object id; also future tasks mask
+	Name   string // visible task name; also user/group short_name
+	Xid    int    // object id; also future tasks mask
 	Offset int
 	Status int
 }
@@ -96,6 +96,12 @@ func InitDatabase() {
 	App.db = db
 
 	App.db.AutoMigrate(&User{}, &Task{}, &Group{}, &Bookmark{}, &Friend{}, &Member{}, &Post{})
+
+	App.db.Exec("PRAGMA journal_mode = WAL")
+	App.db.Exec("PRAGMA synchronous = normal")
+	App.db.Exec("PRAGMA temp_store = memory")
+	App.db.Exec("PRAGMA mmap_size = 30000000000")
+
 	fmt.Println("Database vk.db opened")
 }
 
@@ -200,6 +206,15 @@ func getGroupsCount(db *gorm.DB) int {
 	return int(count)
 }
 
+func getTasksCount(db *gorm.DB) int {
+	var count int64
+	result := db.Model(&Task{}).Count(&count)
+	if result.Error != nil {
+		return 0
+	}
+	return int(count)
+}
+
 func getUserName(db *gorm.DB, uid int) string {
 	var user User
 	result := db.First(&user, "uid=?", uid)
@@ -226,6 +241,63 @@ func getUserData(db *gorm.DB, uid int) (string, error) {
 
 func getGroupData(db *gorm.DB, gid int) (string, error) {
 	return getGroupName(db, gid), nil
+}
+
+func getFriends(db *gorm.DB, uid int, page int, pageSize int) ([]User, error) {
+	var friends []User
+	var err error
+	fmt.Println("getFriends: ", uid)
+	if page > 0 {
+		offset := (page - 1) * pageSize
+		err = db.Raw("SELECT friends.uid2 AS uid, Name, Attrs, Age, Type FROM users JOIN friends ON users.uid = friends.uid2 WHERE friends.uid1 =  ? OFFSET ? LIMIT ?",
+			uid, offset, pageSize).Scan(&friends).Error
+	} else {
+		err = db.Raw("SELECT friends.uid2 AS uid, Name, Attrs, Age, Type FROM users JOIN friends ON users.uid = friends.uid2 WHERE friends.uid1 =  ?",
+			uid).Scan(&friends).Error
+	}
+	if err != nil {
+		fmt.Println("getFriends error")
+		return nil, err
+	}
+	return friends, nil
+}
+
+func getMemberships(db *gorm.DB, uid int, page int, pageSize int) ([]Group, error) {
+	var groups []Group
+	var err error
+	fmt.Println("getMemberships: ", uid)
+	if page > 0 {
+		offset := (page - 1) * pageSize
+		err = db.Raw("SELECT groups.gid AS gid, name, attrs, type FROM groups JOIN members ON groups.gid = members.gid WHERE members.uid = ? OFFSET ? LIMIT ?",
+			uid, offset, pageSize).Scan(&groups).Error
+	} else {
+		err = db.Raw("SELECT groups.gid AS gid, name, attrs, type FROM groups JOIN members ON groups.gid = members.gid WHERE members.uid = ?",
+			uid).Scan(&groups).Error
+	}
+	if err != nil {
+		fmt.Println("getMemberships error")
+		return nil, err
+	}
+	fmt.Println("groups len == ", len(groups))
+	return groups, nil
+}
+
+func getMembers(db *gorm.DB, gid int, page int, pageSize int) ([]User, error) {
+	var members []User
+	var err error
+	query := "SELECT members.uid AS uid, name FROM users JOIN members ON users.uid = members.uid WHERE members.gid = ?"
+	if page > 0 {
+		offset := (page - 1) * pageSize
+		query += " OFFSET ? LIMIT ?"
+		err = db.Raw(query, gid, offset, pageSize).Scan(&members).Error
+	} else {
+		err = db.Raw(query, gid).Scan(&members).Error
+	}
+
+	if err != nil {
+		return nil, err
+	}
+	return members, nil
 }
 
 func (app *Application) UpsertUser(uid int, name string, attrs int) {
