@@ -44,6 +44,27 @@ function postURL(event) {
     xhr.send(prm);
 }
 
+function setProxy(event) {
+    event.preventDefault();
+    let proxyUrl = document.getElementById("proxy_addr").value;
+    let proxyUse = document.getElementById("proxy_use").checked;
+    console.log("proxyURL: " + proxyUrl + " , proxyUse: " + proxyUse);
+    let xhr = new XMLHttpRequest();
+    xhr.open("POST", "/set-proxy", true);
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    // handler
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+            //alert(xhr.responseText);
+            location.reload()
+        }
+    };
+    // send
+    let prm = "proxy_url=" + proxyUrl + "&proxy_use=" + proxyUse;
+    console.log("proxy prm: " + prm);
+    xhr.send(prm);
+}
+
 function openTestURL(ibase) {
     let base = document.getElementById(ibase).textContent;
     console.log(base)

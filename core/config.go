@@ -10,6 +10,8 @@ type Configuration struct {
 	AppID       string
 	AccessToken string
 	RecentIP    string
+	ProxyAddr   string
+	ProxyUse    bool
 }
 
 func LoadConfig() {

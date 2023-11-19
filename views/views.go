@@ -9,8 +9,9 @@ type Pagination struct {
 }
 
 type UserRec struct {
-	Uid  int
-	Name string
+	Uid        int
+	Name       string
+	UpdateTime string
 }
 
 type UsersList struct {
@@ -20,8 +21,9 @@ type UsersList struct {
 }
 
 type GroupRec struct {
-	Gid  int
-	Name string
+	Gid        int
+	Name       string
+	UpdateTime string
 }
 
 type GroupsList struct {
@@ -30,11 +32,19 @@ type GroupsList struct {
 	Pagination
 }
 
+type PostRec struct {
+	Pid  int
+	Fid  int
+	Name string
+	Text string
+}
+
 type GroupData struct {
 	Gid     int
 	Name    string
 	Title   string
 	Members []UserRec
+	Wall    []PostRec
 }
 
 type UserData struct {

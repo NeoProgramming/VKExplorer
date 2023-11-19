@@ -48,6 +48,7 @@ func (app *Application) groups(w http.ResponseWriter, r *http.Request) {
 	for i, elem := range groups {
 		t.Items[i].Gid = elem.Gid
 		t.Items[i].Name = elem.Name
+		t.Items[i].UpdateTime = elem.UpdatedAt.Format("2006-01-02 15:04:05")
 	}
 	t.Title = "Groups"
 	t.Count = getGroupsCount(app.db)

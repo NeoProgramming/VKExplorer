@@ -13,6 +13,8 @@ type ViewHome struct {
 	CurrentIP   string
 	DBConnected bool
 	DBTables    string
+	TasksCount  int
+	ProxyAddr   string
 }
 
 func (app *Application) home(w http.ResponseWriter, r *http.Request) {
@@ -26,6 +28,8 @@ func (app *Application) home(w http.ResponseWriter, r *http.Request) {
 		CurrentIP:   GetGlobalIP(),
 		DBConnected: app.dbaseConnected,
 		DBTables:    GetTables(),
+		TasksCount:  getTasksCount(app.db),
+		ProxyAddr:   app.config.ProxyAddr,
 	}
 
 	// Checks if the current request URL path exactly matches the "/" pattern.

@@ -48,6 +48,7 @@ func (app *Application) users(w http.ResponseWriter, r *http.Request) {
 	for i, elem := range users {
 		t.Items[i].Uid = elem.Uid
 		t.Items[i].Name = elem.Name
+		t.Items[i].UpdateTime = elem.UpdatedAt.Format("2006-01-02 15:04:05")
 	}
 	t.Title = "Users"
 	t.Count = getUsersCount(app.db)

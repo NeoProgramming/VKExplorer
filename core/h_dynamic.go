@@ -39,6 +39,32 @@ func (app *Application) setAppToken(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusMethodNotAllowed)
 }
 
+// AJAX - setting proxy
+func (app *Application) setProxy(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("setProxy")
+	if r.Method == http.MethodPost {
+		proxyAddr := r.FormValue("proxy_url")
+		proxyUse := r.FormValue("proxy_use")
+		app.config.ProxyAddr = proxyAddr
+		app.config.ProxyUse = proxyUse == "true"
+
+		fmt.Println("proxy: ", app.config.ProxyAddr, " use: ", proxyUse)
+		// ... update user information in the database ...
+		w.Write([]byte("setProxy ok"))
+		SaveConfig()
+
+		if app.config.ProxyUse {
+			ActivateProxy()
+
+		} else {
+			DeactivateProxy()
+		}
+
+		return
+	}
+	w.WriteHeader(http.StatusMethodNotAllowed)
+}
+
 //  SSE - get server status
 func (app *Application) getServerStatus(w http.ResponseWriter, r *http.Request) {
 	// Set response headers for SSE

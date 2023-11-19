@@ -3,7 +3,10 @@ package core
 import (
 	"fmt"
 	"github.com/SevereCloud/vksdk/v2/api"
+	"log"
+	"net/http"
 	"net/url"
+	"os"
 	"time"
 )
 
@@ -18,8 +21,47 @@ const (
 )
 
 func InitVK() {
+	fmt.Println("VK API library initializing...")
 	App.vk = api.NewVK(App.config.AccessToken)
+	App.defVkClient = App.vk.Client
+
+	if App.config.ProxyAddr != "" {
+		ActivateProxy()
+	}
+	if App.currentClient != nil {
+		App.vk.Client = App.currentClient
+	}
 	fmt.Println("VK API library initialized")
+}
+
+func ActivateProxy() {
+	fmt.Println("config.proxyAddr = ", App.config.ProxyAddr)
+	proxyUrl, err := url.Parse(App.config.ProxyAddr) // "socks5://proxyIp:proxyPort"
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println("proxyUrl = ", proxyUrl)
+	transport := &http.Transport{
+		Proxy: http.ProxyURL(proxyUrl),
+	}
+	if transport != nil {
+		fmt.Println("Transport ok")
+	}
+	App.proxyClient = &http.Client{
+		Transport: transport,
+	}
+	if App.proxyClient != nil {
+		fmt.Println("Proxy client prepared")
+	}
+
+	App.currentClient = App.proxyClient
+	fmt.Println("Proxy enabled")
+}
+
+func DeactivateProxy() {
+	App.proxyClient = nil
+	App.currentClient = App.defVkClient
+	fmt.Println("Proxy disabled")
 }
 
 func extractAccessToken(urlStr string) string {
@@ -261,29 +303,55 @@ func (app *Application) loadUserGroups(task *Task) {
 
 func (app *Application) loadGroupWall(task *Task) {
 	offset := 0
-	count := 1000
+	totalCount := 0
+
+	// logging
+	logFile, err := os.OpenFile("log.txt", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer logFile.Close()
+	log.SetOutput(logFile)
+
+	fmt.Println("--------------------------------------------------")
+	fmt.Println("loadGroupWall")
 	for {
 		// make a request to the site
-		fmt.Println("Request for group wall: ", offset)
+		fmt.Println("Request for group wall: offset=", offset)
 
 		wall, err := app.vk.WallGet(api.Params{
 			"owner_id": -task.Xid,
 			"offset":   offset,
-			"count":    count,
+			"count":    100, // 1000 is too big?,
 		})
 		if err != nil {
 			fmt.Println(err)
 			return
 		}
-		fmt.Println("Received: ", len(wall.Items), " Total: ", wall.Count)
+		received := len(wall.Items)
+		totalCount += received
+		offset += received
+		fmt.Println("Received: ", received, " RTotal: ", wall.Count, "CTotal: ", totalCount)
 
 		// adding downloaded groups to the database
 		// todo
+		for _, post := range wall.Items {
+			text := post.Text
+			fmt.Println(text)
+			app.UpsertPost(post.ID, post.OwnerID, post.FromID, post.Date, post.Text,
+				post.Comments.Count, post.Likes.Count, post.Reposts.Count, post.Views.Count)
+			//app.UpsertMembership(task.Xid, group.ID)
+		}
 
-		// next offset
-		offset += count
+		//fmt.Printf("%+v\n", wall.Items)
+		for index, value := range wall.Items {
+			log.Println("====== index = ", index)
+			log.Printf("%+v\n", value)
+		}
+		//time.Sleep(100)
+
 		// if the received number of elements is less than the number in the package, then the package is the last
-		if len(wall.Items) < count {
+		if totalCount >= wall.Count {
 			break
 		}
 	}

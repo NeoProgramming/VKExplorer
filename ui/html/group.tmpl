@@ -1,7 +1,8 @@
 {{define "content"}}
-<h1>GROUP: {{ .Name}}</h1>
+{{ $topLevel := . }}
+<h1>GROUP: <a href="https://vk.com/public{{.Gid}}">{{.Gid}}</a> {{ .Name}}</h1>
 
-<h2>Friends</h2>
+<h2>Members</h2>
 <table border='1' style='border-collapse: collapse;' width='100%'>
     <tr>
         <th><input type="checkbox" id="all" name="all" onclick="checkAll()"/></th>
@@ -16,5 +17,21 @@
     </tr>
     {{end}}
 </table>
-
+<h2>Wall</h2>
+<table border='1' style='border-collapse: collapse;' width='100%'>
+    <tr>
+        <th><input type="checkbox" id="all" name="all" onclick="checkAll()"/></th>
+        <th>PostURL</th>
+        <th>FromURL</th>
+        <th>Text</th>
+    </tr>
+    {{range .Wall}}
+    <tr>
+        <td><input type="checkbox" id="{{.Pid}}" name="{{.Pid}}"/></td>
+        <td><a href="https://vk.com/wall-{{$topLevel.Gid}}_{{.Pid}}" target="_blank">{{.Pid}}</a></td>
+        <td><a href="https://vk.com/id{{.Fid}}" target="_blank">{{.Name}}</a></td>
+        <td>{{.Text}}</td>
+    </tr>
+    {{end}}
+</table>
 {{end}}

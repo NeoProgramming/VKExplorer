@@ -1,8 +1,17 @@
 {{define "content"}}
 <h1>GROUPS: {{ .Count}}</h1>
+<div>
 <button type="button" onclick="updateCheckedGroupMembers()">Update GroupMembers</button>
 <button type="button" onclick="updateCheckedGroupWall()">Update GroupWall</button>
-<p/>
+</div>
+<div>
+    Search:
+    <input type="text" id="search" placeholder="Enter searched text" value=""></input>
+    <button type="button" onclick="searchInGroups()">Search</button>
+</div>
+<div>
+    Tags:
+</div>
 <div>
     Page {{.CurrentPage}} :
     {{if gt .CurrentPage 1}}
@@ -26,12 +35,14 @@
         <th><input type="checkbox" id="all" name="all" onclick="checkAll()"/></th>
         <th>URL</th>
         <th>Name</th>
+        <th>Update</th>
     </tr>
     {{range .Items}}
     <tr>
         <td><input type="checkbox" id="{{.Gid}}" name="{{.Gid}}"/></td>
         <td><a href="https://vk.com/public{{.Gid}}" target="_blank">{{.Gid}}</a></td>
         <td><a href="group/{{.Gid}}">&nbsp;{{.Name}}</a></td>
+        <td>{{.UpdateTime}}</td>
     </tr>
     {{end}}
 </table>

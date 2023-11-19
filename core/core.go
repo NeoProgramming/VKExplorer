@@ -24,6 +24,9 @@ type Application struct {
 	counter        int
 	running        bool
 	wg             sync.WaitGroup
+	defVkClient    *http.Client
+	proxyClient    *http.Client
+	currentClient  *http.Client
 }
 
 var App Application

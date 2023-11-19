@@ -20,23 +20,31 @@ Input VK URL:<br>
     <tr><td>DB connected</td><td>{{.DBConnected}}</td></tr>
     <tr><td>DB tables</td><td>{{.DBTables}}</td></tr>
 </table>
-<h3>Tasks</h3>
+<h3>Tasks: {{.TasksCount}}</h3>
 <button type="button" onclick="updateMyFriends()">Update My Friends</button>
 <button type="button" onclick="updateMyGroups()">Update My Groups</button>
 <button type="button" onclick="updateMyBookmarks()">Update My Bookmarks</button>
 <p>
-<input type="text" id="user_id" placeholder="Enter User ID" value=""></input>
-<button type="button" onclick="updateUserFriends()">Update User Friends</button>
-<button type="button" onclick="updateUserGroups()">Update User Groups</button>
-<button type="button" onclick="updateUserWall()">Update User Wall</button>
-<button type="button" onclick="updateUserData()">Update User Data</button>
+<input type="text" id="user_id" placeholder="Enter User ID or URL" value=""></input>
+    <button type="button" onclick="updateUserData()">Upsert User Data</button>
+    <button type="button" onclick="updateUserFriends()">Update User Friends</button>
+    <button type="button" onclick="updateUserGroups()">Update User Groups</button>
+    <button type="button" onclick="updateUserWall()">Update User Wall</button>
 
 <p>
-<input type="text" id="group_id" placeholder="Enter Group ID" value=""></input>
-<button type="button" onclick="updateGroupMembers()">Update Group Members</button>
-<button type="button" onclick="updateGroupWall()">Update Group Wall</button>
-<button type="button" onclick="updateGroupData()">Update Group Data</button>
+<input type="text" id="group_id" placeholder="Enter Group ID or URL" value=""></input>
+    <button type="button" onclick="updateGroupData()">Upsert Group Data</button>
+    <button type="button" onclick="updateGroupMembers()">Update Group Members</button>
+    <button type="button" onclick="updateGroupWall()">Update Group Wall</button>
 
+<p><hr></p>
+<h3>Proxy (do not forget to set a proxy in your browser when receiving the access token)</h3>
+<h4></h4>
+<form>
+    <input type="checkbox" id="proxy_use"></input><label for="proxy_use">Use proxy</label>
+    <input type="text" id="proxy_addr" placeholder="host:port" value="{{.ProxyAddr}}"></input>
+    <button type="button" onclick="setProxy(event)">Set</button>
+</form>
 <p><hr></p>
 <form action="/exit" method="post">
     <input type="submit" value="Exit Server App">
