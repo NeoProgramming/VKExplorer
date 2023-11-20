@@ -41,7 +41,7 @@ Input VK URL:<br>
 <h3>Proxy (do not forget to set a proxy in your browser when receiving the access token)</h3>
 <h4></h4>
 <form>
-    <input type="checkbox" id="proxy_use"></input><label for="proxy_use">Use proxy</label>
+    <input type="checkbox" id="proxy_use" {{if .ProxyUsage}}checked{{end}}></input><label for="proxy_use">Use proxy</label>
     <input type="text" id="proxy_addr" placeholder="host:port" value="{{.ProxyAddr}}"></input>
     <button type="button" onclick="setProxy(event)">Set</button>
 </form>

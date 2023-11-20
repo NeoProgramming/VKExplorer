@@ -11,11 +11,14 @@ import (
 func (app *Application) friends(w http.ResponseWriter, r *http.Request) {
 
 	userID := Atoi(r.URL.Path[len("/friends/"):])
-	fmt.Printf("User ID: %d", userID)
+	fmt.Println("User ID: ", userID)
 
 	files := []string{
-		"./ui/html/base.tmpl",
-		"./ui/html/user.tmpl",
+		"./ui/pages/base.tmpl",
+		"./ui/pages/friends.tmpl",
+		"./ui/fragments/usermenu.tmpl",
+		"./ui/fragments/search.tmpl",
+		"./ui/fragments/userlist.tmpl",
 	}
 
 	// get User data
@@ -41,15 +44,16 @@ func (app *Application) friends(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-
+	fmt.Println("frinds count ", len(friends))
 	// fill UserData
-	var t views.UserData
-	t.Uid = userID
+	var t views.UsersList
+	t.Id = userID
 	t.Name = user
-	t.Friends = make([]views.UserRec, len(friends))
+	t.Items = make([]views.UserRec, len(friends))
 	for i, elem := range friends {
-		t.Friends[i].Uid = elem.Uid
-		t.Friends[i].Name = elem.Name
+		t.Items[i].Id = elem.Uid
+		t.Items[i].Name = elem.Name
+		fmt.Println(elem.Name)
 	}
 
 	// execute templates

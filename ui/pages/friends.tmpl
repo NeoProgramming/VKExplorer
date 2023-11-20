@@ -1,0 +1,6 @@
+{{define "content"}}
+<h1>USER: <a href="https://vk.com/id{{.Id}}">{{.Id}}</a> {{ .Name }}</h1>
+{{template "usermenu" .}}
+{{template "search" .}}
+{{template "userlist" .}}
+{{end}}

@@ -1,0 +1,19 @@
+{{define "postlist"}}
+{{ $topLevel := . }}
+<table border='1' style='border-collapse: collapse;' width='100%'>
+    <tr>
+        <th><input type="checkbox" id="all" name="all" onclick="checkAll()"/></th>
+        <th>Post</th>
+        <th>From</th>
+        <th>Text</th>
+    </tr>
+    {{range .Items}}
+    <tr>
+        <td><input type="checkbox" id="{{.Pid}}" name="{{.Pid}}"/></td>
+        <td><a href="https://vk.com/wall-{{$topLevel.Id}}_{{.Pid}}" target="_blank">{{.Pid}}</a></td>
+        <td><a href="https://vk.com/id{{.Fid}}" target="_blank">{{.Name}}</a></td>
+        <td>{{.Text}}</td>
+    </tr>
+    {{end}}
+</table>
+{{end}}

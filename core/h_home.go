@@ -15,6 +15,7 @@ type ViewHome struct {
 	DBTables    string
 	TasksCount  int
 	ProxyAddr   string
+	ProxyUsage  bool
 }
 
 func (app *Application) home(w http.ResponseWriter, r *http.Request) {
@@ -30,6 +31,7 @@ func (app *Application) home(w http.ResponseWriter, r *http.Request) {
 		DBTables:    GetTables(),
 		TasksCount:  getTasksCount(app.db),
 		ProxyAddr:   app.config.ProxyAddr,
+		ProxyUsage:  app.config.ProxyUse,
 	}
 
 	// Checks if the current request URL path exactly matches the "/" pattern.
@@ -41,8 +43,8 @@ func (app *Application) home(w http.ResponseWriter, r *http.Request) {
 
 	// We initialize a slice containing paths to two files.
 	files := []string{
-		"./ui/html/base.tmpl",
-		"./ui/html/home.tmpl",
+		"./ui/pages/base.tmpl",
+		"./ui/pages/home.tmpl",
 	}
 
 	// Read template file

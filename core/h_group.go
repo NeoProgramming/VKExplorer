@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"html/template"
 	"net/http"
-	"strconv"
 	"vkexplorer/views"
 )
 
@@ -15,8 +14,9 @@ func (app *Application) group(w http.ResponseWriter, r *http.Request) {
 	fmt.Printf("Group ID: %d", groupID)
 
 	files := []string{
-		"./ui/html/base.tmpl",
-		"./ui/html/group.tmpl",
+		"./ui/pages/base.tmpl",
+		"./ui/pages/group.tmpl",
+		"./ui/fragments/groupmenu.tmpl",
 	}
 
 	// get group info
@@ -33,45 +33,10 @@ func (app *Application) group(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	page := 0
-	pageSize := 10
-
-	// get Members list
-	members, err := getMembers(app.db, groupID, page, pageSize)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	// get Wall
-	wall, err := getWall(app.db, -groupID, page, pageSize)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	fmt.Println("wall size = ", len(wall))
-
-	// fill data
+	// fill GroupData
 	var t views.GroupData
-	t.Gid = groupID
+	t.Id = groupID
 	t.Name = group
-	t.Members = make([]views.UserRec, len(members))
-	for i, elem := range members {
-		t.Members[i].Uid = elem.Uid
-		t.Members[i].Name = elem.Name
-	}
-	t.Wall = make([]views.PostRec, len(wall))
-	for i, elem := range wall {
-		t.Wall[i].Pid = elem.Pid
-		t.Wall[i].Fid = elem.Fid
-		if elem.Name == "" {
-			t.Wall[i].Name = "! " + strconv.Itoa(elem.Fid)
-		} else {
-			t.Wall[i].Name = elem.Name
-		}
-		t.Wall[i].Text = elem.Text
-	}
 
 	// execute templates
 	err = ts.Execute(w, t)

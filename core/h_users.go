@@ -12,10 +12,10 @@ import (
 func (app *Application) users(w http.ResponseWriter, r *http.Request) {
 
 	files := []string{
-		"./ui/html/base.tmpl",
-		"./ui/html/users.tmpl",
-		"./ui/html/pagination.tmpl",
-		"./ui/html/userlist.tmpl",
+		"./ui/pages/base.tmpl",
+		"./ui/pages/users.tmpl",
+		"./ui/fragments/pagination.tmpl",
+		"./ui/fragments/userlist.tmpl",
 	}
 
 	// pagination
@@ -48,7 +48,7 @@ func (app *Application) users(w http.ResponseWriter, r *http.Request) {
 	var t views.UsersList
 	t.Items = make([]views.UserRec, len(users))
 	for i, elem := range users {
-		t.Items[i].Uid = elem.Uid
+		t.Items[i].Id = elem.Uid
 		t.Items[i].Name = elem.Name
 		t.Items[i].UpdateTime = elem.UpdatedAt.Format("2006-01-02 15:04:05")
 	}

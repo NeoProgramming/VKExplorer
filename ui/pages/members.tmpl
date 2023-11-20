@@ -1,0 +1,5 @@
+{{define "content"}}
+<h1>GROUP: <a href="https://vk.com/public{{.Id}}">{{.Id}}</a> {{ .Name }}</h1>
+{{template "groupmenu" .}}
+{{template "userlist" .}}
+{{end}}

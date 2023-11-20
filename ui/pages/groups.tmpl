@@ -4,15 +4,9 @@
 <button type="button" onclick="updateCheckedGroupMembers()">Update GroupMembers</button>
 <button type="button" onclick="updateCheckedGroupWall()">Update GroupWall</button>
 </div>
-<div>
-    Search:
-    <input type="text" id="search" placeholder="Enter searched text" value=""></input>
-    <button type="button" onclick="searchInGroups()">Search</button>
-</div>
-<div>
-    Tags:
-</div>
+{{template "search" .}}
+{{template "tags" .}}
 {{template "pagination" .}}
-
+{{template "grouplist" .}}
 {{template "pagination" .}}
 {{end}}

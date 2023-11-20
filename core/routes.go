@@ -24,6 +24,11 @@ func (app *Application) routes() *http.ServeMux {
 	mux.HandleFunc("/groups", app.groups)
 	mux.HandleFunc("/user/", app.user)
 	mux.HandleFunc("/group/", app.group)
+	mux.HandleFunc("/friends/", app.friends)
+	mux.HandleFunc("/membership/", app.membership)
+	mux.HandleFunc("/members/", app.members)
+	mux.HandleFunc("/userwall/", app.userwall)
+	mux.HandleFunc("/groupwall/", app.groupwall)
 	mux.HandleFunc("/tasks", app.tasks)
 	mux.HandleFunc("/exit", app.exit)
 

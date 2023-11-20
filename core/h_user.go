@@ -14,11 +14,12 @@ func (app *Application) user(w http.ResponseWriter, r *http.Request) {
 	fmt.Printf("User ID: %d\n", userID)
 
 	files := []string{
-		"./ui/html/base.tmpl",
-		"./ui/html/user.tmpl",
+		"./ui/pages/base.tmpl",
+		"./ui/pages/user.tmpl",
+		"./ui/fragments/usermenu.tmpl",
 	}
 
-	// get User data
+	// get user info
 	user, err := getUserData(app.db, userID)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -32,37 +33,10 @@ func (app *Application) user(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	page := 0
-	pageSize := 10
-
-	// get Friends list
-	friends, err := getFriends(app.db, userID, page, pageSize)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	// get Groups list
-	groups, err := getMemberships(app.db, userID, page, pageSize)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
 	// fill UserData
 	var t views.UserData
-	t.Uid = userID
+	t.Id = userID
 	t.Name = user
-	t.Friends = make([]views.UserRec, len(friends))
-	for i, elem := range friends {
-		t.Friends[i].Uid = elem.Uid
-		t.Friends[i].Name = elem.Name
-	}
-	t.Groups = make([]views.GroupRec, len(groups))
-	for i, elem := range groups {
-		t.Groups[i].Gid = elem.Gid
-		t.Groups[i].Name = elem.Name
-	}
 
 	// execute templates
 	err = ts.Execute(w, t)

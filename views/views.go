@@ -9,25 +9,29 @@ type Pagination struct {
 }
 
 type UserRec struct {
-	Uid        int
+	Id         int
 	Name       string
 	UpdateTime string
 }
 
 type UsersList struct {
 	Title string
+	Id    int
+	Name  string
 	Items []UserRec
 	Pagination
 }
 
 type GroupRec struct {
-	Gid        int
+	Id         int
 	Name       string
 	UpdateTime string
 }
 
 type GroupsList struct {
 	Title string
+	Id    int
+	Name  string
 	Items []GroupRec
 	Pagination
 }
@@ -41,22 +45,24 @@ type PostRec struct {
 
 type PostsList struct {
 	Title string
+	Id    int
+	Name  string
 	Items []PostRec
 	Pagination
 }
 
 type UserData struct {
-	Uid     int
-	Name    string
-	Title   string
-	Friends []UserRec
-	Groups  []GroupRec
+	Id    int
+	Name  string
+	Title string
+	//	Friends []UserRec
+	//	Groups  []GroupRec
 }
 
 type GroupData struct {
-	Gid     int
-	Name    string
-	Title   string
-	Members []UserRec
-	Wall    []PostRec
+	Id    int
+	Name  string
+	Title string
+	//	Members []UserRec
+	//	Wall    []PostRec
 }

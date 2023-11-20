@@ -12,10 +12,12 @@ import (
 func (app *Application) groups(w http.ResponseWriter, r *http.Request) {
 
 	files := []string{
-		"./ui/html/base.tmpl",
-		"./ui/html/groups.tmpl",
-		"./ui/html/pagination.tmpl",
-		"./ui/html/grouplist.tmpl",
+		"./ui/pages/base.tmpl",
+		"./ui/pages/groups.tmpl",
+		"./ui/fragments/search.tmpl",
+		"./ui/fragments/tags.tmpl",
+		"./ui/fragments/pagination.tmpl",
+		"./ui/fragments/grouplist.tmpl",
 	}
 
 	// pagination: we take the page number from the URL, 1 by default
@@ -48,7 +50,7 @@ func (app *Application) groups(w http.ResponseWriter, r *http.Request) {
 	var t views.GroupsList
 	t.Items = make([]views.GroupRec, len(groups))
 	for i, elem := range groups {
-		t.Items[i].Gid = elem.Gid
+		t.Items[i].Id = elem.Gid
 		t.Items[i].Name = elem.Name
 		t.Items[i].UpdateTime = elem.UpdatedAt.Format("2006-01-02 15:04:05")
 	}

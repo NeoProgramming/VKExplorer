@@ -21,8 +21,8 @@ type ViewTask struct {
 func (app *Application) tasks(w http.ResponseWriter, r *http.Request) {
 
 	files := []string{
-		"./ui/html/base.tmpl",
-		"./ui/html/tasks.tmpl",
+		"./ui/pages/base.tmpl",
+		"./ui/pages/tasks.tmpl",
 	}
 
 	// pagination
