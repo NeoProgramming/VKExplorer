@@ -14,6 +14,8 @@ func (app *Application) users(w http.ResponseWriter, r *http.Request) {
 	files := []string{
 		"./ui/html/base.tmpl",
 		"./ui/html/users.tmpl",
+		"./ui/html/pagination.tmpl",
+		"./ui/html/userlist.tmpl",
 	}
 
 	// pagination

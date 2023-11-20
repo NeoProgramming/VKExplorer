@@ -13,11 +13,12 @@ import (
 type RecordAttrs int
 
 const (
-	RA_MY     = 0x1  // my friend or my group
-	RA_FAV    = 0x2  // bookmarked user of group
-	RA_FRIEND = 0x4  // my friend's friend; or my friend's group
-	RA_MEMBER = 0x8  // member of my group
-	RA_LIKER  = 0x10 // liker of some record
+	RA_MY        = 0x1  // my friend or my group
+	RA_FAV       = 0x2  // bookmarked user of group
+	RA_FRIEND    = 0x4  // my friend's friend; or my friend's group
+	RA_MEMBER    = 0x8  // member of some group
+	RA_LIKER     = 0x10 // liker of some record
+	RA_COMMENTER = 0x20 // commenter of some record
 )
 
 func InitVK() {

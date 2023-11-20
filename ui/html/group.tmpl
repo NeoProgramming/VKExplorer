@@ -1,5 +1,5 @@
 {{define "content"}}
-{{ $topLevel := . }}
+
 <h1>GROUP: <a href="https://vk.com/public{{.Gid}}">{{.Gid}}</a> {{ .Name}}</h1>
 
 <h2>Members</h2>
@@ -18,6 +18,8 @@
     {{end}}
 </table>
 <h2>Wall</h2>
+
+{{ $topLevel := . }}
 <table border='1' style='border-collapse: collapse;' width='100%'>
     <tr>
         <th><input type="checkbox" id="all" name="all" onclick="checkAll()"/></th>

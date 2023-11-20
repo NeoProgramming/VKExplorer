@@ -4,56 +4,8 @@
 <button type="button" onclick="updateCheckedUserGroups()">Update UserGroups</button>
 <button type="button" onclick="updateCheckedUserWall()">Update UserWall</button>
 <p/>
-<div>
-    Page {{.CurrentPage}} :
-    {{if gt .CurrentPage 1}}
-    <a href="?page=1">First (1)</a>
-    <a href="?page={{.PrevPage}}">Prev ({{.PrevPage}})</a>
-    {{else}}
-    <span>First</span>
-    <span>Prev</span>
-    {{end}}
-    <a href="?page=0">All</a>
-    {{if lt .CurrentPage .TotalPages}}
-    <a href="?page={{.NextPage}}">Next ({{.NextPage}})</a>
-    <a href="?page={{.TotalPages}}">Last ({{.TotalPages}})</a>
-    {{else}}
-    <span>Next</span>
-    <span>Last</span>
-    {{end}}
-</div>
-<table border='1' style='border-collapse: collapse;' width='100%'>
-    <tr>
-        <th><input type="checkbox" id="all" name="all" onclick="checkAll()"/></th>
-        <th>URL</th>
-        <th>Name</th>
-        <th>Update</th>
-    </tr>
-    {{range .Items}}
-    <tr>
-        <td><input type="checkbox" id="{{.Uid}}" name="{{.Uid}}"/></td>
-        <td><a href="https://vk.com/id{{.Uid}}" target="_blank">{{.Uid}}</a></td>
-        <td><a href="user/{{.Uid}}">&nbsp;{{.Name}}</a></td>
-        <td>{{.UpdateTime}}</td>
-    </tr>
-    {{end}}
-</table>
-<div>
-    Page {{.CurrentPage}} :
-    {{if gt .CurrentPage 1}}
-    <a href="?page=1">First (1)</a>
-    <a href="?page={{.PrevPage}}">Prev ({{.PrevPage}})</a>
-    {{else}}
-    <span>First</span>
-    <span>Prev</span>
-    {{end}}
-    <a href="?page=0">All</a>
-    {{if lt .CurrentPage .TotalPages}}
-    <a href="?page={{.NextPage}}">Next ({{.NextPage}})</a>
-    <a href="?page={{.TotalPages}}">Last ({{.TotalPages}})</a>
-    {{else}}
-    <span>Next</span>
-    <span>Last</span>
-    {{end}}
-</div>
+{{template "pagination" .}}
+{{template "userlist" .}}
+
+{{template "pagination" .}}
 {{end}}

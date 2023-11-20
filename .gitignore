@@ -12,6 +12,7 @@ dist/
 *.toml
 *.db
 *.geany
+*.txt
 vkexplorer
 /*.db-shm
 /*.db-wal

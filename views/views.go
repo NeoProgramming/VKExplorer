@@ -39,12 +39,10 @@ type PostRec struct {
 	Text string
 }
 
-type GroupData struct {
-	Gid     int
-	Name    string
-	Title   string
-	Members []UserRec
-	Wall    []PostRec
+type PostsList struct {
+	Title string
+	Items []PostRec
+	Pagination
 }
 
 type UserData struct {
@@ -53,4 +51,12 @@ type UserData struct {
 	Title   string
 	Friends []UserRec
 	Groups  []GroupRec
+}
+
+type GroupData struct {
+	Gid     int
+	Name    string
+	Title   string
+	Members []UserRec
+	Wall    []PostRec
 }

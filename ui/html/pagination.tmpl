@@ -1,0 +1,21 @@
+{{define "pagination"}}
+
+<div>
+    Page {{.CurrentPage}} :
+    {{if gt .CurrentPage 1}}
+    <a href="?page=1">First (1)</a>
+    <a href="?page={{.PrevPage}}">Prev ({{.PrevPage}})</a>
+    {{else}}
+    <span>First</span>
+    <span>Prev</span>
+    {{end}}
+    <a href="?page=0">All</a>
+    {{if lt .CurrentPage .TotalPages}}
+    <a href="?page={{.NextPage}}">Next ({{.NextPage}})</a>
+    <a href="?page={{.TotalPages}}">Last ({{.TotalPages}})</a>
+    {{else}}
+    <span>Next</span>
+    <span>Last</span>
+    {{end}}
+</div>
+{{end}}

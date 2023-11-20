@@ -1,0 +1,18 @@
+{{define "grouplist"}}
+<table border='1' style='border-collapse: collapse;' width='100%'>
+    <tr>
+        <th><input type="checkbox" id="all" name="all" onclick="checkAll()"/></th>
+        <th>URL</th>
+        <th>Name</th>
+        <th>Update</th>
+    </tr>
+    {{range .Items}}
+    <tr>
+        <td><input type="checkbox" id="{{.Gid}}" name="{{.Gid}}"/></td>
+        <td><a href="https://vk.com/public{{.Gid}}" target="_blank">{{.Gid}}</a></td>
+        <td><a href="group/{{.Gid}}">&nbsp;{{.Name}}</a></td>
+        <td>{{.UpdateTime}}</td>
+    </tr>
+    {{end}}
+</table>
+{{end}}

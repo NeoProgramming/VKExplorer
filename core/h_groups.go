@@ -14,6 +14,8 @@ func (app *Application) groups(w http.ResponseWriter, r *http.Request) {
 	files := []string{
 		"./ui/html/base.tmpl",
 		"./ui/html/groups.tmpl",
+		"./ui/html/pagination.tmpl",
+		"./ui/html/grouplist.tmpl",
 	}
 
 	// pagination: we take the page number from the URL, 1 by default
