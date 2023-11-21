@@ -1,5 +1,7 @@
 package views
 
+// common control data
+
 type Pagination struct {
 	Count       int
 	CurrentPage int
@@ -8,32 +10,32 @@ type Pagination struct {
 	NextPage    int
 }
 
-type UserRec struct {
+type Search struct {
+	SearchStr	string
+	AndOr		int
+	SearchArg   string
+}
+
+type Tags struct {
+	TagsStr		string
+}
+
+// common data
+
+type NameRec struct {
 	Id         int
 	Name       string
 	UpdateTime string
 }
 
-type UsersList struct {
+type NameList struct {
 	Title string
 	Id    int
 	Name  string
-	Items []UserRec
+	Items []NameRec
 	Pagination
-}
-
-type GroupRec struct {
-	Id         int
-	Name       string
-	UpdateTime string
-}
-
-type GroupsList struct {
-	Title string
-	Id    int
-	Name  string
-	Items []GroupRec
-	Pagination
+	Search
+	Tags
 }
 
 type PostRec struct {
@@ -49,20 +51,20 @@ type PostsList struct {
 	Name  string
 	Items []PostRec
 	Pagination
+	Search
+	Tags
 }
+
+// special data for db entities
 
 type UserData struct {
 	Id    int
 	Name  string
 	Title string
-	//	Friends []UserRec
-	//	Groups  []GroupRec
 }
 
 type GroupData struct {
 	Id    int
 	Name  string
 	Title string
-	//	Members []UserRec
-	//	Wall    []PostRec
 }

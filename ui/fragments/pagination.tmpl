@@ -1,21 +1,20 @@
 {{define "pagination"}}
-
-<div>
-    Page {{.CurrentPage}} :
+<div class="navbar">
+    <span class="navtext">Page {{.CurrentPage}} :</span>
     {{if gt .CurrentPage 1}}
-    <a href="?page=1">First (1)</a>
-    <a href="?page={{.PrevPage}}">Prev ({{.PrevPage}})</a>
+    <a class="navitem" href="?page=1{{.SearchArg}}">First (1)</a>
+    <a class="navitem" href="?page={{.PrevPage}}{{.SearchArg}}">Prev ({{.PrevPage}})</a>
     {{else}}
-    <span>First</span>
-    <span>Prev</span>
+    <span class="navitem">First</span>
+    <span class="navitem">Prev</span>
     {{end}}
-    <a href="?page=0">All</a>
+    <a  class="navitem" href="?page=0{{.SearchArg}}">All</a>
     {{if lt .CurrentPage .TotalPages}}
-    <a href="?page={{.NextPage}}">Next ({{.NextPage}})</a>
-    <a href="?page={{.TotalPages}}">Last ({{.TotalPages}})</a>
+    <a  class="navitem" href="?page={{.NextPage}}{{.SearchArg}}">Next ({{.NextPage}})</a>
+    <a  class="navitem" href="?page={{.TotalPages}}{{.SearchArg}}">Last ({{.TotalPages}})</a>
     {{else}}
-    <span>Next</span>
-    <span>Last</span>
+    <span class="navitem">Next</span>
+    <span class="navitem">Last</span>
     {{end}}
 </div>
 {{end}}

@@ -74,6 +74,27 @@ function openTestURL(ibase) {
     window.open(url, "_blank");
 }
 
+function setSearch(currPage) {
+
+   // Get the name from the form
+   var text = document.getElementById('search').value;
+//   console.log("search text = ", text);
+   var currentUrl = window.location.href.split('?')[0];
+//   console.log("currentUrl = ", currentUrl);
+     
+   // Send a GET request to the server
+   //var xhr = new XMLHttpRequest();
+   //xhr.open('GET', currentUrl + '?page=' + currPage + "&search=" + encodeURIComponent(text), true);
+   //xhr.send();
+   window.location.href = currentUrl + '?page=' + currPage + "&search=" + encodeURIComponent(text);
+}
+
+function clearSearch(currPage) {
+//	console.log(currPage);
+	var currentUrl = window.location.href.split('?')[0];
+	window.location.href = currentUrl + '?page=' + currPage;
+}
+
 // HELPERS FOR UPDATE DB QUERIES
 
 function sendUpdateQuery(url) {

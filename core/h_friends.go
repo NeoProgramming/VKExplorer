@@ -45,11 +45,12 @@ func (app *Application) friends(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	fmt.Println("frinds count ", len(friends))
-	// fill UserData
-	var t views.UsersList
+	
+	// fill 
+	var t views.NameList
 	t.Id = userID
 	t.Name = user
-	t.Items = make([]views.UserRec, len(friends))
+	t.Items = make([]views.NameRec, len(friends))
 	for i, elem := range friends {
 		t.Items[i].Id = elem.Uid
 		t.Items[i].Name = elem.Name

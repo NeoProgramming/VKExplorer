@@ -32,3 +32,37 @@ nav {
     /* display: inline-block; */
     width: 100px;
 }
+.navbar {
+    margin: 5px;
+    border-radius: 5px;
+    border: 2px solid #73AD21;
+    padding: 2px;    
+}
+.navbar:last-child {
+	flex-grow: 1;
+}
+.navtext {
+    display: inline-block;
+    width: 100px;
+}
+.navitem {
+	display: inline-block;
+    width: 100px;
+    text-align: center;
+    background-color: #99ff99;
+}
+.navitem:hover {
+    background-color: #3374C2;
+}
+.slider {
+	margin: 2px;
+	padding: 2px;
+	border: 1px solid #777777;
+	border-radius: 3px;
+}
+.tag {
+	background-color: #ffff99;
+}
+.tag:hover {
+    background-color: #9999ff;
+}

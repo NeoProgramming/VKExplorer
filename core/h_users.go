@@ -1,6 +1,7 @@
 package core
 
 import (
+	"fmt"
 	"html/template"
 	"math"
 	"net/http"
@@ -14,6 +15,8 @@ func (app *Application) users(w http.ResponseWriter, r *http.Request) {
 	files := []string{
 		"./ui/pages/base.tmpl",
 		"./ui/pages/users.tmpl",
+		"./ui/fragments/search.tmpl",
+		"./ui/fragments/tags.tmpl",
 		"./ui/fragments/pagination.tmpl",
 		"./ui/fragments/userlist.tmpl",
 	}
@@ -29,9 +32,14 @@ func (app *Application) users(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	pageSize := 10
+	searchStr := r.URL.Query().Get("search")
+	fmt.Println("searchStr = ", searchStr)
+	andOr := Atoi(r.URL.Query().Get("andor"))
+	tagsStr := r.URL.Query().Get("tags")
+	fmt.Println("tagsStr = ", tagsStr)
 
 	// get Users list
-	users, err := getUsers(app.db, page, pageSize)
+	users, err := getUsers(app.db, page, pageSize, searchStr)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -45,8 +53,8 @@ func (app *Application) users(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// fill Users list
-	var t views.UsersList
-	t.Items = make([]views.UserRec, len(users))
+	var t views.NameList
+	t.Items = make([]views.NameRec, len(users))
 	for i, elem := range users {
 		t.Items[i].Id = elem.Uid
 		t.Items[i].Name = elem.Name
@@ -58,6 +66,12 @@ func (app *Application) users(w http.ResponseWriter, r *http.Request) {
 	t.NextPage = page + 1
 	t.PrevPage = page - 1
 	t.TotalPages = int(math.Ceil(float64(t.Count) / float64(pageSize)))
+	t.SearchStr = searchStr
+	t.TagsStr = tagsStr
+	t.AndOr = andOr
+	if searchStr != "" {
+		t.SearchArg = "&search=" + searchStr
+	}
 
 	// execute templates
 	err = ts.Execute(w, t)

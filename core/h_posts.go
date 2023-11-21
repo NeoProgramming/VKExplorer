@@ -10,15 +10,15 @@ import (
 )
 
 // Handler for displaying a list of groups
-func (app *Application) groups(w http.ResponseWriter, r *http.Request) {
+func (app *Application) posts(w http.ResponseWriter, r *http.Request) {
 
 	files := []string{
 		"./ui/pages/base.tmpl",
-		"./ui/pages/groups.tmpl",
+		"./ui/pages/posts.tmpl",
 		"./ui/fragments/search.tmpl",
 		"./ui/fragments/tags.tmpl",
 		"./ui/fragments/pagination.tmpl",
-		"./ui/fragments/grouplist.tmpl",
+		"./ui/fragments/postlist.tmpl",
 	}
 
 	// pagination: we take the page number from the URL, 1 by default
@@ -39,7 +39,7 @@ func (app *Application) groups(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("tagsStr = ", tagsStr)
 
 	// get list
-	groups, err := getGroups(app.db, page, pageSize, searchStr)
+	posts, err := getPosts(app.db, page, pageSize, searchStr)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -52,16 +52,18 @@ func (app *Application) groups(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// fill in the list of groups
-	var t views.NameList
-	t.Items = make([]views.NameRec, len(groups))
-	for i, elem := range groups {
-		t.Items[i].Id = elem.Gid
-		t.Items[i].Name = elem.Name
-		t.Items[i].UpdateTime = elem.UpdatedAt.Format("2006-01-02 15:04:05")
+	// fill in the list of posts
+	var t views.PostsList
+	t.Items = make([]views.PostRec, len(posts))
+	for i, elem := range posts {
+		t.Items[i].Pid = elem.Pid
+		t.Items[i].Fid = elem.Fid
+	//	t.Items[i].Name = elem.Name
+		t.Items[i].Text = elem.Text
+	//	t.Items[i].UpdateTime = elem.UpdatedAt.Format("2006-01-02 15:04:05")
 	}
-	t.Title = "Groups"
-	t.Count = getGroupsCount(app.db)
+	t.Title = "Posts"
+	t.Count = getPostsCount(app.db)
 	t.CurrentPage = page
 	t.NextPage = page + 1
 	t.PrevPage = page - 1

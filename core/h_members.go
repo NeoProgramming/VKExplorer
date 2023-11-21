@@ -44,10 +44,10 @@ func (app *Application) members(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// fill
-	var t views.UsersList
+	var t views.NameList
 	t.Id = groupID
 	t.Name = group
-	t.Items = make([]views.UserRec, len(members))
+	t.Items = make([]views.NameRec, len(members))
 	for i, elem := range members {
 		t.Items[i].Id = elem.Uid
 		t.Items[i].Name = elem.Name

@@ -45,10 +45,10 @@ func (app *Application) membership(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// fill UserData
-	var t views.GroupsList
+	var t views.NameList
 	t.Id = userID
 	t.Name = user
-	t.Items = make([]views.GroupRec, len(groups))
+	t.Items = make([]views.NameRec, len(groups))
 	for i, elem := range groups {
 		t.Items[i].Id = elem.Gid
 		t.Items[i].Name = elem.Name

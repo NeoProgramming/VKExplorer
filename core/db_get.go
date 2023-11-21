@@ -48,14 +48,25 @@ func getTasks(db *gorm.DB, page int, pageSize int) ([]Task, error) {
 	return tasks, nil
 }
 
-func getUsers(db *gorm.DB, page int, pageSize int) ([]User, error) {
+func getUsers(db *gorm.DB, page int, pageSize int, search string) ([]User, error) {
 	var users []User
 	var err error
+	
 	if page > 0 {
 		offset := (page - 1) * pageSize
-		err = db.Offset(offset).Limit(pageSize).Find(&users).Error
+		if search == "" {
+			err = db.Offset(offset).Limit(pageSize).Find(&users).Error
+		} else {
+			search = "%" + search + "%"
+			err = db.Where("Name LIKE ?", search).Offset(offset).Limit(pageSize).Find(&users).Error
+		}
 	} else {
-		err = db.Find(&users).Error
+		if search == "" {
+			err = db.Find(&users).Error
+		} else {
+			search = "%" + search + "%"
+			err = db.Where("Name LIKE ?", search).Find(&users).Error
+		}
 	}
 	if err != nil {
 		return nil, err
@@ -63,19 +74,55 @@ func getUsers(db *gorm.DB, page int, pageSize int) ([]User, error) {
 	return users, nil
 }
 
-func getGroups(db *gorm.DB, page int, pageSize int) ([]Group, error) {
+func getGroups(db *gorm.DB, page int, pageSize int, search string) ([]Group, error) {
 	var groups []Group
 	var err error
+	
 	if page > 0 {
 		offset := (page - 1) * pageSize
-		err = db.Offset(offset).Limit(pageSize).Find(&groups).Error
+		if search == "" {
+			err = db.Offset(offset).Limit(pageSize).Find(&groups).Error
+		} else {
+			search = "%" + search + "%"
+			err = db.Where("Name LIKE ?", search).Offset(offset).Limit(pageSize).Find(&groups).Error
+		}
 	} else {
-		err = db.Find(&groups).Error
+		if search == "" {
+			err = db.Find(&groups).Error
+		} else {
+			search = "%" + search + "%"
+			err = db.Where("Name LIKE ?", search).Find(&groups).Error
+		}
 	}
 	if err != nil {
 		return nil, err
 	}
 	return groups, nil
+}
+
+func getPosts(db *gorm.DB, page int, pageSize int, search string) ([]Post, error) {
+	var posts []Post
+	var err error
+	if page > 0 {
+		offset := (page - 1) * pageSize
+		if search == "" {
+			err = db.Offset(offset).Limit(pageSize).Find(&posts).Error
+		} else {
+			search = "%" + search + "%"
+			err = db.Where("Text LIKE ?", search).Offset(offset).Limit(pageSize).Find(&posts).Error
+		}
+	} else {
+		if search == "" {
+			err = db.Find(&posts).Error
+		} else {
+			search = "%" + search + "%"
+			err = db.Where("Text LIKE ?", search).Find(&posts).Error
+		}
+	}
+	if err != nil {
+		return nil, err
+	}
+	return posts, nil
 }
 
 func getUsersCount(db *gorm.DB) int {
@@ -90,6 +137,15 @@ func getUsersCount(db *gorm.DB) int {
 func getGroupsCount(db *gorm.DB) int {
 	var count int64
 	result := db.Model(&Group{}).Count(&count)
+	if result.Error != nil {
+		return 0
+	}
+	return int(count)
+}
+
+func getPostsCount(db *gorm.DB) int {
+	var count int64
+	result := db.Model(&Post{}).Count(&count)
 	if result.Error != nil {
 		return 0
 	}

@@ -1,5 +1,8 @@
 {{define "tags"}}
-<div>
-    Tags:
+<div class="navbar">
+    <span>Tags:</span>
+    <input type="text" id="tag" placeholder="New tag" value="" style="width:70px"></input>    
+    <button type="button" id="set" onclick="setTags()">Set</button>
+    <button type="button" id="set" onclick="setTags()">Clr</button>
 </div>
 {{end}}

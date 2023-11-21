@@ -1,7 +1,13 @@
 {{define "search"}}
-<div>
-    Search:
-    <input type="text" id="search" placeholder="Enter searched text" value=""></input>
-    <button type="button" onclick="searchInGroups()">Search</button>
+<div class="navbar">
+    <span>Search:</span>
+    <span class="slider">
+      <label for="andor">AND</label>
+      <input type="range" id="andor" style="width:30px;" name="andor" min="0" max="1" />
+      <label for="andor">OR</label>
+    </span>
+    <button type="button" onclick="clearSearch({{.CurrentPage}})">Clear</button>
+    <button type="button" onclick="setSearch({{.CurrentPage}})">Search</button>
+    <input type="text" id="search" placeholder="Enter searched text" value="{{.SearchStr}}" style="width:70%"></input>    
 </div>
 {{end}}

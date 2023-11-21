@@ -1,0 +1,11 @@
+{{define "content"}}
+<h1>POSTS: {{ .Count}}</h1>
+<div>
+<button type="button" onclick="updateCheckedPosts()">Update Posts</button>
+</div>
+{{template "search" .}}
+{{template "tags" .}}
+{{template "pagination" .}}
+{{template "postlist" .}}
+{{template "pagination" .}}
+{{end}}
