@@ -2,10 +2,10 @@ package core
 
 import (
 	"fmt"
-	"html/template"
 	"math"
 	"net/http"
 	"strconv"
+	"text/template"
 	"vkexplorer/views"
 )
 
@@ -23,6 +23,7 @@ func (app *Application) posts(w http.ResponseWriter, r *http.Request) {
 
 	// pagination: we take the page number from the URL, 1 by default
 	pageStr := r.URL.Query().Get("page")
+	fmt.Println("pageStr = ", pageStr)
 	if pageStr == "" {
 		pageStr = "1"
 	}
@@ -58,9 +59,9 @@ func (app *Application) posts(w http.ResponseWriter, r *http.Request) {
 	for i, elem := range posts {
 		t.Items[i].Pid = elem.Pid
 		t.Items[i].Fid = elem.Fid
-	//	t.Items[i].Name = elem.Name
+		//	t.Items[i].Name = elem.Name
 		t.Items[i].Text = elem.Text
-	//	t.Items[i].UpdateTime = elem.UpdatedAt.Format("2006-01-02 15:04:05")
+		//	t.Items[i].UpdateTime = elem.UpdatedAt.Format("2006-01-02 15:04:05")
 	}
 	t.Title = "Posts"
 	t.Count = getPostsCount(app.db)

@@ -342,13 +342,20 @@ func (app *Application) loadGroupWall(task *Task) {
 			fmt.Println(text)
 			app.UpsertPost(post.ID, post.OwnerID, post.FromID, post.Date, post.Text,
 				post.Comments.Count, post.Likes.Count, post.Reposts.Count, post.Views.Count)
+			// attachments
+			fmt.Println("===Att for ID=", post.ID, " OwnerID=", post.OwnerID, " FromID=", post.FromID)
+			for _, att := range post.Attachments {
+				if att.Type == "photo" {
+					fmt.Println("Photo: ID=", att.Photo.ID, " AlbumID=", att.Photo.AlbumID, " OwnerId=", att.Photo.OwnerID,
+						" UserID=", att.Photo.UserID, " Text=", att.Photo.Text)
+				} else if att.Type == "posted_photo" {
+					fmt.Println("PostedPhoto: ID=", att.PostedPhoto.ID, " OwnerID=", att.PostedPhoto.OwnerID)
+				} else if att.Type == "video" {
+					fmt.Println("Video: ID=", att.Video.ID, " OwnerID=", att.Video.OwnerID, " Title=",
+						att.Video.Title, " Descr=", att.Video.Description)
+				}
+			}
 		}
-
-		//	for index, value := range wall.Items {
-		//		log.Println("====== index = ", index)
-		//		log.Printf("%+v\n", value)
-		//	}
-		//time.Sleep(100)
 
 		// if the received number of elements is less than the number in the package, then the package is the last
 		if totalCount >= wall.Count {
@@ -381,10 +388,22 @@ func (app *Application) loadUserWall(task *Task) {
 
 		// adding downloaded posts to the database
 		for _, post := range wall.Items {
-			text := post.Text
-			fmt.Println(text)
+			//fmt.Println(post.text)
 			app.UpsertPost(post.ID, post.OwnerID, post.FromID, post.Date, post.Text,
 				post.Comments.Count, post.Likes.Count, post.Reposts.Count, post.Views.Count)
+			// attachments
+			fmt.Println("===Att for ID=", post.ID, " OwnerID=", post.OwnerID, " FromID=", post.FromID)
+			for _, att := range post.Attachments {
+				if att.Type == "photo" {
+					fmt.Println("Photo: ID=", att.Photo.ID, " AlbumID=", att.Photo.AlbumID, " OwnerId=", att.Photo.OwnerID,
+						" UserID=", att.Photo.UserID, " Text=", att.Photo.Text)
+				} else if att.Type == "posted_photo" {
+					fmt.Println("PostedPhoto: ID=", att.PostedPhoto.ID, " OwnerID=", att.PostedPhoto.OwnerID)
+				} else if att.Type == "video" {
+					fmt.Println("Video: ID=", att.Video.ID, " OwnerID=", att.Video.OwnerID, " Title=",
+						att.Video.Title, " Descr=", att.Video.Description)
+				}
+			}
 		}
 
 		if totalCount >= wall.Count {

@@ -1,5 +1,9 @@
 {{define "content"}}
 <h1>GROUP: <a href="https://vk.com/public{{.Id}}">{{.Id}}</a> {{ .Name }}</h1>
 {{template "groupmenu" .}}
+{{template "search" .}}
+{{template "tags" .}}
+{{template "pagination" .}}
 {{template "postlist" .}}
+{{template "pagination" .}}
 {{end}}

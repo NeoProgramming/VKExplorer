@@ -16,6 +16,8 @@ func (app *Application) members(w http.ResponseWriter, r *http.Request) {
 		"./ui/pages/members.tmpl",
 		"./ui/fragments/groupmenu.tmpl",
 		"./ui/fragments/search.tmpl",
+		"./ui/fragments/tags.tmpl",
+		"./ui/fragments/pagination.tmpl",
 		"./ui/fragments/userlist.tmpl",
 	}
 

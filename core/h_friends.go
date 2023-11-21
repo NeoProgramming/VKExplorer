@@ -18,6 +18,8 @@ func (app *Application) friends(w http.ResponseWriter, r *http.Request) {
 		"./ui/pages/friends.tmpl",
 		"./ui/fragments/usermenu.tmpl",
 		"./ui/fragments/search.tmpl",
+		"./ui/fragments/tags.tmpl",
+		"./ui/fragments/pagination.tmpl",
 		"./ui/fragments/userlist.tmpl",
 	}
 
@@ -45,8 +47,8 @@ func (app *Application) friends(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	fmt.Println("frinds count ", len(friends))
-	
-	// fill 
+
+	// fill
 	var t views.NameList
 	t.Id = userID
 	t.Name = user

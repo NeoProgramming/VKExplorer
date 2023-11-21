@@ -17,6 +17,8 @@ func (app *Application) groupwall(w http.ResponseWriter, r *http.Request) {
 		"./ui/pages/groupwall.tmpl",
 		"./ui/fragments/groupmenu.tmpl",
 		"./ui/fragments/search.tmpl",
+		"./ui/fragments/tags.tmpl",
+		"./ui/fragments/pagination.tmpl",
 		"./ui/fragments/postlist.tmpl",
 	}
 

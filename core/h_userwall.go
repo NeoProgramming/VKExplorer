@@ -17,6 +17,8 @@ func (app *Application) userwall(w http.ResponseWriter, r *http.Request) {
 		"./ui/pages/userwall.tmpl",
 		"./ui/fragments/usermenu.tmpl",
 		"./ui/fragments/search.tmpl",
+		"./ui/fragments/tags.tmpl",
+		"./ui/fragments/pagination.tmpl",
 		"./ui/fragments/postlist.tmpl",
 	}
 

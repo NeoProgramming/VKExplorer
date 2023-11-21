@@ -17,6 +17,9 @@ func (app *Application) membership(w http.ResponseWriter, r *http.Request) {
 		"./ui/pages/base.tmpl",
 		"./ui/pages/membership.tmpl",
 		"./ui/fragments/usermenu.tmpl",
+		"./ui/fragments/search.tmpl",
+		"./ui/fragments/tags.tmpl",
+		"./ui/fragments/pagination.tmpl",
 		"./ui/fragments/grouplist.tmpl",
 	}
 
