@@ -78,19 +78,11 @@ function setSearch(currPage) {
 
    // Get the name from the form
    var text = document.getElementById('search').value;
-//   console.log("search text = ", text);
    var currentUrl = window.location.href.split('?')[0];
-//   console.log("currentUrl = ", currentUrl);
-     
-   // Send a GET request to the server
-   //var xhr = new XMLHttpRequest();
-   //xhr.open('GET', currentUrl + '?page=' + currPage + "&search=" + encodeURIComponent(text), true);
-   //xhr.send();
    window.location.href = currentUrl + '?page=' + currPage + "&search=" + encodeURIComponent(text);
 }
 
 function clearSearch(currPage) {
-//	console.log(currPage);
 	var currentUrl = window.location.href.split('?')[0];
 	window.location.href = currentUrl + '?page=' + currPage;
 }
@@ -147,37 +139,6 @@ function sendUpdateQueryCB(url) {
  
 // UPDATE DB QUERIES
 
-function updateMyFriends() {
-    sendUpdateQuery("/update-my-friends")
-}
-
-function updateMyGroups() {
-    sendUpdateQuery("/update-my-groups")
-}
-
-function updateMyBookmarks() {
-    sendUpdateQuery("/update-my-bookmarks")
-}
-
-function updateCheckedGroupMembers() {
-    sendUpdateQueryCB("/update-checked-group-members")
-}
-
-function updateCheckedGroupWall() {
-    sendUpdateQueryCB("/update-checked-group-wall")
-}
-
-function updateCheckedUserFriends() {
-    sendUpdateQueryCB("/update-checked-user-friends")
-}
-
-function updateCheckedUserWall() {
-    sendUpdateQueryCB("/update-checked-user-wall")
-}
-
-function updateCheckedUserGroups() {
-    sendUpdateQueryCB("/update-checked-user-groups")
-}
 
 function updateUserData() {
     let id = document.getElementById("user_id").value;

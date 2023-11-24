@@ -65,20 +65,6 @@ type PostsList struct {
 // special data for db entities
 
 
-type ViewHome struct {
-	Menu
-	Title       string
-	AppID       string
-	AppURL      string
-	RecentIP    string
-	CurrentIP   string
-	DBConnected bool
-	DBTables    string
-	TasksCount  int
-	ProxyAddr   string
-	ProxyUsage  bool
-}
-
 type UserData struct {
 	Menu
 	Id    int

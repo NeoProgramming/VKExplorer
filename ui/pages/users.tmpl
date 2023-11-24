@@ -1,8 +1,8 @@
 {{define "content"}}
 <h1>USERS: {{ .Count }}</h1>
-<button type="button" onclick="updateCheckedUserFriends()">Update UserFriends</button>
-<button type="button" onclick="updateCheckedUserGroups()">Update UserGroups</button>
-<button type="button" onclick="updateCheckedUserWall()">Update UserWall</button>
+<button type="button" onclick="sendUpdateQueryCB('/update-checked-user-friends')">Update UserFriends</button>
+<button type="button" onclick="sendUpdateQueryCB('/update-checked-user-groups')">Update UserGroups</button>
+<button type="button" onclick="sendUpdateQueryCB('/update-checked-user-wall')">Update UserWall</button>
 <p/>
 {{template "search" .}}
 {{template "tags" .}}

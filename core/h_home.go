@@ -6,11 +6,24 @@ import (
 	"vkexplorer/views"
 )
 
+type ViewHome struct {
+	views.Menu
+	Title       string
+	AppID       string
+	AppURL      string
+	RecentIP    string
+	CurrentIP   string
+	DBConnected bool
+	DBTables    string
+	TasksCount  int
+	ProxyAddr   string
+	ProxyUsage  bool
+}
 
 func (app *Application) home(w http.ResponseWriter, r *http.Request) {
 
 	// data to pass to the template; any type, reflection in the handler anyway
-	data := views.ViewHome{
+	data := ViewHome {
 		Menu: views.Menu {
 			MainMenu:    0,
 		},

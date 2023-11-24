@@ -93,10 +93,12 @@ type PostWithUsername struct {
 }
 
 // like to object
-type Like struct {
+type Reaction struct {
 	gorm.Model
-	Oid int // object owner id
-	Lid int // liker id
+	Type int // object type (post, comment, image, video...)
+	Oid int  // object owner id (user, group)
+	Iid int  // liked item id (post, comment, image, video...)
+	Uid int  // liker id (usually user, maybe group)
 }
 
 type Comment struct {

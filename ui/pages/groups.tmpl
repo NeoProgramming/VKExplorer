@@ -1,8 +1,8 @@
 {{define "content"}}
 <h1>GROUPS: {{ .Count}}</h1>
 <div>
-<button type="button" onclick="updateCheckedGroupMembers()">Update GroupMembers</button>
-<button type="button" onclick="updateCheckedGroupWall()">Update GroupWall</button>
+<button type="button" onclick="sendUpdateQueryCB('/update-checked-group-members')">Update GroupMembers</button>
+<button type="button" onclick="sendUpdateQueryCB('/update-checked-group-wall')">Update GroupWall</button>
 </div>
 {{template "search" .}}
 {{template "tags" .}}

@@ -1,6 +1,10 @@
 {{define "content"}}
 {{template "usermenu" .}}
 <h1>USER: <a href="https://vk.com/id{{.Id}}">{{.Id}}</a> {{ .Name }}</h1>
+<div>
+<button type="button" onclick="updateCheckedFriends()">Update Checked Friends</button>
+<button type="button" onclick="updateAllFriends()">Update All Friends</button>
+</div>
 {{template "search" .}}
 {{template "tags" .}}
 {{template "pagination" .}}

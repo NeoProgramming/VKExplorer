@@ -31,7 +31,9 @@ body {
 .menuitem:hover {
 	background-color: #f0f090;
 }
-
+.selmenuitem:hover {
+    background-color: #f0f090;
+}
 
 #tasksctl {
     position: fixed; /* set the span element as a fixed position */
@@ -49,7 +51,8 @@ body {
     width: 100px;
 }
 .navbar {
-    margin: 5px;
+    margin-top: 5px;
+    margin-bottom: 5px;
     border-radius: 5px;
     border: 2px solid #73AD21;
     padding: 2px;    
