@@ -54,6 +54,8 @@ func (app *Application) users(w http.ResponseWriter, r *http.Request) {
 
 	// fill Users list
 	var t views.NameList
+	t.MainMenu = 1
+	t.SubMenu = 0
 	t.Items = make([]views.NameRec, len(users))
 	for i, elem := range users {
 		t.Items[i].Id = elem.Uid

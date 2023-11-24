@@ -35,6 +35,8 @@ func (app *Application) user(w http.ResponseWriter, r *http.Request) {
 
 	// fill UserData
 	var t views.UserData
+	t.MainMenu = 1
+	t.SubMenu = 0	
 	t.Id = userID
 	t.Name = user
 

@@ -9,13 +9,29 @@ body {
     background-color: #FFFEAC;
 }
 
-nav {
-    background-color: #a0a0FF;
+.menu {
+    
     display: inline-block; /* make the nav element display inline with other elements */
     position: relative; /* set the nav element as the relative reference for the absolute positioning of the span element */
     margin-top: 10px; /* add a margin-top to the nav element */
     margin-right: 20px; /* add a margin-right to the nav element */
+    padding: 5px;
+    font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
+    font-weight: normal;
+    font-size: 20px;
+    background-color: #a0a0FF;
 }
+
+.menuitem {
+	
+}
+.selmenuitem {
+    background-color: #f0f0f0;
+}
+.menuitem:hover {
+	background-color: #f0f090;
+}
+
 
 #tasksctl {
     position: fixed; /* set the span element as a fixed position */

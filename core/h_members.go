@@ -47,6 +47,8 @@ func (app *Application) members(w http.ResponseWriter, r *http.Request) {
 
 	// fill
 	var t views.NameList
+	t.MainMenu = 2
+	t.SubMenu = 1
 	t.Id = groupID
 	t.Name = group
 	t.Items = make([]views.NameRec, len(members))

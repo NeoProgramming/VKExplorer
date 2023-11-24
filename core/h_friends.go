@@ -50,6 +50,8 @@ func (app *Application) friends(w http.ResponseWriter, r *http.Request) {
 
 	// fill
 	var t views.NameList
+	t.MainMenu = 1
+	t.SubMenu = 1
 	t.Id = userID
 	t.Name = user
 	t.Items = make([]views.NameRec, len(friends))

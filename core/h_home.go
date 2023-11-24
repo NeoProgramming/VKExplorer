@@ -3,25 +3,17 @@ package core
 import (
 	"html/template"
 	"net/http"
+	"vkexplorer/views"
 )
 
-type ViewHome struct {
-	Title       string
-	AppID       string
-	AppURL      string
-	RecentIP    string
-	CurrentIP   string
-	DBConnected bool
-	DBTables    string
-	TasksCount  int
-	ProxyAddr   string
-	ProxyUsage  bool
-}
 
 func (app *Application) home(w http.ResponseWriter, r *http.Request) {
 
 	// data to pass to the template; any type, reflection in the handler anyway
-	data := ViewHome{
+	data := views.ViewHome{
+		Menu: views.Menu {
+			MainMenu:    0,
+		},
 		Title:       "This is Users List page",
 		AppID:       app.config.AppID,
 		AppURL:      app.config.AccessToken,

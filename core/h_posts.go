@@ -55,6 +55,7 @@ func (app *Application) posts(w http.ResponseWriter, r *http.Request) {
 
 	// fill in the list of posts
 	var t views.PostsList
+	t.MainMenu = 3
 	t.Items = make([]views.PostRec, len(posts))
 	for i, elem := range posts {
 		t.Items[i].Pid = elem.Pid

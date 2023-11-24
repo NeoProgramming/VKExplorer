@@ -2,6 +2,11 @@ package views
 
 // common control data
 
+type Menu struct {
+	MainMenu	int
+	SubMenu		int
+}
+
 type Pagination struct {
 	Count       int
 	CurrentPage int
@@ -29,13 +34,14 @@ type NameRec struct {
 }
 
 type NameList struct {
+	Menu
+	Pagination
+	Search
+	Tags
 	Title string
 	Id    int
 	Name  string
 	Items []NameRec
-	Pagination
-	Search
-	Tags
 }
 
 type PostRec struct {
@@ -46,24 +52,42 @@ type PostRec struct {
 }
 
 type PostsList struct {
-	Title string
-	Id    int
-	Name  string
-	Items []PostRec
+	Menu
 	Pagination
 	Search
 	Tags
+	Title string
+	Id    int
+	Name  string
+	Items []PostRec	
 }
 
 // special data for db entities
 
+
+type ViewHome struct {
+	Menu
+	Title       string
+	AppID       string
+	AppURL      string
+	RecentIP    string
+	CurrentIP   string
+	DBConnected bool
+	DBTables    string
+	TasksCount  int
+	ProxyAddr   string
+	ProxyUsage  bool
+}
+
 type UserData struct {
+	Menu
 	Id    int
 	Name  string
 	Title string
 }
 
 type GroupData struct {
+	Menu
 	Id    int
 	Name  string
 	Title string

@@ -5,9 +5,11 @@ import (
 	"math"
 	"net/http"
 	"strconv"
+	"vkexplorer/views"
 )
 
 type ViewTask struct {
+	views.Menu
 	Title       string
 	Names       []string
 	Count       int
@@ -53,6 +55,7 @@ func (app *Application) tasks(w http.ResponseWriter, r *http.Request) {
 
 	// fill out the tasks list
 	var t ViewTask
+	t.MainMenu = 4
 	t.Names = make([]string, len(tasks))
 	for i, elem := range tasks {
 		t.Names[i] = elem.Name

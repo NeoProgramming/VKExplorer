@@ -48,6 +48,8 @@ func (app *Application) userwall(w http.ResponseWriter, r *http.Request) {
 
 	// fill
 	var t views.PostsList
+	t.MainMenu = 1
+	t.SubMenu = 3
 	t.Id = userID
 	t.Name = user
 	t.Items = make([]views.PostRec, len(wall))

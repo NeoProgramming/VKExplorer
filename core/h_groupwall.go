@@ -48,6 +48,8 @@ func (app *Application) groupwall(w http.ResponseWriter, r *http.Request) {
 
 	// fill
 	var t views.PostsList
+	t.MainMenu = 2
+	t.SubMenu = 2
 	t.Id = groupID
 	t.Name = group
 	t.Items = make([]views.PostRec, len(wall))

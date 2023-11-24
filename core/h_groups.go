@@ -54,6 +54,8 @@ func (app *Application) groups(w http.ResponseWriter, r *http.Request) {
 
 	// fill in the list of groups
 	var t views.NameList
+	t.MainMenu = 2
+	t.SubMenu = 0
 	t.Items = make([]views.NameRec, len(groups))
 	for i, elem := range groups {
 		t.Items[i].Id = elem.Gid

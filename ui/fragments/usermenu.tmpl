@@ -1,7 +1,8 @@
 {{define "usermenu"}}
-<h3><a href="/user/{{.Id}}">Info</a>
-    <a href="/friends/{{.Id}}">Friends</a>
-    <a href="/membership/{{.Id}}">Membership</a>
-    <a href="/userwall/{{.Id}}">Wall</a>
-</h3>
+<div class="menu">
+<a class={{ if eq .SubMenu 0 }} "selmenuitem" {{ else }} "menuitem" {{ end }} href="/user/{{.Id}}">Info</a>
+<a class={{ if eq .SubMenu 1 }} "selmenuitem" {{ else }} "menuitem" {{ end }} href="/friends/{{.Id}}">Friends</a>
+<a class={{ if eq .SubMenu 2 }} "selmenuitem" {{ else }} "menuitem" {{ end }} href="/membership/{{.Id}}">Membership</a>
+<a class={{ if eq .SubMenu 3 }} "selmenuitem" {{ else }} "menuitem" {{ end }} href="/userwall/{{.Id}}">Wall</a>
+</div>
 {{end}}

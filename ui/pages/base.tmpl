@@ -7,13 +7,13 @@
 </head>
 <body>
 <header>
-    <nav>
-        <a href="/">Home</a>
-        <a href="/users?page=1">Users</a>
-        <a href="/groups?page=1">Groups</a>
-        <a href="/posts?page=1">Posts</a>
-        <a href="/tasks?page=1">Tasks</a>
-        <a href="/about">About</a>
+    <nav class="menu">		
+		<a class={{ if eq .MainMenu 0 }} "selmenuitem" {{ else }} "menuitem" {{ end }} href="/">Home</a>
+        <a class={{ if eq .MainMenu 1 }} "selmenuitem" {{ else }} "menuitem" {{ end }} href="/users?page=1">Users</a>
+        <a class={{ if eq .MainMenu 2 }} "selmenuitem" {{ else }} "menuitem" {{ end }} href="/groups?page=1">Groups</a>
+        <a class={{ if eq .MainMenu 3 }} "selmenuitem" {{ else }} "menuitem" {{ end }} href="/posts?page=1">Posts</a>
+        <a class={{ if eq .MainMenu 4 }} "selmenuitem" {{ else }} "menuitem" {{ end }} href="/tasks?page=1">Tasks</a>
+        <a class={{ if eq .MainMenu 5 }} "selmenuitem" {{ else }} "menuitem" {{ end }} href="/about">About</a>
     </nav>
     <div id="tasksctl">
         <button id="controlbtn">START</button>

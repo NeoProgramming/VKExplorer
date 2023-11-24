@@ -214,6 +214,14 @@ function updateGroupWall() {
     sendUpdateQueryARG("/update-group-wall", "group", id)
 }
 
+function updateCheckedPosts() {
+	sendUpdateQueryCB("/update-checked-posts")
+}
+
+function updateCheckedLikes() {
+	sendUpdateQueryCB("/update-checked-likes")
+}
+
 // GLOBAL AREA
 
 document.addEventListener("DOMContentLoaded", function(event) {

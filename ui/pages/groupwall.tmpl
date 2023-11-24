@@ -1,6 +1,12 @@
 {{define "content"}}
-<h1>GROUP: <a href="https://vk.com/public{{.Id}}">{{.Id}}</a> {{ .Name }}</h1>
 {{template "groupmenu" .}}
+<h1>GROUP: <a href="https://vk.com/public{{.Id}}">{{.Id}}</a> {{ .Name }}</h1>
+<div>
+<button type="button" onclick="updateCheckedPosts()">Update Checked Posts</button>
+<button type="button" onclick="updateCheckedLikes()">Update Checked Likes</button>
+<button type="button" onclick="updateAllPosts()">Update All Posts</button>
+<button type="button" onclick="updateAllLikes()">Update All Likes</button>
+</div>
 {{template "search" .}}
 {{template "tags" .}}
 {{template "pagination" .}}

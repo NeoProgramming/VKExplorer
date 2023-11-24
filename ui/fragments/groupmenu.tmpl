@@ -1,6 +1,7 @@
 {{define "groupmenu"}}
-<h3><a href="/group/{{.Id}}">Info</a>
-    <a href="/members/{{.Id}}">Members</a>
-    <a href="/groupwall/{{.Id}}">Wall</a>
-</h3>
+<div class="menu">
+<a class={{ if eq .SubMenu 0 }} "selmenuitem" {{ else }} "menuitem" {{ end }} href="/group/{{.Id}}">Info</a>
+<a class={{ if eq .SubMenu 1 }} "selmenuitem" {{ else }} "menuitem" {{ end }} href="/members/{{.Id}}">Members</a>
+<a class={{ if eq .SubMenu 2 }} "selmenuitem" {{ else }} "menuitem" {{ end }} href="/groupwall/{{.Id}}">Wall</a>
+</div>
 {{end}}

@@ -35,6 +35,8 @@ func (app *Application) group(w http.ResponseWriter, r *http.Request) {
 
 	// fill GroupData
 	var t views.GroupData
+	t.MainMenu = 2
+	t.SubMenu = 0
 	t.Id = groupID
 	t.Name = group
 
