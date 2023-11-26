@@ -107,13 +107,14 @@ function sendUpdateQuery(url) {
     xhr.send();
 }
 
-function sendUpdateQueryARG(url, argname, argvalue) {
+function sendUpdateQueryARG(url, argvalue) {
+    console.log("sendUpdateQueryARG: ", argvalue)
     // prepare AJAX
     let xhr = new XMLHttpRequest();
     xhr.open("POST", url, true);
     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
-    const data = argname + "=" + argvalue;
+    const data = "id=" + argvalue;
 
     console.log(url);
     xhr.send(data);
@@ -136,51 +137,17 @@ function sendUpdateQueryCB(url) {
     xhr.send(data);
     console.log(url);
  }
- 
-// UPDATE DB QUERIES
 
+function checkAll()
+{
+    const mainCheckbox = document.getElementById('all');
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
 
-function updateUserData() {
-    let id = document.getElementById("user_id").value;
-    sendUpdateQueryARG("/update-user-data", "user", id)
-}
-
-function updateUserFriends() {
-	let id = document.getElementById("user_id").value;
-	sendUpdateQueryARG("/update-user-friends", "user", id)
-}
-
-function updateUserGroups() {
-	let id = document.getElementById("user_id").value;
-	sendUpdateQueryARG("/update-user-groups", "user", id)
-}
-
-function updateUserWall() {
-	let id = document.getElementById("user_id").value;
-	sendUpdateQueryARG("/updateuserwall", "user", id)
-}
-
-function updateGroupData() {
-    let id = document.getElementById("group_id").value;
-    sendUpdateQueryARG("/update-group-data", "group", id)
-}
-
-function updateGroupMembers() {
-    let id = document.getElementById("group_id").value;
-    sendUpdateQueryARG("/update-group-members", "group", id)
-}
-
-function updateGroupWall() {
-    let id = document.getElementById("group_id").value;
-    sendUpdateQueryARG("/update-group-wall", "group", id)
-}
-
-function updateCheckedPosts() {
-	sendUpdateQueryCB("/update-checked-posts")
-}
-
-function updateCheckedLikes() {
-	sendUpdateQueryCB("/update-checked-likes")
+    mainCheckbox.addEventListener('click', function() {
+        checkboxes.forEach(function(checkbox) {
+            checkbox.checked = mainCheckbox.checked;
+        });
+    });
 }
 
 // GLOBAL AREA
@@ -247,14 +214,4 @@ document.addEventListener("DOMContentLoaded", function(event) {
     });
 });
 
-function checkAll()
-{
-    const mainCheckbox = document.getElementById('all');
-    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
 
-    mainCheckbox.addEventListener('click', function() {
-        checkboxes.forEach(function(checkbox) {
-            checkbox.checked = mainCheckbox.checked;
-        });
-    });
-}

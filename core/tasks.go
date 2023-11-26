@@ -5,7 +5,6 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
 )
 
-
 func (app *Application) QueueByType(tt TaskType, cmt string) {
 	var task Task
 	err := app.db.First(&task, "Type = ?", tt).Error
@@ -13,6 +12,7 @@ func (app *Application) QueueByType(tt TaskType, cmt string) {
 		// create a new record
 		task = Task{Type: tt, Name: cmt, Offset: 0}
 		app.db.Create(&task)
+		app.taskCounter++
 	}
 }
 
@@ -22,6 +22,7 @@ func (app *Application) QueueById(tt TaskType, id int, cmt string) {
 	if err == gorm.ErrRecordNotFound {
 		task = Task{Type: tt, Name: cmt + getGroupName(app.db, id), Xid: id, Offset: 0}
 		app.db.Create(&task)
+		app.taskCounter++
 	}
 }
 
@@ -31,6 +32,7 @@ func (app *Application) QueueByName(tt TaskType, nm string) {
 	if err == gorm.ErrRecordNotFound {
 		task = Task{Type: tt, Name: nm, Offset: 0}
 		app.db.Create(&task)
+		app.taskCounter++
 	}
 	// else if found: task already in queue
 }

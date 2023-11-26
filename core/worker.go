@@ -3,7 +3,6 @@ package core
 import (
 	"fmt"
 	"github.com/jinzhu/gorm"
-	"strconv"
 	"time"
 )
 
@@ -51,6 +50,7 @@ func (app *Application) worker() {
 			} else {
 				// Handle other errors
 			}
+			app.completeCounter++
 		}
 
 		time.Sleep(1 * time.Second)
@@ -77,7 +77,7 @@ func (app *Application) executeTask(task *Task) {
 		app.loadGroupWall(task)
 	case TT_UserWall:
 		app.loadUserWall(task)
-		
+
 	case TT_UserDataByName:
 		app.loadUserDataByName(task)
 	case TT_UserFriendsByName:
@@ -97,6 +97,5 @@ func (app *Application) executeTask(task *Task) {
 
 func (app *Application) GetStatus() string {
 	app.counter++
-	//fmt.Println("GetStatus ", app.counter)
-	return strconv.Itoa(app.counter)
+	return fmt.Sprintf("C=%d I=%d D=%d", app.counter, app.taskCounter, app.completeCounter)
 }

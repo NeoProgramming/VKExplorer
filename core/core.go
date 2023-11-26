@@ -13,20 +13,22 @@ import (
 )
 
 type Application struct {
-	config         Configuration
-	errorLog       *log.Logger
-	infoLog        *log.Logger
-	r              *gin.Engine
-	srv            *http.Server
-	db             *gorm.DB
-	dbaseConnected bool
-	vk             *api.VK
-	counter        int
-	running        bool
-	wg             sync.WaitGroup
-	defVkClient    *http.Client
-	proxyClient    *http.Client
-	currentClient  *http.Client
+	config          Configuration
+	errorLog        *log.Logger
+	infoLog         *log.Logger
+	r               *gin.Engine
+	srv             *http.Server
+	db              *gorm.DB
+	dbaseConnected  bool
+	vk              *api.VK
+	counter         int
+	taskCounter     int
+	completeCounter int
+	running         bool
+	wg              sync.WaitGroup
+	defVkClient     *http.Client
+	proxyClient     *http.Client
+	currentClient   *http.Client
 }
 
 var App Application

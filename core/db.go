@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
+	"time"
 )
 
 type TaskType int
@@ -39,19 +40,24 @@ type Task struct {
 
 type User struct {
 	gorm.Model
-	Uid   int
-	Name  string
-	Attrs int
-	Age   int
-	Type  int
+	Uid           int
+	Name          string
+	Attrs         int
+	Age           int
+	Type          int
+	FiendsUpdated time.Time
+	GroupsUpdated time.Time
+	WallUpdated   time.Time
 }
 
 type Group struct {
 	gorm.Model
-	Gid   int
-	Name  string
-	Attrs int
-	Type  int
+	Gid            int
+	Name           string
+	Attrs          int
+	Type           int
+	MembersUpdated time.Time
+	WallUpdated    time.Time
 }
 
 type Bookmark struct {
@@ -95,10 +101,10 @@ type PostWithUsername struct {
 // like to object
 type Reaction struct {
 	gorm.Model
-	Type int // object type (post, comment, image, video...)
-	Oid int  // object owner id (user, group)
-	Iid int  // liked item id (post, comment, image, video...)
-	Uid int  // liker id (usually user, maybe group)
+	Typ int // object type (post, comment, image, video...)
+	Oid int // object owner id (user, group)
+	Iid int // liked item id (post, comment, image, video...)
+	Uid int // liker id (usually user, maybe group)
 }
 
 type Comment struct {

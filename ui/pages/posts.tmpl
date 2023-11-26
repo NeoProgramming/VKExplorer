@@ -1,8 +1,8 @@
 {{define "content"}}
 <h1>POSTS: {{ .Count}}</h1>
 <div>
-<button type="button" onclick="updateCheckedPosts()">Update Checked Posts</button>
-<button type="button" onclick="updateCheckedLikes()">Update Checked Likes</button>
+<button type="button" onclick="sendUpdateQueryCB('/update-checked-posts')">Update Checked Posts</button>
+<button type="button" onclick="sendUpdateQueryCB('/update-checked-likes')">Update Checked Likes</button>
 <button type="button" onclick="updateAllPosts()">Update All Posts</button>
 <button type="button" onclick="updateAllLikes()">Update All Likes</button>
 </div>

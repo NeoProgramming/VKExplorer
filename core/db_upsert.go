@@ -55,3 +55,11 @@ func (app *Application) UpsertPost(pid int, oid int, fid int, date int, text str
 	// save
 	app.db.Save(&post)
 }
+func (app *Application) UpsertLike(typ int, oid int, iid int, uid int) {
+	like := Reaction{Typ: typ, Oid: oid, Iid: iid, Uid: uid}
+	app.db.FirstOrCreate(&like, Reaction{Typ: typ, Oid: oid, Iid: iid, Uid: uid})
+	// modify
+	// ...
+	// save
+	app.db.Save(&like)
+}

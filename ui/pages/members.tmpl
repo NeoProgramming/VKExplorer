@@ -2,7 +2,7 @@
 {{template "groupmenu" .}}
 <h1>GROUP: <a href="https://vk.com/public{{.Id}}">{{.Id}}</a> {{ .Name }}</h1>
 <button type="button" onclick="updateCheckedMembers()">Update Checked Members</button>
-<button type="button" onclick="updateAllMembers()">Update All Members</button>
+<button type="button" onclick="sendUpdateQueryARG('/update-group-members', {{ .Id }})">Update All Members</button>
 {{template "search" .}}
 {{template "tags" .}}
 {{template "pagination" .}}

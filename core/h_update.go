@@ -98,7 +98,7 @@ func (app *Application) updateCheckedGroupWall(w http.ResponseWriter, r *http.Re
 
 func (app *Application) updateGroupMembers(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("updateGroupMembers")
-	gid := extractName(w, r, "group")
+	gid := extractName(w, r, "id")
 	if gid != "" {
 		app.QueueByName(TT_GroupMembersByName, gid)
 	}
@@ -106,7 +106,7 @@ func (app *Application) updateGroupMembers(w http.ResponseWriter, r *http.Reques
 
 func (app *Application) updateGroupWall(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("updateGroupWall")
-	gid := extractName(w, r, "group")
+	gid := extractName(w, r, "id")
 	if gid != "" {
 		app.QueueByName(TT_GroupWallByName, gid)
 	}
@@ -114,7 +114,7 @@ func (app *Application) updateGroupWall(w http.ResponseWriter, r *http.Request) 
 
 func (app *Application) updateGroupData(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("updateGroupData")
-	gid := extractName(w, r, "group")
+	gid := extractName(w, r, "id")
 	if gid != "" {
 		app.QueueByName(TT_GroupDataByName, gid)
 	}
@@ -146,7 +146,7 @@ func (app *Application) updateCheckedUserWall(w http.ResponseWriter, r *http.Req
 
 func (app *Application) updateUserFriends(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("updateUserFriends")
-	uid := extractName(w, r, "user")
+	uid := extractName(w, r, "id")
 	if uid != "" {
 		app.QueueByName(TT_UserFriendsByName, uid)
 	}
@@ -154,7 +154,7 @@ func (app *Application) updateUserFriends(w http.ResponseWriter, r *http.Request
 
 func (app *Application) updateUserGroups(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("updateUserGroups")
-	uid := extractName(w, r, "user")
+	uid := extractName(w, r, "id")
 	if uid != "" {
 		app.QueueByName(TT_UserGroupsByName, uid)
 	}
@@ -162,7 +162,7 @@ func (app *Application) updateUserGroups(w http.ResponseWriter, r *http.Request)
 
 func (app *Application) updateUserWall(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("updateUserWall")
-	uid := extractName(w, r, "user")
+	uid := extractName(w, r, "id")
 	if uid != "" {
 		app.QueueByName(TT_UserWallByName, uid)
 	}
@@ -170,7 +170,7 @@ func (app *Application) updateUserWall(w http.ResponseWriter, r *http.Request) {
 
 func (app *Application) updateUserData(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("updateUserData")
-	uid := extractName(w, r, "user")
+	uid := extractName(w, r, "id")
 	if uid != "" {
 		app.QueueByName(TT_UserDataByName, uid)
 	}

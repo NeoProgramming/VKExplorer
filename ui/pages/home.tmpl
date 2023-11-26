@@ -21,21 +21,21 @@ Input VK URL:<br>
     <tr><td>DB tables</td><td>{{.DBTables}}</td></tr>
 </table>
 <h3>Tasks: {{.TasksCount}}</h3>
-<button type="button" onclick="sendUpdateQuery("/update-my-friends")">Update My Friends</button>
-<button type="button" onclick="sendUpdateQuery("/update-my-groups")">Update My Groups</button>
-<button type="button" onclick="sendUpdateQuery("/update-my-bookmarks")">Update My Bookmarks</button>
+<button type="button" onclick="sendUpdateQuery('/update-my-friends')">Update My Friends</button>
+<button type="button" onclick="sendUpdateQuery('/update-my-groups')">Update My Groups</button>
+<button type="button" onclick="sendUpdateQuery('/update-my-bookmarks')">Update My Bookmarks</button>
 <p>
 <input type="text" id="user_id" placeholder="Enter User ID or URL" value=""></input>
-    <button type="button" onclick="updateUserData()">Upsert User Data</button>
-    <button type="button" onclick="updateUserFriends()">Update User Friends</button>
-    <button type="button" onclick="updateUserGroups()">Update User Groups</button>
-    <button type="button" onclick="updateUserWall()">Update User Wall</button>
+    <button type="button" onclick="sendUpdateQueryARG('/update-user-data', document.getElementById('user_id').value)">Upsert User Data</button>
+    <button type="button" onclick="sendUpdateQueryARG('/update-user-friends', document.getElementById('user_id').value)">Update User Friends</button>
+    <button type="button" onclick="sendUpdateQueryARG('/update-user-groups', document.getElementById('user_id').value)">Update User Groups</button>
+    <button type="button" onclick="sendUpdateQueryARG('/update-user-wall', document.getElementById('user_id').value)">Update User Wall</button>
 
 <p>
 <input type="text" id="group_id" placeholder="Enter Group ID or URL" value=""></input>
-    <button type="button" onclick="updateGroupData()">Upsert Group Data</button>
-    <button type="button" onclick="updateGroupMembers()">Update Group Members</button>
-    <button type="button" onclick="updateGroupWall()">Update Group Wall</button>
+    <button type="button" onclick="sendUpdateQueryARG('/update-group-data', document.getElementById('group_id').value)">Upsert Group Data</button>
+    <button type="button" onclick="sendUpdateQueryARG('/update-group-members', document.getElementById('group_id').value)">Update Group Members</button>
+    <button type="button" onclick="sendUpdateQueryARG('/update-group-wall', document.getElementById('group_id').value)">Update Group Wall</button>
 
 <p><hr></p>
 <h3>Proxy (do not forget to set a proxy in your browser when receiving the access token)</h3>
