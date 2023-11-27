@@ -40,14 +40,17 @@ type Task struct {
 
 type User struct {
 	gorm.Model
-	Uid           int
-	Name          string
-	Attrs         int
-	Age           int
-	Type          int
-	FiendsUpdated time.Time
-	GroupsUpdated time.Time
-	WallUpdated   time.Time
+	Uid            int
+	Name           string
+	About          string
+	City           string
+	Domain         string
+	Photo          string
+	Attrs          int
+	Type           int
+	FriendsUpdated time.Time
+	GroupsUpdated  time.Time
+	WallUpdated    time.Time
 }
 
 type Group struct {

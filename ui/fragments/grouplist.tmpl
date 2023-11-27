@@ -4,14 +4,16 @@
         <th><input type="checkbox" id="all" name="all" onclick="checkAll()"/></th>
         <th>URL</th>
         <th>Name</th>
-        <th>Update</th>
+        <th>Oldest</th>
+        <th>Newest</th>
     </tr>
     {{range .Items}}
     <tr>
         <td><input type="checkbox" id="{{.Id}}" name="{{.Id}}"/></td>
         <td><a href="https://vk.com/public{{.Id}}" target="_blank">{{.Id}}</a></td>
         <td><a href="/group/{{.Id}}">&nbsp;{{.Name}}</a></td>
-        <td>{{.UpdateTime}}</td>
+        <td>{{.OldestUpdateTime}}</td>
+        <td>{{.NewestUpdateTime}}</td>
     </tr>
     {{end}}
 </table>

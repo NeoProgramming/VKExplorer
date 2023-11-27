@@ -87,6 +87,23 @@ function clearSearch(currPage) {
 	window.location.href = currentUrl + '?page=' + currPage;
 }
 
+//
+function openById(vkurl) {
+    // extract type and id, redirect to local page
+    let url = new URL(vkurl);
+    let path = url.pathname;
+    let parts = path.match(/([a-zA-Z]+)([0-9]+)/);
+    let type = parts[1]; // "id"
+    let number = parts[2]; // "12345678"
+    if(type=="id") {
+
+    } else if(type=="public") {
+
+    } else {
+
+    }
+}
+
 // HELPERS FOR UPDATE DB QUERIES
 
 function sendUpdateQuery(url) {

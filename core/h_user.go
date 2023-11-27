@@ -20,7 +20,7 @@ func (app *Application) user(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// get user info
-	user, err := getUserData(app.db, userID)
+	user, err := getUserInfo(app.db, userID)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -33,12 +33,15 @@ func (app *Application) user(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// fill UserData
-	var t views.UserData
+	// fill UserInfo
+	var t views.UserInfo
 	t.MainMenu = 1
-	t.SubMenu = 0	
+	t.SubMenu = 0
 	t.Id = userID
-	t.Name = user
+	t.Name = user.Name
+	t.FriendsUpdated = user.FriendsUpdated.Format("06-01-02 15:04")
+	t.GroupsUpdated = user.GroupsUpdated.Format("06-01-02 15:04")
+	t.WallUpdated = user.WallUpdated.Format("06-01-02 15:04")
 
 	// execute templates
 	err = ts.Execute(w, t)

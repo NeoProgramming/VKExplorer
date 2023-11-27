@@ -1,4 +1,7 @@
 {{define "content"}}
 {{template "usermenu" .}}
 <h1>USER: <a target="_blank" href="https://vk.com/id{{.Id}}">{{.Id}}</a> {{ .Name }}</h1>
+<p>Friends Updated: {{.FriendsUpdated}}</p>
+<p>Groups Updated: {{.GroupsUpdated}}</p>
+<p>Wall Updated: {{.WallUpdated}}</p>
 {{end}}

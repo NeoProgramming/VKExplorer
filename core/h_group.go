@@ -20,7 +20,7 @@ func (app *Application) group(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// get group info
-	group, err := getGroupData(app.db, groupID)
+	group, err := getGroupInfo(app.db, groupID)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -38,7 +38,9 @@ func (app *Application) group(w http.ResponseWriter, r *http.Request) {
 	t.MainMenu = 2
 	t.SubMenu = 0
 	t.Id = groupID
-	t.Name = group
+	t.Name = group.Name
+	t.MembersUpdated = group.MembersUpdated.Format("06-01-02 15:04")
+	t.WallUpdated = group.WallUpdated.Format("06-01-02 15:04")
 
 	// execute templates
 	err = ts.Execute(w, t)

@@ -22,11 +22,7 @@ func (app *Application) members(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// get group info
-	group, err := getGroupData(app.db, groupID)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
+	group := getGroupName(app.db, groupID)
 
 	// get Members list
 	page := 0

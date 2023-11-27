@@ -51,7 +51,7 @@ func getTasks(db *gorm.DB, page int, pageSize int) ([]Task, error) {
 func getUsers(db *gorm.DB, page int, pageSize int, search string) ([]User, error) {
 	var users []User
 	var err error
-	
+
 	if page > 0 {
 		offset := (page - 1) * pageSize
 		if search == "" {
@@ -77,7 +77,7 @@ func getUsers(db *gorm.DB, page int, pageSize int, search string) ([]User, error
 func getGroups(db *gorm.DB, page int, pageSize int, search string) ([]Group, error) {
 	var groups []Group
 	var err error
-	
+
 	if page > 0 {
 		offset := (page - 1) * pageSize
 		if search == "" {
@@ -181,12 +181,16 @@ func getGroupName(db *gorm.DB, gid int) string {
 	return group.Name
 }
 
-func getUserData(db *gorm.DB, uid int) (string, error) {
-	return getUserName(db, uid), nil
+func getUserInfo(db *gorm.DB, uid int) (User, error) {
+	var user User
+	result := db.First(&user, "uid=?", uid)
+	return user, result.Error
 }
 
-func getGroupData(db *gorm.DB, gid int) (string, error) {
-	return getGroupName(db, gid), nil
+func getGroupInfo(db *gorm.DB, gid int) (Group, error) {
+	var group Group
+	result := db.First(&group, "gid=?", gid)
+	return group, result.Error
 }
 
 func getFriends(db *gorm.DB, uid int, page int, pageSize int) ([]User, error) {

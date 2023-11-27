@@ -60,7 +60,10 @@ func (app *Application) users(w http.ResponseWriter, r *http.Request) {
 	for i, elem := range users {
 		t.Items[i].Id = elem.Uid
 		t.Items[i].Name = elem.Name
-		t.Items[i].UpdateTime = elem.UpdatedAt.Format("06-01-02 15:04")
+		oldest := minTime(elem.FriendsUpdated, elem.GroupsUpdated, elem.WallUpdated)
+		newest := maxTime(elem.FriendsUpdated, elem.GroupsUpdated, elem.WallUpdated)
+		t.Items[i].OldestUpdateTime = oldest.Format("06-01-02 15:04")
+		t.Items[i].NewestUpdateTime = newest.Format("06-01-02 15:04")
 	}
 	t.Title = "Users"
 	t.Count = getUsersCount(app.db)

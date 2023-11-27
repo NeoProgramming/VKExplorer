@@ -24,11 +24,7 @@ func (app *Application) friends(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// get User data
-	user, err := getUserData(app.db, userID)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
+	user := getUserName(app.db, userID)
 
 	// parsing templates into an internal representation
 	ts, err := template.ParseFiles(files...)

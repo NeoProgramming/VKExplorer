@@ -1,4 +1,6 @@
 {{define "content"}}
 {{template "groupmenu" .}}
 <h1>GROUP: <a target="_blank" href="https://vk.com/public{{.Id}}">{{.Id}}</a> {{ .Name}}</h1>
+<p>Members Updated: {{.MembersUpdated}}</p>
+<p>Wall Updated: {{.WallUpdated}}</p>
 {{end}}

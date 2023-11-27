@@ -1,8 +1,8 @@
 package core
 
-func (app *Application) UpsertUser(uid int, name string, attrs int) {
+func (app *Application) UpsertUser(uid int, name string, about string, city string, domain string, photo string, attrs int) {
 	// update or add User record
-	user := User{Uid: uid}
+	user := User{Uid: uid, About: about, City: city, Domain: domain, Photo: photo}
 	// find by ID
 	app.db.FirstOrCreate(&user, User{Uid: uid})
 	// change name ; fill fields

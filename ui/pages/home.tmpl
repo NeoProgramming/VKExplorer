@@ -26,6 +26,7 @@ Input VK URL:<br>
 <button type="button" onclick="sendUpdateQuery('/update-my-bookmarks')">Update My Bookmarks</button>
 <p>
 <input type="text" id="user_id" placeholder="Enter User ID or URL" value=""></input>
+    <button type="button" onclick="openById(document.getElementById('user_id').value)">Open</button>
     <button type="button" onclick="sendUpdateQueryARG('/update-user-data', document.getElementById('user_id').value)">Upsert User Data</button>
     <button type="button" onclick="sendUpdateQueryARG('/update-user-friends', document.getElementById('user_id').value)">Update User Friends</button>
     <button type="button" onclick="sendUpdateQueryARG('/update-user-groups', document.getElementById('user_id').value)">Update User Groups</button>
@@ -33,6 +34,7 @@ Input VK URL:<br>
 
 <p>
 <input type="text" id="group_id" placeholder="Enter Group ID or URL" value=""></input>
+    <button type="button" onclick="openById(document.getElementById('group_id').value">Open</button>
     <button type="button" onclick="sendUpdateQueryARG('/update-group-data', document.getElementById('group_id').value)">Upsert Group Data</button>
     <button type="button" onclick="sendUpdateQueryARG('/update-group-members', document.getElementById('group_id').value)">Update Group Members</button>
     <button type="button" onclick="sendUpdateQueryARG('/update-group-wall', document.getElementById('group_id').value)">Update Group Wall</button>

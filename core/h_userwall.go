@@ -23,11 +23,7 @@ func (app *Application) userwall(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// get user info
-	user, err := getUserData(app.db, userID)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
+	user := getUserName(app.db, userID)
 
 	// get Wall
 	page := 0

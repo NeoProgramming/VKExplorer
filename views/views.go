@@ -3,8 +3,8 @@ package views
 // common control data
 
 type Menu struct {
-	MainMenu	int
-	SubMenu		int
+	MainMenu int
+	SubMenu  int
 }
 
 type Pagination struct {
@@ -16,21 +16,22 @@ type Pagination struct {
 }
 
 type Search struct {
-	SearchStr	string
-	AndOr		int
-	SearchArg   string
+	SearchStr string
+	AndOr     int
+	SearchArg string
 }
 
 type Tags struct {
-	TagsStr		string
+	TagsStr string
 }
 
 // common data
 
 type NameRec struct {
-	Id         int
-	Name       string
-	UpdateTime string
+	Id               int
+	Name             string
+	OldestUpdateTime string
+	NewestUpdateTime string
 }
 
 type NameList struct {
@@ -59,22 +60,26 @@ type PostsList struct {
 	Title string
 	Id    int
 	Name  string
-	Items []PostRec	
+	Items []PostRec
 }
 
 // special data for db entities
 
-
-type UserData struct {
+type UserInfo struct {
 	Menu
-	Id    int
-	Name  string
-	Title string
+	Id             int
+	Name           string
+	Title          string
+	FriendsUpdated string
+	GroupsUpdated  string
+	WallUpdated    string
 }
 
 type GroupData struct {
 	Menu
-	Id    int
-	Name  string
-	Title string
+	Id             int
+	Name           string
+	Title          string
+	MembersUpdated string
+	WallUpdated    string
 }

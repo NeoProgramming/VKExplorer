@@ -78,7 +78,7 @@ func (app *Application) loadUserDataByName(task *Task) int {
 	fmt.Println("Request for user data ")
 	data, err := app.vk.UsersGet(api.Params{
 		"user_ids": task.Name,
-		"fields":   "id,first_name,last_name,is_closed,can_access_closed",
+		"fields":   "id,first_name,last_name,about,city,domain,photo_max_orig,is_closed,can_access_closed",
 	})
 	if err != nil {
 		fmt.Println(err)
@@ -89,7 +89,7 @@ func (app *Application) loadUserDataByName(task *Task) int {
 	if size == 0 {
 		return 0
 	}
-	app.UpsertUser(data[0].ID, data[0].FirstName+" "+data[0].LastName, 0)
+	app.UpsertUser(data[0].ID, data[0].FirstName+" "+data[0].LastName, data[0].About, data[0].City.Title, data[0].Domain, data[0].PhotoMaxOrig, 0)
 	fmt.Println("User updated")
 	return data[0].ID
 }
@@ -123,7 +123,7 @@ func (app *Application) loadMyFriends(task *Task) {
 		friends, err := app.vk.FriendsGetFields(api.Params{
 			"offset": offset,
 			"count":  count,
-			"fields": "first_name,last_name",
+			"fields": "first_name,last_name,about,city,domain,photo_max_orig",
 		})
 		// if there is an error - for now, just exit to delete the task ...
 		if err != nil {
@@ -135,7 +135,7 @@ func (app *Application) loadMyFriends(task *Task) {
 		for _, friend := range friends.Items {
 			name := friend.FirstName + " " + friend.LastName
 			fmt.Println(name)
-			app.UpsertUser(friend.ID, name, RA_MY)
+			app.UpsertUser(friend.ID, name, friend.About, friend.City.Title, friend.Domain, friend.PhotoMaxOrig, RA_MY)
 		}
 		// next offset
 		offset += count
@@ -194,7 +194,7 @@ func (app *Application) loadGroupMembers(task *Task) {
 			"group_id": task.Xid,
 			"offset":   offset,
 			"count":    count,
-			"fields":   "first_name,last_name",
+			"fields":   "first_name,last_name,about,city,domain,photo_max_orig",
 		})
 		if err != nil {
 			fmt.Println(err)
@@ -207,7 +207,7 @@ func (app *Application) loadGroupMembers(task *Task) {
 		for _, member := range members.Items {
 			name := member.FirstName + " " + member.LastName
 			fmt.Println(name)
-			app.UpsertUser(member.ID, name, RA_MEMBER)
+			app.UpsertUser(member.ID, name, member.About, member.City.Title, member.Domain, member.PhotoMaxOrig, RA_MEMBER)
 			//app.UpsertMembership(member.ID, task.Xid)
 		}
 		elapsed := time.Since(start)
@@ -246,7 +246,7 @@ func (app *Application) loadUserFriends(task *Task) {
 			"user_id": task.Xid,
 			"offset":  offset,
 			"count":   count,
-			"fields":  "first_name,last_name",
+			"fields":  "first_name,last_name,about,city,domain,photo_max_orig",
 		})
 		if err != nil {
 			fmt.Println(err)
@@ -257,7 +257,7 @@ func (app *Application) loadUserFriends(task *Task) {
 		for _, friend := range friends.Items {
 			name := friend.FirstName + " " + friend.LastName
 			fmt.Println(name)
-			app.UpsertUser(friend.ID, name, RA_MEMBER)
+			app.UpsertUser(friend.ID, name, friend.About, friend.City.Title, friend.Domain, friend.PhotoMaxOrig, RA_MEMBER)
 			app.UpsertFriendship(task.Xid, friend.ID)
 		}
 		// next offset
@@ -267,6 +267,8 @@ func (app *Application) loadUserFriends(task *Task) {
 			break
 		}
 	}
+	// update time
+	app.StampUserFirends(task.Xid)
 	fmt.Println("UserFriends updated")
 }
 
@@ -301,6 +303,7 @@ func (app *Application) loadUserGroups(task *Task) {
 			break
 		}
 	}
+	app.StampUserGroups(task.Xid)
 	fmt.Println("UserGroups updated")
 }
 
@@ -362,6 +365,7 @@ func (app *Application) loadGroupWall(task *Task) {
 			break
 		}
 	}
+
 	fmt.Println("GroupWall updated")
 }
 
@@ -410,6 +414,7 @@ func (app *Application) loadUserWall(task *Task) {
 			break
 		}
 	}
+	app.StampUserWall(task.Xid)
 	fmt.Println("UserWall updated")
 }
 
