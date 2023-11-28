@@ -175,14 +175,3 @@ func (app *Application) updateUserData(w http.ResponseWriter, r *http.Request) {
 		app.QueueByName(TT_UserDataByName, uid)
 	}
 }
-
-func (app *Application) updateUserTest(w http.ResponseWriter, r *http.Request) {
-	uids := extractCheckboxes(w, r)
-	for _, uid := range uids {
-		fmt.Println("updateUserTest ", uid)
-		app.StampUserWall(uid)
-	}
-}
-
-
-

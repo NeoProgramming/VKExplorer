@@ -5,6 +5,7 @@ import (
 	"html/template"
 	"net/http"
 	"strconv"
+	"time"
 	"vkexplorer/views"
 )
 
@@ -58,6 +59,7 @@ func (app *Application) userwall(w http.ResponseWriter, r *http.Request) {
 			t.Items[i].Name = elem.Name
 		}
 		t.Items[i].Text = elem.Text
+		t.Items[i].Date = Ttoa(time.Unix(elem.Date, 0))
 	}
 
 	// execute templates

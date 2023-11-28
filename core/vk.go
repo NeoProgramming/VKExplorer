@@ -343,7 +343,7 @@ func (app *Application) loadGroupWall(task *Task) {
 		for _, post := range wall.Items {
 			text := post.Text
 			fmt.Println(text)
-			app.UpsertPost(post.ID, post.OwnerID, post.FromID, post.Date, post.Text,
+			app.UpsertPost(post.ID, post.OwnerID, post.FromID, int64(post.Date), post.Text,
 				post.Comments.Count, post.Likes.Count, post.Reposts.Count, post.Views.Count)
 			// attachments
 			fmt.Println("===Att for ID=", post.ID, " OwnerID=", post.OwnerID, " FromID=", post.FromID)
@@ -393,7 +393,7 @@ func (app *Application) loadUserWall(task *Task) {
 		// adding downloaded posts to the database
 		for _, post := range wall.Items {
 			//fmt.Println(post.text)
-			app.UpsertPost(post.ID, post.OwnerID, post.FromID, post.Date, post.Text,
+			app.UpsertPost(post.ID, post.OwnerID, post.FromID, int64(post.Date), post.Text,
 				post.Comments.Count, post.Likes.Count, post.Reposts.Count, post.Views.Count)
 			// attachments
 			fmt.Println("===Att for ID=", post.ID, " OwnerID=", post.OwnerID, " FromID=", post.FromID)

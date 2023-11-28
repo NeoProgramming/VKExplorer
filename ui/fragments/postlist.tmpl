@@ -6,6 +6,7 @@
         <th>Post</th>
         <th>From</th>
         <th>Text</th>
+        <th>Date</th>
     </tr>
     {{range .Items}}
     <tr>
@@ -13,6 +14,7 @@
         <td><a href="https://vk.com/wall-{{$topLevel.Id}}_{{.Pid}}" target="_blank">{{.Pid}}</a></td>
         <td><a href="https://vk.com/id{{.Fid}}" target="_blank">{{.Name}}</a></td>
         <td>{{.Text}}</td>
+        <td>{{.Date}}</td>
     </tr>
     {{end}}
 </table>

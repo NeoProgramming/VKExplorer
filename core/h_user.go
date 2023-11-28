@@ -39,9 +39,9 @@ func (app *Application) user(w http.ResponseWriter, r *http.Request) {
 	t.SubMenu = 0
 	t.Id = userID
 	t.Name = user.Name
-	t.FriendsUpdated = user.FriendsUpdated.Format("06-01-02 15:04")
-	t.GroupsUpdated = user.GroupsUpdated.Format("06-01-02 15:04")
-	t.WallUpdated = user.WallUpdated.Format("06-01-02 15:04")
+	t.FriendsUpdated = Tmtoa(user.FriendsUpdated)
+	t.GroupsUpdated = Tmtoa(user.GroupsUpdated)
+	t.WallUpdated = Tmtoa(user.WallUpdated)
 
 	// execute templates
 	err = ts.Execute(w, t)

@@ -50,6 +50,7 @@ type PostRec struct {
 	Fid  int
 	Name string
 	Text string
+	Date string
 }
 
 type PostsList struct {

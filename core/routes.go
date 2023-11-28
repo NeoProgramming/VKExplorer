@@ -56,12 +56,10 @@ func (app *Application) routes() *http.ServeMux {
 	mux.HandleFunc("/update-user-groups", app.updateUserGroups)
 	mux.HandleFunc("/update-user-wall", app.updateUserWall)
 	mux.HandleFunc("/update-user-data", app.updateUserData)
-	
+
 	mux.HandleFunc("/update-checked-user-friends", app.updateCheckedUserFriends)
 	mux.HandleFunc("/update-checked-user-groups", app.updateCheckedUserGroups)
 	mux.HandleFunc("/update-checked-user-wall", app.updateCheckedUserWall)
-	
-	mux.HandleFunc("/update-checked-user-test", app.updateUserTest)
-	
+
 	return mux
 }

@@ -46,7 +46,7 @@ func (app *Application) UpsertFriendship(uid1 int, uid2 int) {
 	app.db.Save(&friend)
 }
 
-func (app *Application) UpsertPost(pid int, oid int, fid int, date int, text string, cc int, lc int, rc int, vc int) {
+func (app *Application) UpsertPost(pid int, oid int, fid int, date int64, text string, cc int, lc int, rc int, vc int) {
 	post := Post{Pid: pid, Oid: oid, Fid: fid, Date: date, Text: text, CmntsCount: cc, LikesCount: lc, ReposCount: rc, ViewsCount: vc}
 	// find by pair of ID's
 	app.db.FirstOrCreate(&post, Post{Pid: pid, Oid: oid})

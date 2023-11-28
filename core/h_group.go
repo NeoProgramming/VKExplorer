@@ -39,8 +39,8 @@ func (app *Application) group(w http.ResponseWriter, r *http.Request) {
 	t.SubMenu = 0
 	t.Id = groupID
 	t.Name = group.Name
-	t.MembersUpdated = group.MembersUpdated.Format("06-01-02 15:04")
-	t.WallUpdated = group.WallUpdated.Format("06-01-02 15:04")
+	t.MembersUpdated = Tmtoa(group.MembersUpdated)
+	t.WallUpdated = Tmtoa(group.WallUpdated)
 
 	// execute templates
 	err = ts.Execute(w, t)

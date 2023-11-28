@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
-	"time"
 )
 
 type TaskType int
@@ -48,9 +47,9 @@ type User struct {
 	Photo          string
 	Attrs          int
 	Type           int
-	FriendsUpdated time.Time
-	GroupsUpdated  time.Time
-	WallUpdated    time.Time
+	FriendsUpdated int64
+	GroupsUpdated  int64
+	WallUpdated    int64
 }
 
 type Group struct {
@@ -59,8 +58,8 @@ type Group struct {
 	Name           string
 	Attrs          int
 	Type           int
-	MembersUpdated time.Time
-	WallUpdated    time.Time
+	MembersUpdated int64
+	WallUpdated    int64
 }
 
 type Bookmark struct {
@@ -88,7 +87,7 @@ type Post struct {
 	Pid        int // local post id
 	Oid        int // wall owner (group id)
 	Fid        int // commenter (user id, "from")
-	Date       int
+	Date       int64
 	Text       string // comment text
 	CmntsCount int
 	LikesCount int
@@ -98,7 +97,7 @@ type Post struct {
 
 type PostWithUsername struct {
 	Post
-	Name string
+	Name string // username
 }
 
 // like to object
