@@ -62,8 +62,8 @@ func (app *Application) groups(w http.ResponseWriter, r *http.Request) {
 		t.Items[i].Name = elem.Name
 		oldest := minTime(elem.MembersUpdated, elem.WallUpdated)
 		newest := maxTime(elem.MembersUpdated, elem.WallUpdated)
-		t.Items[i].OldestUpdateTime = oldest.Format("06-01-02 15:04")
-		t.Items[i].NewestUpdateTime = newest.Format("06-01-02 15:04")
+		t.Items[i].OldestUpdateTime = Ttoa(oldest)
+		t.Items[i].NewestUpdateTime = Ttoa(newest)
 	}
 	t.Title = "Groups"
 	t.Count = getGroupsCount(app.db)

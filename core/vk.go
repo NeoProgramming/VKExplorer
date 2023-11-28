@@ -268,7 +268,7 @@ func (app *Application) loadUserFriends(task *Task) {
 		}
 	}
 	// update time
-	app.StampUserFirends(task.Xid)
+	app.StampUserFriends(task.Xid)
 	fmt.Println("UserFriends updated")
 }
 

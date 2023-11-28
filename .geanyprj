@@ -1,0 +1,7 @@
+[project]
+name=VKExplorer
+description=
+base_path=./
+run_cmd=
+regenerate=true
+type=All

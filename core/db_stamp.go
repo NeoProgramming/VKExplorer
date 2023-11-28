@@ -5,30 +5,27 @@ import (
 	"time"
 )
 
-func (app *Application) StampUserFirends(uid int) {
-	user := User{Uid: uid, FriendsUpdated: time.Now()}
-	app.db.Update(&user)
-	app.db.Save(&user)
-	//	app.db.Model(&User{}).Where("id = ?", uid).Update("FriendsUpdated", time.Now())
-	fmt.Println("StampUserFirends ", user)
+func (app *Application) StampUserFriends(uid int) {
+	app.db.Exec("UPDATE Users SET friends_updated = ? WHERE uid = ? ", time.Now(), uid)
+	fmt.Println("StampUserFirends ")
 }
 
 func (app *Application) StampUserGroups(uid int) {
-	app.db.Model(&User{}).Where("id = ?", uid).Update("GroupsUpdated", time.Now())
-	fmt.Println("StampUserGroups")
+	app.db.Exec("UPDATE Users SET groups_updated = ? WHERE uid = ? ", time.Now(), uid)
+	fmt.Println("StampUserGroups ")
 }
 
 func (app *Application) StampUserWall(uid int) {
-	app.db.Model(&User{}).Where("id = ?", uid).Update("WallUpdated", time.Now())
-	fmt.Println("StampUserWall")
+	app.db.Exec("UPDATE Users SET wall_updated = ? WHERE uid = ? ", time.Now(), uid)
+	fmt.Println("StampUserWall ")
 }
 
 func (app *Application) StampGroupMembers(gid int) {
-	app.db.Model(&Group{}).Where("id = ?", gid).Update("MembersUpdated", time.Now())
-	fmt.Println("StampGroupMembers")
+	app.db.Exec("UPDATE Groups SET members_updated = ? WHERE uid = ? ", time.Now(), gid)
+	fmt.Println("StampGroupMembers ")
 }
 
 func (app *Application) StampGroupWall(gid int) {
-	app.db.Model(&Group{}).Where("id = ?", gid).Update("WallUpdated", time.Now())
-	fmt.Println("StampGroupWall")
+	app.db.Exec("UPDATE Groups SET wall_updated = ? WHERE uid = ? ", time.Now(), gid)
+	fmt.Println("StampGroupWall ")
 }
