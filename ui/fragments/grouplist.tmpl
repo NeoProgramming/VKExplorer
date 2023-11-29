@@ -3,9 +3,9 @@
     <tr>
         <th><input type="checkbox" id="all" name="all" onclick="checkAll()"/>&nbsp;<a href=""><img src="/static/images/no.png"></a></th>
         <th>URL</th>
-        <th>Name  {{$var := "text1"}}{{template "sort" . }}</th>
-        <th>Oldest{{$var := "text2"}}{{template "sort" . }}</th>
-        <th>Newest{{$var := "text3"}}{{template "sort" . }}</th>
+        <th>Name  {{template "sort"  .  }}</th>
+        <th>Oldest{{template "sort"  .  }}</th>
+        <th>Newest{{template "sort"  .  }}</th>
     </tr>
     {{range .Items}}
     <tr>

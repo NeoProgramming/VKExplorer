@@ -2,9 +2,9 @@ package core
 
 import (
 	"fmt"
-	"html/template"
 	"math"
 	"net/http"
+	"text/template"
 	"vkexplorer/views"
 )
 
@@ -27,7 +27,7 @@ func (app *Application) groups(w http.ResponseWriter, r *http.Request) {
 	searchStr := r.URL.Query().Get("search")
 	andOr := Atoi(r.URL.Query().Get("andor"))
 	tagsStr := r.URL.Query().Get("tags")
-	
+
 	fmt.Println("searchStr = ", searchStr)
 	fmt.Println("tagsStr = ", tagsStr)
 
@@ -37,6 +37,14 @@ func (app *Application) groups(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+
+	// create functions map
+	//	funcMap := template.FuncMap{
+	//		"arr": arr,
+	//	}
+
+	// create new template and connect funcmap
+	//ts, err := template.New("myTemplate").ParseFiles(files...)
 
 	// parsing templates into an internal representation
 	ts, err := template.ParseFiles(files...)
@@ -72,6 +80,7 @@ func (app *Application) groups(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// execute templates
+	//err = ts.ExecuteTemplate(w, "myTemplate", t)
 	err = ts.Execute(w, t)
 	if err != nil {
 		app.serverError(w, err)
