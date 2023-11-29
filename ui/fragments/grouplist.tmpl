@@ -1,11 +1,11 @@
 {{define "grouplist"}}
 <table border='1' style='border-collapse: collapse;' width='100%'>
     <tr>
-        <th><input type="checkbox" id="all" name="all" onclick="checkAll()"/></th>
+        <th><input type="checkbox" id="all" name="all" onclick="checkAll()"/>&nbsp;<a href=""><img src="/static/images/no.png"></a></th>
         <th>URL</th>
-        <th>Name</th>
-        <th>Oldest</th>
-        <th>Newest</th>
+        <th>Name  {{$var := "text1"}}{{template "sort" . }}</th>
+        <th>Oldest{{$var := "text2"}}{{template "sort" . }}</th>
+        <th>Newest{{$var := "text3"}}{{template "sort" . }}</th>
     </tr>
     {{range .Items}}
     <tr>

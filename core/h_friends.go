@@ -37,7 +37,7 @@ func (app *Application) friends(w http.ResponseWriter, r *http.Request) {
 	pageSize := 10
 
 	// get Friends list
-	friends, err := getFriends(app.db, userID, page, pageSize)
+	friends, err := getFriends(app.db, userID, page, pageSize, "", "", false)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -54,7 +54,7 @@ func (app *Application) friends(w http.ResponseWriter, r *http.Request) {
 	for i, elem := range friends {
 		t.Items[i].Id = elem.Uid
 		t.Items[i].Name = elem.Name
-		fmt.Println(elem.Name)
+	//	fmt.Println(elem.Name)
 	}
 
 	// execute templates

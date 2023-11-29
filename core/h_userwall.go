@@ -29,7 +29,7 @@ func (app *Application) userwall(w http.ResponseWriter, r *http.Request) {
 	// get Wall
 	page := 0
 	pageSize := 10
-	wall, err := getWall(app.db, userID, page, pageSize)
+	wall, err := getWall(app.db, userID, page, pageSize, "", "", false)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

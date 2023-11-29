@@ -13,6 +13,13 @@ func Atoi(s string) int {
 	return 0
 }
 
+func Atodi(s string, d int) int {
+	if i, err := strconv.Atoi(s); err == nil {
+		return i
+	}
+	return d
+}
+
 func Ttoa(t time.Time) string {
 	if t == time.Date(1, 1, 1, 0, 0, 0, 0, time.UTC) {
 		return "---"

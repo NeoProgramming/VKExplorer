@@ -27,7 +27,7 @@ func (app *Application) members(w http.ResponseWriter, r *http.Request) {
 	// get Members list
 	page := 0
 	pageSize := 10
-	members, err := getMembers(app.db, groupID, page, pageSize)
+	members, err := getMembers(app.db, groupID, page, pageSize, "", "", false)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

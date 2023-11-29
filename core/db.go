@@ -125,7 +125,13 @@ func InitDatabase() {
 	App.dbaseConnected = true
 	App.db = db
 
-	App.db.AutoMigrate(&User{}, &Task{}, &Group{}, &Bookmark{}, &Friend{}, &Member{}, &Post{})
+	App.db.AutoMigrate(&User{})
+	App.db.AutoMigrate(&Task{})
+	App.db.AutoMigrate(&Group{})
+	App.db.AutoMigrate(&Bookmark{})
+	App.db.AutoMigrate(&Friend{})
+	App.db.AutoMigrate(&Member{})
+	App.db.AutoMigrate(&Post{})
 
 	App.db.Exec("PRAGMA journal_mode = WAL")
 	App.db.Exec("PRAGMA synchronous = normal")

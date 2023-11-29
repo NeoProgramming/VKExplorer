@@ -5,7 +5,6 @@ import (
 	"html/template"
 	"math"
 	"net/http"
-	"strconv"
 	"vkexplorer/views"
 )
 
@@ -19,27 +18,21 @@ func (app *Application) groups(w http.ResponseWriter, r *http.Request) {
 		"./ui/fragments/tags.tmpl",
 		"./ui/fragments/pagination.tmpl",
 		"./ui/fragments/grouplist.tmpl",
+		"./ui/fragments/sort.tmpl",
 	}
 
 	// pagination: we take the page number from the URL, 1 by default
-	pageStr := r.URL.Query().Get("page")
-	if pageStr == "" {
-		pageStr = "1"
-	}
-	page, err := strconv.Atoi(pageStr)
-	if err != nil {
-		http.Error(w, "Invalid page number", http.StatusBadRequest)
-		return
-	}
+	page := Atodi(r.URL.Query().Get("page"), 1)
 	pageSize := 10
 	searchStr := r.URL.Query().Get("search")
-	fmt.Println("searchStr = ", searchStr)
 	andOr := Atoi(r.URL.Query().Get("andor"))
 	tagsStr := r.URL.Query().Get("tags")
+	
+	fmt.Println("searchStr = ", searchStr)
 	fmt.Println("tagsStr = ", tagsStr)
 
 	// get list
-	groups, err := getGroups(app.db, page, pageSize, searchStr)
+	groups, err := getGroups(app.db, page, pageSize, searchStr, "", false)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

@@ -21,6 +21,7 @@ func (app *Application) membership(w http.ResponseWriter, r *http.Request) {
 		"./ui/fragments/tags.tmpl",
 		"./ui/fragments/pagination.tmpl",
 		"./ui/fragments/grouplist.tmpl",
+		"./ui/fragments/sort.tmpl",
 	}
 
 	// get User data
@@ -37,7 +38,7 @@ func (app *Application) membership(w http.ResponseWriter, r *http.Request) {
 	pageSize := 10
 
 	// get Groups list
-	groups, err := getMemberships(app.db, userID, page, pageSize)
+	groups, err := getMemberships(app.db, userID, page, pageSize, "", "", false)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

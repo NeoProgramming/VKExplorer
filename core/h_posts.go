@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"math"
 	"net/http"
-	"strconv"
 	"text/template"
 	"time"
 	"vkexplorer/views"
@@ -23,25 +22,18 @@ func (app *Application) posts(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// pagination: we take the page number from the URL, 1 by default
-	pageStr := r.URL.Query().Get("page")
-	fmt.Println("pageStr = ", pageStr)
-	if pageStr == "" {
-		pageStr = "1"
-	}
-	page, err := strconv.Atoi(pageStr)
-	if err != nil {
-		http.Error(w, "Invalid page number", http.StatusBadRequest)
-		return
-	}
+	page := Atodi(r.URL.Query().Get("page"), 1)
 	pageSize := 10
 	searchStr := r.URL.Query().Get("search")
-	fmt.Println("searchStr = ", searchStr)
 	andOr := Atoi(r.URL.Query().Get("andor"))
 	tagsStr := r.URL.Query().Get("tags")
-	fmt.Println("tagsStr = ", tagsStr)
+	
+	fmt.Println("page = ", page)
+	fmt.Println("search = ", searchStr)
+	fmt.Println("tags = ", tagsStr)
 
 	// get list
-	posts, err := getPosts(app.db, page, pageSize, searchStr)
+	posts, err := getPosts(app.db, page, pageSize, searchStr, "", false)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
