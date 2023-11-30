@@ -40,7 +40,14 @@ func GetOutboundIP() net.IP {
 }
 
 func GetGlobalIP() string {
-	resp, err := http.Get("http://checkip.amazonaws.com")
+	var resp *http.Response
+	var err error
+	if App.config.ProxyUse {
+		ActivateProxy()
+		resp, err = App.proxyClient.Get("http://checkip.amazonaws.com")
+	} else {
+		resp, err = http.Get("http://checkip.amazonaws.com")
+	}
 	if err != nil {
 		fmt.Println("Error:", err)
 		return ""
