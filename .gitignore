@@ -17,3 +17,5 @@ vkexplorer
 /*.db-shm
 /*.db-wal
 /*.zip
+/db_secure/*.db-shm
+/db_secure/*.db-wal
