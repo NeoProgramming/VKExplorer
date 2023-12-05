@@ -27,24 +27,18 @@ func (app *Application) groups(w http.ResponseWriter, r *http.Request) {
 	searchStr := r.URL.Query().Get("search")
 	andOr := Atoi(r.URL.Query().Get("andor"))
 	tagsStr := r.URL.Query().Get("tags")
+	sort := r.URL.Query().Get("sort")
+	desc := Atoi(r.URL.Query().Get("desc"))
 
 	fmt.Println("searchStr = ", searchStr)
 	fmt.Println("tagsStr = ", tagsStr)
 
 	// get list
-	groups, err := getGroups(app.db, page, pageSize, searchStr, "", false)
+	groups, err := getGroups(app.db, page, pageSize, searchStr, sort, desc!=0)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-
-	// create functions map
-	//	funcMap := template.FuncMap{
-	//		"arr": arr,
-	//	}
-
-	// create new template and connect funcmap
-	//ts, err := template.New("myTemplate").ParseFiles(files...)
 
 	// parsing templates into an internal representation
 	ts, err := template.ParseFiles(files...)
@@ -57,6 +51,7 @@ func (app *Application) groups(w http.ResponseWriter, r *http.Request) {
 	var t views.NameList
 	t.MainMenu = 2
 	t.SubMenu = 0
+	
 	t.Items = make([]views.NameRec, len(groups))
 	for i, elem := range groups {
 		t.Items[i].Id = elem.Gid
@@ -78,9 +73,32 @@ func (app *Application) groups(w http.ResponseWriter, r *http.Request) {
 	if searchStr != "" {
 		t.SearchArg = "&search=" + searchStr
 	}
+	
+	query := fmt.Sprintf("page=%d", page)
+	if searchStr != "" {
+		query += "&search="
+		query += searchStr
+	}
+	if tagsStr != "" {
+		query += "&tags="
+		query += tagsStr
+	}
+	
+	t.Columns = make([]views.Column, 4)
+	t.Columns[0].Name = "gid"	
+	t.Columns[0].Title = "URL"
+	t.Columns[1].Name = "name"
+	t.Columns[1].Title = "Name"
+	t.Columns[2].Title = "Oldest"
+	t.Columns[2].Name = "oldest"
+	t.Columns[3].Title = "Newest"
+	t.Columns[3].Name = "newest"
+	for i, _ := range t.Columns {
+		t.Columns[i].Query = &query
+	}
+
 
 	// execute templates
-	//err = ts.ExecuteTemplate(w, "myTemplate", t)
 	err = ts.Execute(w, t)
 	if err != nil {
 		app.serverError(w, err)

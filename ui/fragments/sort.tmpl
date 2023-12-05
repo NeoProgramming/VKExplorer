@@ -1,3 +1,6 @@
 {{define "sort"}}
-&nbsp;<a href=""><img src="/static/images/up.png"></a>&nbsp;<a href=""><img src="/static/images/dn.png"></a>
+&nbsp;
+<a href="?{{.Query}}&sort={{.Name}}&desc=0"><img src="/static/images/up.png"></a>
+&nbsp;
+<a href="?{{.Query}}&srt={{.Name}}&desc=1"><img src="/static/images/dn.png"></a>
 {{end}}

@@ -49,6 +49,27 @@ func getUsers(db *gorm.DB, page int, pageSize int, search string, order string, 
 func getGroups(db *gorm.DB, page int, pageSize int, search string, order string, desc bool) ([]Group, error) {
 	var groups []Group
 	var err error
+	query := fmt.Sprintf("SELECT gid, name, attrs, type FROM groups")
+	
+	if search!="" {
+		query += fmt.Sprintf(" WHERE Name LIKE '%%%s%%'", search)
+	}
+	if order!="" {
+		query += fmt.Sprintf(" ORDER BY %s", order)
+		if desc {
+			query += " DESC"
+		}
+	}
+	if page > 0 {
+		offset := (page - 1) * pageSize
+		query += fmt.Sprintf(" LIMIT %d OFFSET %d", pageSize, offset);
+	}
+
+	query += ";"
+	
+	fmt.Println("getGroups: ", query)
+	err = db.Raw(query).Scan(&groups).Error
+	/*
 
 	if page > 0 {
 		offset := (page - 1) * pageSize
@@ -65,8 +86,9 @@ func getGroups(db *gorm.DB, page int, pageSize int, search string, order string,
 			search = "%" + search + "%"
 			err = db.Where("Name LIKE ?", search).Find(&groups).Error
 		}
-	}
+	}*/
 	if err != nil {
+		fmt.Println("getGroups error")
 		return nil, err
 	}
 	return groups, nil
@@ -108,7 +130,7 @@ func getFriends(db *gorm.DB, uid int, page int, pageSize int, search string, ord
 	}
 	if page > 0 {
 		offset := (page - 1) * pageSize
-		query += fmt.Sprintf(" OFFSET %d LIMIT %d", offset, pageSize);
+		query += fmt.Sprintf(" LIMIT %d OFFSET %d", pageSize, offset);
 	} 
 	if order != "" {
 		query += fmt.Sprintf(" ORDER BY %s", order)

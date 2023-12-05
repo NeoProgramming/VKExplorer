@@ -25,6 +25,11 @@ type Tags struct {
 	TagsStr string
 }
 
+type Order struct {
+	Sort string
+	Desc int
+}
+
 // common data
 
 type NameRec struct {
@@ -32,6 +37,13 @@ type NameRec struct {
 	Name             string
 	OldestUpdateTime string
 	NewestUpdateTime string
+}
+
+type Column struct {
+	Name  string
+	Desc  int
+	Title string
+	Query *string
 }
 
 type NameList struct {
@@ -43,6 +55,7 @@ type NameList struct {
 	Id    int
 	Name  string
 	Items []NameRec
+	Columns []Column
 }
 
 type PostRec struct {
