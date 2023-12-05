@@ -38,8 +38,7 @@ type Task struct {
 }
 
 type User struct {
-	gorm.Model
-	Uid            int
+	Uid            int `gorm:"unique;index"`
 	Name           string
 	About          string
 	City           string
@@ -50,43 +49,46 @@ type User struct {
 	FriendsUpdated int64
 	GroupsUpdated  int64
 	WallUpdated    int64
+	Oldest         int64
+	Newest         int64
 }
 
 type Group struct {
-	gorm.Model
-	Gid            int
+	Gid            int `gorm:"uniqueIndex:groups_gid_uindex"`
 	Name           string
 	Attrs          int
 	Type           int
 	MembersUpdated int64
 	WallUpdated    int64
+	Oldest         int64
+	Newest         int64
 }
 
 type Bookmark struct {
-	gorm.Model
-	Bid int
+	Bid  int `gorm:"uniqueIndex"`
+	Type int
 }
 
 // user-user link
 type Friend struct {
-	gorm.Model
+	ID   uint `gorm:"primary_key"`
 	Uid1 int
 	Uid2 int
 }
 
 // user-group link
 type Member struct {
-	gorm.Model
+	ID  uint `gorm:"primary_key"`
 	Uid int
 	Gid int
 }
 
 // Post on wall
 type Post struct {
-	gorm.Model
-	Pid        int // local post id
-	Oid        int // wall owner (group id)
-	Fid        int // commenter (user id, "from")
+	ID         uint `gorm:"primary_key"`
+	Pid        int  // local post id
+	Oid        int  // wall owner (group id)
+	Fid        int  // commenter (user id, "from")
 	Date       int64
 	Text       string // comment text
 	CmntsCount int
@@ -102,17 +104,17 @@ type PostWithUsername struct {
 
 // like to object
 type Reaction struct {
-	gorm.Model
-	Typ int // object type (post, comment, image, video...)
-	Oid int // object owner id (user, group)
-	Iid int // liked item id (post, comment, image, video...)
-	Uid int // liker id (usually user, maybe group)
+	ID  uint `gorm:"primary_key"`
+	Typ int  // object type (post, comment, image, video...)
+	Oid int  // object owner id (user, group)
+	Iid int  // liked item id (post, comment, image, video...)
+	Uid int  // liker id (usually user, maybe group)
 }
 
 type Comment struct {
-	gorm.Model
-	Oid  int // object owner id
-	Cid  int // commenter id
+	ID   uint `gorm:"primary_key"`
+	Oid  int  // object owner id
+	Cid  int  // commenter id
 	Text string
 }
 

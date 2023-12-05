@@ -185,6 +185,8 @@ func (app *Application) loadMyBookmarks(task *Task) {
 
 func (app *Application) loadGroupMembers(task *Task) {
 	fmt.Println("loadGroupMembers for group ", task.Xid)
+	gstart := time.Now()
+
 	offset := 0
 	count := 1000 // or any other value you want to set
 	for {
@@ -203,6 +205,7 @@ func (app *Application) loadGroupMembers(task *Task) {
 		fmt.Println("Received: ", len(members.Items), " Total: ", members.Count)
 		// add downloaded users to the database
 		//app.db.Begin()
+		fmt.Println("UpsertUser starting...")
 		start := time.Now()
 		for _, member := range members.Items {
 			name := member.FirstName + " " + member.LastName
@@ -211,10 +214,11 @@ func (app *Application) loadGroupMembers(task *Task) {
 			//app.UpsertMembership(member.ID, task.Xid)
 		}
 		elapsed := time.Since(start)
-		fmt.Println("UpsertUser: ", elapsed)
+		fmt.Println("UpsertUser time: ", elapsed)
 		//app.db.Commit()
 
 		//app.db.Begin()
+		fmt.Println("UpsertMembership starting...")
 		start = time.Now()
 		for _, member := range members.Items {
 			//name := member.FirstName + " " + member.LastName
@@ -223,7 +227,7 @@ func (app *Application) loadGroupMembers(task *Task) {
 			app.UpsertMembership(member.ID, task.Xid)
 		}
 		elapsed = time.Since(start)
-		fmt.Println("UpsertMembership: ", elapsed)
+		fmt.Println("UpsertMembership time: ", elapsed)
 		//app.db.Commit()
 
 		// next offset
@@ -233,7 +237,10 @@ func (app *Application) loadGroupMembers(task *Task) {
 			break
 		}
 	}
-	fmt.Println("GroupMembers updated")
+	app.StampGroupMembers(task.Xid)
+
+	gelapsed := time.Since(gstart)
+	fmt.Println("GroupMembers updated, total time: ", gelapsed)
 }
 
 func (app *Application) loadUserFriends(task *Task) {
@@ -365,7 +372,7 @@ func (app *Application) loadGroupWall(task *Task) {
 			break
 		}
 	}
-
+	app.StampGroupWall(task.Xid)
 	fmt.Println("GroupWall updated")
 }
 

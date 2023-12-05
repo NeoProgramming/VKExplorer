@@ -25,18 +25,13 @@ type Tags struct {
 	TagsStr string
 }
 
-type Order struct {
-	Sort string
-	Desc int
-}
-
 // common data
 
 type NameRec struct {
-	Id               int
-	Name             string
-	OldestUpdateTime string
-	NewestUpdateTime string
+	Id     int
+	Name   string
+	Oldest string
+	Newest string
 }
 
 type Column struct {
@@ -51,10 +46,10 @@ type NameList struct {
 	Pagination
 	Search
 	Tags
-	Title string
-	Id    int
-	Name  string
-	Items []NameRec
+	Title   string
+	Id      int
+	Name    string
+	Items   []NameRec
 	Columns []Column
 }
 
