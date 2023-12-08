@@ -41,10 +41,12 @@ func (app *Application) worker() {
 		}*/
 
 		// perform the task
+		fmt.Println("Executing task: ", task.Name)
 		app.executeTask(&task)
 
 		// task completed; delete the record from the "tasks" table
-		_, err = app.db.Exec("DELETE FROM your_table WHERE id = ?", task.Id) 
+		fmt.Println("Deleting task: ", task.Name)
+		_, err = app.db.Exec("DELETE FROM tasks WHERE id = ?", task.Id) 
 		if err != nil {
 			fmt.Println("worker delete task error: ", err)			
 		} else {
@@ -58,7 +60,7 @@ func (app *Application) worker() {
 }
 
 func (app *Application) executeTask(task *Task) {
-	switch task.Type {
+	switch task.TType {
 	case TT_MyFriends:
 		app.loadMyFriends(task)
 	case TT_MyGroups:

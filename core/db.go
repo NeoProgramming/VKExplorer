@@ -6,11 +6,11 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
-type TaskType int
+//type TaskType int
 
 // task types
 const (
-	TT_MyFriends TaskType = iota + 1
+	TT_MyFriends  = iota + 1
 	TT_MyGroups
 	TT_MyBookmarks
 	TT_GroupMembers
@@ -30,14 +30,14 @@ const (
 
 type Task struct {
 	Id     int      `db:"id"`
-	Type   TaskType `db:"type"`
+	TType  int 		`db:"type"`
 	Name   string   `db:"name"`
 	Xid    int      `db:"xid"`
 	Offs   int      `db:"offs"`
 	Status int      `db:"status"`
 }
 const SQLITE_SCHEMA_Tasks string = 
-`CREATE TABLE "tasks" (
+`CREATE TABLE IF NOT EXISTS "tasks" (
 	"id"	integer PRIMARY KEY AUTOINCREMENT,
 	"type"	integer,
 	"name"	varchar(255),
@@ -62,7 +62,7 @@ type User struct {
 	Newest         int64	`db:"newest"`
 }
 const SQLITE_SCHEMA_Users string = 
-`CREATE TABLE "users" (
+`CREATE TABLE IF NOT EXISTS "users" (
 	"uid"	integer,
 	"name"	varchar(255),
 	"about"	varchar(255),
@@ -88,7 +88,7 @@ type Group struct {
 	Newest         int64	`db:"newest"`
 }
 const SQLITE_SCHEMA_Groups string = 
-`CREATE TABLE "groups" (
+`CREATE TABLE IF NOT EXISTS "groups" (
 	"gid"	integer,
 	"name"	varchar(255),
 	"attrs"	integer,
@@ -105,7 +105,7 @@ type Bookmark struct {
 	Type int	`db:"type"`
 }
 const SQLITE_SCHEMA_Bookmarks string = 
-`CREATE TABLE "bookmarks" (
+`CREATE TABLE IF NOT EXISTS "bookmarks" (
 	"bid"	integer,
 	"type"	integer
 )`
@@ -117,7 +117,7 @@ type Friend struct {
 	Uid2 int	`db:"uid2"`
 }
 const SQLITE_SCHEMA_Friends string = 
-`CREATE TABLE "friends" (
+`CREATE TABLE IF NOT EXISTS "friends" (
 	"id"	integer PRIMARY KEY AUTOINCREMENT,
 	"uid1"	integer,
 	"uid2"	integer
@@ -130,7 +130,7 @@ type Member struct {
 	Gid int		`db:"gid"`
 }
 const SQLITE_SCHEMA_Members string = 
-`CREATE TABLE "members" (
+`CREATE TABLE IF NOT EXISTS "members" (
 	"id"	integer PRIMARY KEY AUTOINCREMENT,
 	"uid"	integer,
 	"gid"	integer
@@ -150,7 +150,7 @@ type Post struct {
 	ViewsCount int		`db:"views_count"`
 }
 const SQLITE_SCHEMA_Posts string = 
-`CREATE TABLE "posts" (
+`CREATE TABLE IF NOT EXISTS "posts" (
 	"id"	integer PRIMARY KEY AUTOINCREMENT,
 	"pid"	integer,
 	"oid"	integer,
@@ -162,6 +162,14 @@ const SQLITE_SCHEMA_Posts string =
 	"repos_count"	integer,
 	"views_count"	integer
 )`
+
+// indexes
+const SQLITE_SCHEMA_FriendsIndex string = 
+`CREATE UNIQUE INDEX IF NOT EXISTS idx_friends_uid1_uid2 ON Friends (uid1, uid2);`
+const SQLITE_SCHEMA_MembersIndex string = 
+`CREATE UNIQUE INDEX IF NOT EXISTS idx_members_uid_gid ON Members (uid, gid);`
+const SQLITE_SCHEMA_PostsIndex string = 
+`CREATE UNIQUE INDEX IF NOT EXISTS idx_members_pid_oid_fid ON Posts (pid, oid, fid);`
 
 // join(posts, users)
 type PostWithUsername struct {
@@ -194,6 +202,9 @@ func InitDatabase() {
 	App.dbaseConnected = true
 	App.db = db
 
+	App.db.Exec(SQLITE_SCHEMA_FriendsIndex);
+	App.db.Exec(SQLITE_SCHEMA_MembersIndex);
+	App.db.Exec(SQLITE_SCHEMA_PostsIndex);
 
 	App.db.Exec("PRAGMA journal_mode = WAL")
 	App.db.Exec("PRAGMA synchronous = normal")

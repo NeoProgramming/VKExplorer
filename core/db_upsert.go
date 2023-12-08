@@ -6,7 +6,7 @@ import (
 )
 
 func (app *Application) UpsertUser(uid int, name string, about string, city string, domain string, photo string, attrs int) {
-	fmt.Println("UpsertUser")
+//	fmt.Println("UpsertUser")
 	var query string
 	if strings.TrimSpace(name) == "DELETED" {
 		query = `INSERT INTO users (uid, about, city, domain, photo, attrs) 
@@ -25,7 +25,7 @@ func (app *Application) UpsertUser(uid int, name string, about string, city stri
 }
 
 func (app *Application) UpsertGroup(gid int, name string, attrs int) {
-	fmt.Println("UpsertGroup")
+//	fmt.Println("UpsertGroup")
 	query := `INSERT INTO groups (gid, name, attrs) 
 	VALUES (:uid, :name, :attrs) ON CONFLICT(gid) DO UPDATE 
 	SET name=:name, attrs=attrs|:attrs;`
@@ -37,7 +37,7 @@ func (app *Application) UpsertGroup(gid int, name string, attrs int) {
 }
 
 func (app *Application) UpsertMembership(uid int, gid int) {
-	fmt.Println("UpsertMembership")
+//	fmt.Println("UpsertMembership")
 	query := `INSERT INTO members (uid, gid) 
 	VALUES (:uid, :gid) ON CONFLICT(uid, gid) DO NOTHING`
 	member := Member{Uid: uid, Gid: gid}
@@ -48,7 +48,7 @@ func (app *Application) UpsertMembership(uid int, gid int) {
 }
 
 func (app *Application) UpsertFriendship(uid1 int, uid2 int) {
-	fmt.Println("UpsertFriendship")
+//	fmt.Println("UpsertFriendship")
 	query := `INSERT INTO friends (uid1, uid2) 
 	VALUES (:uid1, :uid2) ON CONFLICT(uid1, uid2) DO NOTHING`
 	friend := Friend{Uid1: uid1, Uid2: uid2}
@@ -59,7 +59,7 @@ func (app *Application) UpsertFriendship(uid1 int, uid2 int) {
 }
 
 func (app *Application) UpsertPost(pid int, oid int, fid int, date int64, text string, cc int, lc int, rc int, vc int) {
-	fmt.Println("UpsertPost")
+//	fmt.Println("UpsertPost")
 	query := `INSERT INTO posts (pid, oid, fid, date, text, cmnts_count, likes_count, repos_count, views_count) 
 	VALUES (:Pid, :Oid, :Fid, :Date, :Text, :CmntsCount, :LikesCount, :LikesCount, :ViewsCount) 
 	ON CONFLICT(pid, oid, fid) DO UPDATE 
