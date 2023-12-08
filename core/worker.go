@@ -2,7 +2,7 @@ package core
 
 import (
 	"fmt"
-	"github.com/jinzhu/gorm"
+	"database/sql"
 	"time"
 )
 
@@ -16,8 +16,9 @@ func (app *Application) worker() {
 
 		// take the task from the queue (do not delete yet)
 		var task Task
-		if err := app.db.First(&task).Error; err != nil {
-			if err == gorm.ErrRecordNotFound {
+		err := app.db.Get(&task, "SELECT * FROM tasks"); 
+		if err != nil {
+			if err == sql.ErrNoRows {
 				// Handle "record not found" error
 				fmt.Println("No tasks")
 				app.running = false
@@ -42,14 +43,11 @@ func (app *Application) worker() {
 		// perform the task
 		app.executeTask(&task)
 
-		// task completed
-		// Delete the first record from the "tasks" table
-		if err := app.db.Delete(&task).Error; err != nil {
-			if err == gorm.ErrRecordNotFound {
-				// Handle "record not found" error
-			} else {
-				// Handle other errors
-			}
+		// task completed; delete the record from the "tasks" table
+		_, err = app.db.Exec("DELETE FROM your_table WHERE id = ?", task.Id) 
+		if err != nil {
+			fmt.Println("worker delete task error: ", err)			
+		} else {
 			app.completeCounter++
 		}
 

@@ -1,19 +1,18 @@
 package core
 
 import (
-	"github.com/jinzhu/gorm"
+	"fmt"
+	"github.com/jmoiron/sqlx"
 	"strconv"
 	"strings"
 )
 
-func getTableNames(db *gorm.DB) ([]string, error) {
+func getTableNames(db *sqlx.DB) ([]string, error) {
 	// get a list of tables as an array
 	var tableInfos []TableInfo
-	//db = db.Debug()
-	result := db.Raw("SELECT name FROM sqlite_master WHERE type='table';").Scan(&tableInfos)
-	//fmt.Println(tableInfos)
-	if result.Error != nil {
-		return nil, result.Error
+	err := db.Select(tableInfos, "SELECT name FROM sqlite_master WHERE type='table';")
+	if err != nil {
+		return nil, err
 	}
 
 	tableNames := make([]string, len(tableInfos))
@@ -23,6 +22,7 @@ func getTableNames(db *gorm.DB) ([]string, error) {
 
 	return tableNames, nil
 }
+
 func GetTables() string {
 	// get a list of tables as a string separated by commas
 	arr, err := getTableNames(App.db)
@@ -32,72 +32,73 @@ func GetTables() string {
 	return strings.Join(arr, ", ")
 }
 
-func getUsersCount(db *gorm.DB) int {
-	var count int64
-	result := db.Model(&User{}).Count(&count)
-	if result.Error != nil {
+func getUsersCount(db *sqlx.DB) int {
+	var count int
+	err := db.Get(&count, "SELECT count(*) FROM users")
+	if err != nil {
+		fmt.Println(err)
 		return 0
 	}
-	return int(count)
+	return count
 }
 
-func getGroupsCount(db *gorm.DB) int {
-	var count int64
-	result := db.Model(&Group{}).Count(&count)
-	if result.Error != nil {
+func getGroupsCount(db *sqlx.DB) int {
+	var count int
+	err := db.Get(&count, "SELECT count(*) FROM groups")
+	if err != nil {
 		return 0
 	}
-	return int(count)
+	return count
 }
 
-func getPostsCount(db *gorm.DB) int {
-	var count int64
-	result := db.Model(&Post{}).Count(&count)
-	if result.Error != nil {
+func getPostsCount(db *sqlx.DB) int {
+	var count int
+	err := db.Get(&count, "SELECT count(*) FROM posts")
+	if err != nil {
 		return 0
 	}
-	return int(count)
+	return count
 }
 
-func getTasksCount(db *gorm.DB) int {
-	var count int64
-	result := db.Model(&Task{}).Count(&count)
-	if result.Error != nil {
+func getTasksCount(db *sqlx.DB) int {
+	var count int
+	err := db.Get(&count, "SELECT count(*) FROM tasks")
+	if err != nil {
 		return 0
 	}
-	return int(count)
+	return count
 }
 
-func getUserName(db *gorm.DB, uid int) string {
+func getUserName(db *sqlx.DB, uid int) string {
 	var user User
-	result := db.First(&user, "uid=?", uid)
-	if result.Error != nil {
+	err := db.Get(&user, "uid=?", uid)
+	if err != nil {
 		// Handle error
 		return "! " + strconv.Itoa(uid)
 	}
 	return user.Name
 }
 
-func getGroupName(db *gorm.DB, gid int) string {
+func getGroupName(db *sqlx.DB, gid int) string {
 	var group Group
-	result := db.First(&group, "gid=?", gid)
-	if result.Error != nil {
+	err := db.Get(&group, "gid=?", gid)
+	if err != nil {
 		// Handle error
 		return "! " + strconv.Itoa(gid)
 	}
 	return group.Name
 }
 
-func getUserInfo(db *gorm.DB, uid int) (User, error) {
+func getUserInfo(db *sqlx.DB, uid int) (User, error) {
 	var user User
-	result := db.First(&user, "uid=?", uid)
-	return user, result.Error
+	err := db.Get(&user, "SELECT * FROM users WHERE uid=?", uid)
+	return user, err
 }
 
-func getGroupInfo(db *gorm.DB, gid int) (Group, error) {
+func getGroupInfo(db *sqlx.DB, gid int) (Group, error) {
 	var group Group
-	result := db.First(&group, "gid=?", gid)
-	return group, result.Error
+	err := db.Get(&group, "SELECT * FROM groups WHERE gid=?", gid)
+	return group, err
 }
 
 

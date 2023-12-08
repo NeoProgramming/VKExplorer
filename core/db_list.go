@@ -2,51 +2,58 @@ package core
 
 import (
 	"fmt"
-	"github.com/jinzhu/gorm"
+	"github.com/jmoiron/sqlx"
 )
 
-func getTasks(db *gorm.DB, page int, pageSize int) ([]Task, error) {
+func getTasks(db *sqlx.DB, page int, pageSize int) ([]Task, error) {
 	var tasks []Task
 	var err error
+	query := fmt.Sprintf("SELECT id, name FROM tasks")
 	if page > 0 {
 		offset := (page - 1) * pageSize
-		err = db.Offset(offset).Limit(pageSize).Find(&tasks).Error
-	} else {
-		err = db.Find(&tasks).Error
+		query += fmt.Sprintf(" LIMIT %d OFFSET %d", pageSize, offset)
 	}
+	query += ";"
+	
+	fmt.Println("getTasks: ", query)
+	err = db.Select(&tasks, query)
 	if err != nil {
+		fmt.Println("getTasks error", err)
 		return nil, err
 	}
 	return tasks, nil
 }
 
-func getUsers(db *gorm.DB, page int, pageSize int, search string, order string, desc bool) ([]User, error) {
+func getUsers(db *sqlx.DB, page int, pageSize int, search string, order string, desc bool) ([]User, error) {
 	var users []User
 	var err error
+	query := fmt.Sprintf("SELECT uid, name, attrs, type, oldest, newest FROM users")
 
-	if page > 0 {
-		offset := (page - 1) * pageSize
-		if search == "" {
-			err = db.Offset(offset).Limit(pageSize).Find(&users).Error
-		} else {
-			search = "%" + search + "%"
-			err = db.Where("Name LIKE ?", search).Offset(offset).Limit(pageSize).Find(&users).Error
-		}
-	} else {
-		if search == "" {
-			err = db.Find(&users).Error
-		} else {
-			search = "%" + search + "%"
-			err = db.Where("Name LIKE ?", search).Find(&users).Error
+	if search != "" {
+		query += fmt.Sprintf(" WHERE Name LIKE '%%%s%%'", search)
+	}
+	if order != "" {
+		query += fmt.Sprintf(" ORDER BY %s", order)
+		if desc {
+			query += " DESC"
 		}
 	}
+	if page > 0 {
+		offset := (page - 1) * pageSize
+		query += fmt.Sprintf(" LIMIT %d OFFSET %d", pageSize, offset)
+	}
+	query += ";"
+	
+	fmt.Println("getUsers: ", query)
+	err = db.Select(&users, query)
 	if err != nil {
+		fmt.Println("getUsers error", err)
 		return nil, err
 	}
 	return users, nil
 }
 
-func getGroups(db *gorm.DB, page int, pageSize int, search string, order string, desc bool) ([]Group, error) {
+func getGroups(db *sqlx.DB, page int, pageSize int, search string, order string, desc bool) ([]Group, error) {
 	var groups []Group
 	var err error
 	query := fmt.Sprintf("SELECT gid, name, attrs, type, oldest, newest FROM groups")
@@ -64,73 +71,23 @@ func getGroups(db *gorm.DB, page int, pageSize int, search string, order string,
 		offset := (page - 1) * pageSize
 		query += fmt.Sprintf(" LIMIT %d OFFSET %d", pageSize, offset)
 	}
-
 	query += ";"
 
 	fmt.Println("getGroups: ", query)
-	err = db.Raw(query).Scan(&groups).Error
-	/*
-
-		if page > 0 {
-			offset := (page - 1) * pageSize
-			if search == "" {
-				err = db.Offset(offset).Limit(pageSize).Find(&groups).Error
-			} else {
-				search = "%" + search + "%"
-				err = db.Where("Name LIKE ?", search).Offset(offset).Limit(pageSize).Find(&groups).Error
-			}
-		} else {
-			if search == "" {
-				err = db.Find(&groups).Error
-			} else {
-				search = "%" + search + "%"
-				err = db.Where("Name LIKE ?", search).Find(&groups).Error
-			}
-		}*/
+	err = db.Select(&groups, query)
 	if err != nil {
-		fmt.Println("getGroups error")
+		fmt.Println("getGroups error", err)
 		return nil, err
 	}
 	return groups, nil
 }
 
-func getPosts(db *gorm.DB, page int, pageSize int, search string, order string, desc bool) ([]Post, error) {
+func getPosts(db *sqlx.DB, page int, pageSize int, search string, order string, desc bool) ([]Post, error) {
 	var posts []Post
 	var err error
-	if page > 0 {
-		offset := (page - 1) * pageSize
-		if search == "" {
-			err = db.Offset(offset).Limit(pageSize).Find(&posts).Error
-		} else {
-			search = "%" + search + "%"
-			err = db.Where("Text LIKE ?", search).Offset(offset).Limit(pageSize).Find(&posts).Error
-		}
-	} else {
-		if search == "" {
-			err = db.Find(&posts).Error
-		} else {
-			search = "%" + search + "%"
-			err = db.Where("Text LIKE ?", search).Find(&posts).Error
-		}
-	}
-	if err != nil {
-		return nil, err
-	}
-	return posts, nil
-}
-
-func getFriends(db *gorm.DB, uid int, page int, pageSize int, search string, order string, desc bool) ([]User, error) {
-	var friends []User
-	var err error
-
-	query := fmt.Sprintf("SELECT friends.uid2 AS uid, Name, Attrs, Type FROM users JOIN friends ON users.uid = friends.uid2 WHERE friends.uid1 = %d", uid)
-
+	query := fmt.Sprintf("SELECT pid, oid, fid, date, text FROM posts")
 	if search != "" {
-		query += fmt.Sprintf(" AND Name LIKE '%%%s%%'", search)
-	}
-	if page > 0 {
-		offset := (page - 1) * pageSize
-		query += fmt.Sprintf(" LIMIT %d OFFSET %d", pageSize, offset)
+		query += fmt.Sprintf(" WHERE Text LIKE '%%%s%%'", search)
 	}
 	if order != "" {
 		query += fmt.Sprintf(" ORDER BY %s", order)
@@ -138,67 +95,125 @@ func getFriends(db *gorm.DB, uid int, page int, pageSize int, search string, ord
 			query += " DESC"
 		}
 	}
-
-	fmt.Println("getFriends: ", uid, " = ", query)
-	err = db.Raw(query).Scan(&friends).Error
-
+	if page > 0 {
+		offset := (page - 1) * pageSize
+		query += fmt.Sprintf(" LIMIT %d OFFSET %d", pageSize, offset)
+	}
+	query += ";"
+	
+	fmt.Println("getPosts: ", query)
+	err = db.Select(&posts, query)
 	if err != nil {
-		fmt.Println("getFriends error")
+		fmt.Println("getPosts error", err)
+		return nil, err
+	}
+	return posts, nil
+}
+
+func getFriends(db *sqlx.DB, uid int, page int, pageSize int, search string, order string, desc bool) ([]User, error) {
+	var friends []User
+	var err error
+	query := fmt.Sprintf("SELECT friends.uid2 AS uid, Name, Attrs, Type FROM users JOIN friends ON users.uid = friends.uid2 WHERE friends.uid1 = %d", uid)
+
+	if search != "" {
+		query += fmt.Sprintf(" AND Name LIKE '%%%s%%'", search)
+	}
+	if order != "" {
+		query += fmt.Sprintf(" ORDER BY %s", order)
+		if desc {
+			query += " DESC"
+		}
+	}
+	if page > 0 {
+		offset := (page - 1) * pageSize
+		query += fmt.Sprintf(" LIMIT %d OFFSET %d", pageSize, offset)
+	}
+	
+	fmt.Println("getFriends: ", query)
+	err = db.Select(&friends, query)
+	if err != nil {
+		fmt.Println("getFriends error: ", err)
 		return nil, err
 	}
 	return friends, nil
 }
 
-func getMemberships(db *gorm.DB, uid int, page int, pageSize int, search string, order string, desc bool) ([]Group, error) {
+func getMemberships(db *sqlx.DB, uid int, page int, pageSize int, search string, order string, desc bool) ([]Group, error) {
 	var groups []Group
 	var err error
-	fmt.Println("getMemberships: ", uid)
+	query:= fmt.Sprintf("SELECT groups.gid AS gid, name, attrs, type FROM groups JOIN members ON groups.gid = members.gid WHERE members.uid = %d", uid)
+	if search != "" {
+		query += fmt.Sprintf(" AND Name LIKE '%%%s%%'", search)
+	}
+	if order != "" {
+		query += fmt.Sprintf(" ORDER BY %s", order)
+		if desc {
+			query += " DESC"
+		}
+	}
 	if page > 0 {
 		offset := (page - 1) * pageSize
-		err = db.Raw("SELECT groups.gid AS gid, name, attrs, type FROM groups JOIN members ON groups.gid = members.gid WHERE members.uid = ? OFFSET ? LIMIT ?",
-			uid, offset, pageSize).Scan(&groups).Error
-	} else {
-		err = db.Raw("SELECT groups.gid AS gid, name, attrs, type FROM groups JOIN members ON groups.gid = members.gid WHERE members.uid = ?",
-			uid).Scan(&groups).Error
+		query += fmt.Sprintf(" LIMIT %d OFFSET %d", pageSize, offset)
 	}
+	
+	fmt.Println("getMemberships: ", query)
+	err = db.Select(&groups, query)
 	if err != nil {
-		fmt.Println("getMemberships error")
+		fmt.Println("getMemberships error: ", err)
 		return nil, err
 	}
-	fmt.Println("groups len == ", len(groups))
 	return groups, nil
 }
 
-func getMembers(db *gorm.DB, gid int, page int, pageSize int, search string, order string, desc bool) ([]User, error) {
+func getMembers(db *sqlx.DB, gid int, page int, pageSize int, search string, order string, desc bool) ([]User, error) {
 	var members []User
 	var err error
-	query := "SELECT members.uid AS uid, name FROM users JOIN members ON users.uid = members.uid WHERE members.gid = ?"
+	query := fmt.Sprintf("SELECT members.uid AS uid, name FROM users JOIN members ON users.uid = members.uid WHERE members.gid = %d", gid)
+	if search != "" {
+		query += fmt.Sprintf(" AND Name LIKE '%%%s%%'", search)
+	}
+	if order != "" {
+		query += fmt.Sprintf(" ORDER BY %s", order)
+		if desc {
+			query += " DESC"
+		}
+	}
 	if page > 0 {
 		offset := (page - 1) * pageSize
-		query += " OFFSET ? LIMIT ?"
-		err = db.Raw(query, gid, offset, pageSize).Scan(&members).Error
-	} else {
-		err = db.Raw(query, gid).Scan(&members).Error
+		query += fmt.Sprintf(" LIMIT %d OFFSET %d", pageSize, offset)
 	}
-
+	
+	fmt.Println("getMembers: ", query)
+	err = db.Select(&members, query)
 	if err != nil {
+		fmt.Println("getMembers error: ", err)
 		return nil, err
 	}
 	return members, nil
 }
 
-func getWall(db *gorm.DB, gid int, page int, pageSize int, search string, order string, desc bool) ([]PostWithUsername, error) {
+func getWall(db *sqlx.DB, gid int, page int, pageSize int, search string, order string, desc bool) ([]PostWithUsername, error) {
 	var wall []PostWithUsername
 	var err error
-	query := "SELECT pid, oid, fid, date, text, name FROM posts LEFT OUTER JOIN users ON users.uid = posts.fid WHERE posts.oid = ?"
+	query := fmt.Sprintf("SELECT pid, oid, fid, date, text, name FROM posts LEFT OUTER JOIN users ON users.uid = posts.fid WHERE posts.oid = %d", gid)
+	if search != "" {
+		query += fmt.Sprintf(" AND Text LIKE '%%%s%%'", search)
+	}
+	if order != "" {
+		query += fmt.Sprintf(" ORDER BY %s", order)
+		if desc {
+			query += " DESC"
+		}
+	}
 	if page > 0 {
 		offset := (page - 1) * pageSize
-		query += " OFFSET ? LIMIT ?"
-		err = db.Raw(query, gid, offset, pageSize).Scan(&wall).Error
-	} else {
-		err = db.Raw(query, gid).Scan(&wall).Error
+		query += fmt.Sprintf(" LIMIT %d OFFSET %d", pageSize, offset)
 	}
+	
+	fmt.Println("getWall: ", query)
+	err = db.Select(&wall, query)
 	if err != nil {
+		fmt.Println("getWall error: ", err)
 		return nil, err
 	}
 	return wall, nil

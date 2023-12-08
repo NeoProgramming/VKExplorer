@@ -3,9 +3,7 @@ package core
 import (
 	"fmt"
 	"github.com/SevereCloud/vksdk/v2/api"
-	//"github.com/getlantern/systray"
-	"github.com/gin-gonic/gin"
-	"github.com/jinzhu/gorm"
+	"github.com/jmoiron/sqlx"
 	"log"
 	"net/http"
 	"os"
@@ -16,9 +14,8 @@ type Application struct {
 	config          Configuration
 	errorLog        *log.Logger
 	infoLog         *log.Logger
-	r               *gin.Engine
 	srv             *http.Server
-	db              *gorm.DB
+	db              *sqlx.DB
 	dbaseConnected  bool
 	vk              *api.VK
 	counter         int

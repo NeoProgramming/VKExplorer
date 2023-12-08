@@ -2,8 +2,8 @@ package core
 
 import (
 	"fmt"
-	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/sqlite"
+	"github.com/jmoiron/sqlx"
+	_ "github.com/mattn/go-sqlite3"
 )
 
 type TaskType int
@@ -29,97 +29,164 @@ const (
 )
 
 type Task struct {
-	gorm.Model
-	Type   TaskType
-	Name   string // visible task name; also user/group short_name
-	Xid    int    // object id; also future tasks mask
-	Offset int
-	Status int
+	Id     int      `db:"id"`
+	Type   TaskType `db:"type"`
+	Name   string   `db:"name"`
+	Xid    int      `db:"xid"`
+	Offs   int      `db:"offs"`
+	Status int      `db:"status"`
 }
+const SQLITE_SCHEMA_Tasks string = 
+`CREATE TABLE "tasks" (
+	"id"	integer PRIMARY KEY AUTOINCREMENT,
+	"type"	integer,
+	"name"	varchar(255),
+	"xid"	integer,
+	"offs"	integer,
+	"status"	integer
+)`
 
 type User struct {
-	Uid            int `gorm:"unique;index"`
-	Name           string
-	About          string
-	City           string
-	Domain         string
-	Photo          string
-	Attrs          int
-	Type           int
-	FriendsUpdated int64
-	GroupsUpdated  int64
-	WallUpdated    int64
-	Oldest         int64
-	Newest         int64
+	Uid            int		`db:"uid"`
+	Name           string	`db:"name"`
+	About          string	`db:"about"`
+	City           string	`db:"city"`
+	Domain         string	`db:"domain"`
+	Photo          string	`db:"photo"`
+	Attrs          int		`db:"attrs"`
+	Type           int		`db:"type"`
+	FriendsUpdated int64	`db:"friends_updated"`
+	GroupsUpdated  int64	`db:"groups_updated"`
+	WallUpdated    int64	`db:"wall_updated"`
+	Oldest         int64	`db:"oldest"`
+	Newest         int64	`db:"newest"`
 }
+const SQLITE_SCHEMA_Users string = 
+`CREATE TABLE "users" (
+	"uid"	integer,
+	"name"	varchar(255),
+	"about"	varchar(255),
+	"city"	varchar(255),
+	"domain"	varchar(255),
+	"photo"	varchar(255),
+	"attrs"	integer,
+	"type"	integer,
+	"friends_updated"	bigint,
+	"groups_updated"	bigint,
+	"wall_updated"	bigint,
+	PRIMARY KEY("uid")
+)`
 
 type Group struct {
-	Gid            int `gorm:"uniqueIndex:groups_gid_uindex"`
-	Name           string
-	Attrs          int
-	Type           int
-	MembersUpdated int64
-	WallUpdated    int64
-	Oldest         int64
-	Newest         int64
+	Gid            int		`db:"gid"`
+	Name           string	`db:"name"`
+	Attrs          int		`db:"attrs"`
+	Type           int		`db:"type"`
+	MembersUpdated int64	`db:"members_updated"`
+	WallUpdated    int64	`db:"wall_updated"`
+	Oldest         int64	`db:"oldest"`
+	Newest         int64	`db:"newest"`
 }
+const SQLITE_SCHEMA_Groups string = 
+`CREATE TABLE "groups" (
+	"gid"	integer,
+	"name"	varchar(255),
+	"attrs"	integer,
+	"type"	integer,
+	"members_updated"	bigint,
+	"wall_updated"	bigint,
+	"oldest"	bigint,
+	"newest"	bigint,
+	PRIMARY KEY("gid")
+)`
 
 type Bookmark struct {
-	Bid  int `gorm:"uniqueIndex"`
-	Type int
+	Bid  int	`db:"bid"`
+	Type int	`db:"type"`
 }
+const SQLITE_SCHEMA_Bookmarks string = 
+`CREATE TABLE "bookmarks" (
+	"bid"	integer,
+	"type"	integer
+)`
 
 // user-user link
 type Friend struct {
-	ID   uint `gorm:"primary_key"`
-	Uid1 int
-	Uid2 int
+	ID   uint	`db:"id"`
+	Uid1 int	`db:"uid1"`
+	Uid2 int	`db:"uid2"`
 }
+const SQLITE_SCHEMA_Friends string = 
+`CREATE TABLE "friends" (
+	"id"	integer PRIMARY KEY AUTOINCREMENT,
+	"uid1"	integer,
+	"uid2"	integer
+)`
 
 // user-group link
 type Member struct {
-	ID  uint `gorm:"primary_key"`
-	Uid int
-	Gid int
+	ID  uint	`db:"id"`
+	Uid int		`db:"uid"`
+	Gid int		`db:"gid"`
 }
+const SQLITE_SCHEMA_Members string = 
+`CREATE TABLE "members" (
+	"id"	integer PRIMARY KEY AUTOINCREMENT,
+	"uid"	integer,
+	"gid"	integer
+)`
 
 // Post on wall
 type Post struct {
-	ID         uint `gorm:"primary_key"`
-	Pid        int  // local post id
-	Oid        int  // wall owner (group id)
-	Fid        int  // commenter (user id, "from")
-	Date       int64
-	Text       string // comment text
-	CmntsCount int
-	LikesCount int
-	ReposCount int
-	ViewsCount int
+	ID         uint		`db:"id"`
+	Pid        int  	`db:"pid"`	// local post id
+	Oid        int  	`db:"oid"`	// wall owner (group id)
+	Fid        int  	`db:"fid"`	// commenter (user id, "from")
+	Date       int64	`db:"date"`
+	Text       string 	`db:"text"`	// comment text
+	CmntsCount int		`db:"cmnts_count"`
+	LikesCount int		`db:"likes_count"`
+	ReposCount int		`db:"repos_count"`
+	ViewsCount int		`db:"views_count"`
 }
+const SQLITE_SCHEMA_Posts string = 
+`CREATE TABLE "posts" (
+	"id"	integer PRIMARY KEY AUTOINCREMENT,
+	"pid"	integer,
+	"oid"	integer,
+	"fid"	integer,
+	"date"	bigint,
+	"text"	varchar(255),
+	"cmnts_count"	integer,
+	"likes_count"	integer,
+	"repos_count"	integer,
+	"views_count"	integer
+)`
 
+// join(posts, users)
 type PostWithUsername struct {
 	Post
-	Name string // username
+	Name string `db:"name"`
 }
 
 // like to object
 type Reaction struct {
-	ID  uint `gorm:"primary_key"`
-	Typ int  // object type (post, comment, image, video...)
+	ID  uint 
+	Type int  // object type (post, comment, image, video...)
 	Oid int  // object owner id (user, group)
 	Iid int  // liked item id (post, comment, image, video...)
 	Uid int  // liker id (usually user, maybe group)
 }
 
 type Comment struct {
-	ID   uint `gorm:"primary_key"`
+	ID   uint 
 	Oid  int  // object owner id
 	Cid  int  // commenter id
 	Text string
 }
 
 func InitDatabase() {
-	db, err := gorm.Open("sqlite3", "./vk.db") //rename to vk.db
+	db, err := sqlx.Open("sqlite3", "./vk.db") //rename to vk.db
 	if err != nil {
 		App.dbaseConnected = false
 		panic("failed to connect database")
@@ -127,13 +194,6 @@ func InitDatabase() {
 	App.dbaseConnected = true
 	App.db = db
 
-	App.db.AutoMigrate(&User{})
-	App.db.AutoMigrate(&Task{})
-	App.db.AutoMigrate(&Group{})
-	App.db.AutoMigrate(&Bookmark{})
-	App.db.AutoMigrate(&Friend{})
-	App.db.AutoMigrate(&Member{})
-	App.db.AutoMigrate(&Post{})
 
 	App.db.Exec("PRAGMA journal_mode = WAL")
 	App.db.Exec("PRAGMA synchronous = normal")
