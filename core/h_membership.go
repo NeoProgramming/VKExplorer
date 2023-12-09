@@ -2,17 +2,13 @@ package core
 
 import (
 	"fmt"
-	"html/template"
 	"net/http"
-	"vkexplorer/views"
 )
 
 // Handler for displaying a user page
 func (app *Application) membership(w http.ResponseWriter, r *http.Request) {
 
-	userID := Atoi(r.URL.Path[len("/membership/"):])
-	fmt.Printf("User ID: %d\n", userID)
-
+	// define files
 	files := []string{
 		"./ui/pages/base.tmpl",
 		"./ui/pages/membership.tmpl",
@@ -24,41 +20,24 @@ func (app *Application) membership(w http.ResponseWriter, r *http.Request) {
 		"./ui/fragments/sort.tmpl",
 	}
 
-	// get User data
-	user := getUserName(app.db, userID)
-
-	// parsing templates into an internal representation
-	ts, err := template.ParseFiles(files...)
-	if err != nil {
-		app.serverError(w, err)
-		return
-	}
-
-	page := 0
-	pageSize := 10
+	// get arguments
+	var args Args
+	args.extractArgs(r)
+	args.id = Atoi(r.URL.Path[len("/membership/"):])
+	args.name = getUserName(app.db, args.id)
+	args.menu = 1
+	args.submenu = 2
+	args.title = "Membership"
 
 	// get Groups list
-	groups, err := getMemberships(app.db, userID, page, pageSize, "", "", false)
+	groups, err := getMemberships(app.db, args.id, args.page, args.size, args.search, args.sort, args.desc)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	// fill UserInfo
-	var t views.NameList
-	t.MainMenu = 1
-	t.SubMenu = 2
-	t.Id = userID
-	t.Name = user
-	t.Items = make([]views.NameRec, len(groups))
-	for i, elem := range groups {
-		t.Items[i].Id = elem.Gid
-		t.Items[i].Name = elem.Name
-	}
+	fmt.Printf("User ID: %d\n", args.id)
 
-	// execute templates
-	err = ts.Execute(w, t)
-	if err != nil {
-		app.serverError(w, err)
-	}
+	// generate web page
+	app.makeGroupList(w, r, &files, &groups, &args)
 }

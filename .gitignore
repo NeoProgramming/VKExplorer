@@ -19,3 +19,4 @@ vkexplorer
 /*.zip
 /db_secure/*.db-shm
 /db_secure/*.db-wal
+/*.exe~

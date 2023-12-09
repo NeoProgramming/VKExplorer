@@ -1,11 +1,11 @@
 {{define "userlist"}}
 <table border='1' style='border-collapse: collapse;' width='100%'>
     <tr>
-        <th><input type="checkbox" id="all" name="all" onclick="checkAll()"/></th>
-        <th>URL</th>
-        <th>Name</th>
-        <th>Oldest</th>
-        <th>Newest</th>
+        <th><input type="checkbox" id="all" name="all" onclick="checkAll()"/>
+            <a href="?page={{.CurrentPage}}{{.SearchStr}}{{.TagsStr}}"><img src="/static/images/no.png"></a></th>
+        {{range .Columns}}
+        <th>{{.Title}} {{template "sort" . }}</th>
+        {{end}}
     </tr>
     {{range .Items}}
     <tr>

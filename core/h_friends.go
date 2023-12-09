@@ -2,17 +2,12 @@ package core
 
 import (
 	"fmt"
-	"html/template"
 	"net/http"
-	"vkexplorer/views"
 )
 
 // Handler for displaying a group content
 func (app *Application) friends(w http.ResponseWriter, r *http.Request) {
-
-	userID := Atoi(r.URL.Path[len("/friends/"):])
-	fmt.Println("User ID: ", userID)
-
+	// define files
 	files := []string{
 		"./ui/pages/base.tmpl",
 		"./ui/pages/friends.tmpl",
@@ -21,45 +16,28 @@ func (app *Application) friends(w http.ResponseWriter, r *http.Request) {
 		"./ui/fragments/tags.tmpl",
 		"./ui/fragments/pagination.tmpl",
 		"./ui/fragments/userlist.tmpl",
+		"./ui/fragments/sort.tmpl",
 	}
 
-	// get User data
-	user := getUserName(app.db, userID)
+	// get arguments
+	var args Args
+	args.extractArgs(r)
+	args.id = Atoi(r.URL.Path[len("/friends/"):])
+	args.name = getUserName(app.db, args.id)
+	args.menu = 1
+	args.submenu = 1
+	args.title = "Friends"
+	args.count = 0
 
-	// parsing templates into an internal representation
-	ts, err := template.ParseFiles(files...)
-	if err != nil {
-		app.serverError(w, err)
-		return
-	}
-
-	page := 0
-	pageSize := 10
+	fmt.Println("User ID: ", args.id, " name: ", args.name)
 
 	// get Friends list
-	friends, err := getFriends(app.db, userID, page, pageSize, "", "", false)
+	friends, err := getFriends(app.db, args.id, args.page, args.size, args.search, args.sort, args.desc)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	fmt.Println("frinds count ", len(friends))
 
-	// fill
-	var t views.NameList
-	t.MainMenu = 1
-	t.SubMenu = 1
-	t.Id = userID
-	t.Name = user
-	t.Items = make([]views.NameRec, len(friends))
-	for i, elem := range friends {
-		t.Items[i].Id = elem.Uid
-		t.Items[i].Name = elem.Name
-	//	fmt.Println(elem.Name)
-	}
-
-	// execute templates
-	err = ts.Execute(w, t)
-	if err != nil {
-		app.serverError(w, err)
-	}
+	// generate web page
+	app.makeUserList(w, r, &files, &friends, &args)
 }

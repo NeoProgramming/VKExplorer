@@ -34,6 +34,13 @@ func Tmtoa(t int64) string {
 	return time.Unix(t, 0).Format("06-01-02 15:04")
 }
 
+func Btoa(b bool) string {
+	if b {
+		return "1"
+	}
+	return "0"
+}
+
 func arr(args ...interface{}) []interface{} {
 	return args
 }
