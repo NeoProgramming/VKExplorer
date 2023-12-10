@@ -43,6 +43,12 @@ func (app *Application) user(w http.ResponseWriter, r *http.Request) {
 	t.GroupsUpdated = Tmtoa(user.GroupsUpdated)
 	t.WallUpdated = Tmtoa(user.WallUpdated)
 
+	friends, _ := getCommonFriends(app.db, userID)
+	t.CommonFriends = make([]views.Named, len(friends))
+	for i, fr := range friends {
+		t.CommonFriends[i].Id = fr.Uid
+		t.CommonFriends[i].Name = fr.Name
+	}
 	// execute templates
 	err = ts.Execute(w, t)
 	if err != nil {

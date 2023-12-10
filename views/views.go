@@ -16,9 +16,9 @@ type Pagination struct {
 }
 
 type Search struct {
-	SearchStr string
-	AndOr     int
-	SearchArg string
+	SearchStr    string
+	AndOr        int
+	PageExtraArg string
 }
 
 type Tags struct {
@@ -30,15 +30,14 @@ type Tags struct {
 type NameRec struct {
 	Id     int
 	Name   string
+	Attrs  string
 	Oldest string
 	Newest string
 }
 
 type Column struct {
-	Name  string
-	Desc  int
-	Title string
-	Query *string
+	Name         string
+	SortExtraArg *string
 }
 
 type NameList struct {
@@ -74,6 +73,11 @@ type PostsList struct {
 
 // special data for db entities
 
+type Named struct {
+	Id   int
+	Name string
+}
+
 type UserInfo struct {
 	Menu
 	Id             int
@@ -82,6 +86,7 @@ type UserInfo struct {
 	FriendsUpdated string
 	GroupsUpdated  string
 	WallUpdated    string
+	CommonFriends  []Named
 }
 
 type GroupData struct {

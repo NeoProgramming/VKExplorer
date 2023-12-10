@@ -9,8 +9,8 @@ func (app *Application) QueueByType(tt int, cmt string) {
 	app.db.Get(&c, `SELECT COUNT(*) FROM tasks WHERE type = ?`, tt)
 	if c == 0 {
 		query := `INSERT INTO tasks (type, name, offs) VALUES (:type, :name, :offs)`
-		task := Task{TType: tt, Name: cmt, Offs: 0}
-		_, err := app.db.NamedExec(query, task)	
+		task := Task{TType: tt, Name: cmt, Offs: 0, Xid: 0}
+		_, err := app.db.NamedExec(query, task)
 		if err != nil {
 			fmt.Println("QueueByType error: ", err)
 		} else {
@@ -25,7 +25,7 @@ func (app *Application) QueueById(tt int, id int, cmt string) {
 	if c == 0 {
 		task := Task{TType: tt, Name: cmt + getGroupName(app.db, id), Xid: id, Offs: 0}
 		query := `INSERT INTO tasks (name, type, xid, offs) VALUES (:name, :type, :xid, :offs)`
-		_, err := app.db.NamedExec(query, task)	
+		_, err := app.db.NamedExec(query, task)
 		if err != nil {
 			fmt.Println("QueueById error: ", err)
 		} else {
@@ -40,7 +40,7 @@ func (app *Application) QueueByName(tt int, nm string) {
 	if c == 0 {
 		task := Task{TType: tt, Name: nm, Offs: 0}
 		query := `INSERT INTO tasks (type, name) VALUES (:type, :name)`
-		_, err := app.db.NamedExec(query, task)	
+		_, err := app.db.NamedExec(query, task)
 		if err != nil {
 			fmt.Println("QueueByName error: ", err)
 		} else {

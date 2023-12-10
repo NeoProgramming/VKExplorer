@@ -2,16 +2,16 @@
 <div class="navbar">
     <span class="navtext">Page {{.CurrentPage}} :</span>
     {{if gt .CurrentPage 1}}
-    <a class="navitem" href="?page=1{{.SearchArg}}">First (1)</a>
-    <a class="navitem" href="?page={{.PrevPage}}{{.SearchArg}}">Prev ({{.PrevPage}})</a>
+    <a class="navitem" href="?page=1{{.PageExtraArg}}">First (1)</a>
+    <a class="navitem" href="?page={{.PrevPage}}{{.PageExtraArg}}">Prev ({{.PrevPage}})</a>
     {{else}}
     <span class="navitem">First</span>
     <span class="navitem">Prev</span>
     {{end}}
-    <a  class="navitem" href="?page=0{{.SearchArg}}">All</a>
+    <a  class="navitem" href="?page=0{{.PageExtraArg}}">All</a>
     {{if lt .CurrentPage .TotalPages}}
-    <a  class="navitem" href="?page={{.NextPage}}{{.SearchArg}}">Next ({{.NextPage}})</a>
-    <a  class="navitem" href="?page={{.TotalPages}}{{.SearchArg}}">Last ({{.TotalPages}})</a>
+    <a  class="navitem" href="?page={{.NextPage}}{{.PageExtraArg}}">Next ({{.NextPage}})</a>
+    <a  class="navitem" href="?page={{.TotalPages}}{{.PageExtraArg}}">Last ({{.TotalPages}})</a>
     {{else}}
     <span class="navitem">Next</span>
     <span class="navitem">Last</span>

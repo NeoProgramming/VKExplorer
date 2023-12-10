@@ -19,6 +19,7 @@ type Args struct {
 	andor   int
 	sort    string
 	desc    bool
+	colunms []string
 }
 
 func (args *Args) extractArgs(r *http.Request) {

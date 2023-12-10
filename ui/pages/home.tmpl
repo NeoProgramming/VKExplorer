@@ -14,6 +14,8 @@ Input VK URL:<br>
 </form>
 <h3>Your data</h3>
 <table border='1' style='border-collapse: collapse;'>
+    <tr><td>My ID</td><td>{{.MyID}}</td></tr>
+    <tr><td>My Domain</td><td>{{.MyDomain}}</td></tr>
     <tr><td>Access Token</td><td>{{.AppURL}}</td></tr>
     <tr><td>Recent IP</td><td>{{.RecentIP}}</td></tr>
     <tr><td>Current IP</td><td>{{.CurrentIP}}</td></tr>
@@ -21,6 +23,7 @@ Input VK URL:<br>
     <tr><td>DB tables</td><td>{{.DBTables}}</td></tr>
 </table>
 <h3>Tasks: {{.TasksCount}}</h3>
+<button type="button" onclick="sendUpdateQueryARG('/update-my-data')">Update My Data</button>
 <button type="button" onclick="sendUpdateQuery('/update-my-friends')">Update My Friends</button>
 <button type="button" onclick="sendUpdateQuery('/update-my-groups')">Update My Groups</button>
 <button type="button" onclick="sendUpdateQuery('/update-my-bookmarks')">Update My Bookmarks</button>

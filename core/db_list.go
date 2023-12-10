@@ -14,7 +14,7 @@ func getTasks(db *sqlx.DB, page int, pageSize int) ([]Task, error) {
 		query += fmt.Sprintf(" LIMIT %d OFFSET %d", pageSize, offset)
 	}
 	query += ";"
-	
+
 	fmt.Println("getTasks: ", query)
 	err = db.Select(&tasks, query)
 	if err != nil {
@@ -43,7 +43,7 @@ func getUsers(db *sqlx.DB, page int, pageSize int, search string, order string, 
 		query += fmt.Sprintf(" LIMIT %d OFFSET %d", pageSize, offset)
 	}
 	query += ";"
-	
+
 	fmt.Println("getUsers: ", query)
 	err = db.Select(&users, query)
 	if err != nil {
@@ -100,7 +100,7 @@ func getPosts(db *sqlx.DB, page int, pageSize int, search string, order string, 
 		query += fmt.Sprintf(" LIMIT %d OFFSET %d", pageSize, offset)
 	}
 	query += ";"
-	
+
 	fmt.Println("getPosts: ", query)
 	err = db.Select(&posts, query)
 	if err != nil {
@@ -128,7 +128,7 @@ func getFriends(db *sqlx.DB, uid int, page int, pageSize int, search string, ord
 		offset := (page - 1) * pageSize
 		query += fmt.Sprintf(" LIMIT %d OFFSET %d", pageSize, offset)
 	}
-	
+
 	fmt.Println("getFriends: ", query)
 	err = db.Select(&friends, query)
 	if err != nil {
@@ -141,7 +141,7 @@ func getFriends(db *sqlx.DB, uid int, page int, pageSize int, search string, ord
 func getMemberships(db *sqlx.DB, uid int, page int, pageSize int, search string, order string, desc bool) ([]Group, error) {
 	var groups []Group
 	var err error
-	query:= fmt.Sprintf("SELECT groups.gid AS gid, name, attrs, type FROM groups JOIN members ON groups.gid = members.gid WHERE members.uid = %d", uid)
+	query := fmt.Sprintf("SELECT groups.gid AS gid, name, attrs, type FROM groups JOIN members ON groups.gid = members.gid WHERE members.uid = %d", uid)
 	if search != "" {
 		query += fmt.Sprintf(" AND Name LIKE '%%%s%%'", search)
 	}
@@ -155,7 +155,7 @@ func getMemberships(db *sqlx.DB, uid int, page int, pageSize int, search string,
 		offset := (page - 1) * pageSize
 		query += fmt.Sprintf(" LIMIT %d OFFSET %d", pageSize, offset)
 	}
-	
+
 	fmt.Println("getMemberships: ", query)
 	err = db.Select(&groups, query)
 	if err != nil {
@@ -182,7 +182,7 @@ func getMembers(db *sqlx.DB, gid int, page int, pageSize int, search string, ord
 		offset := (page - 1) * pageSize
 		query += fmt.Sprintf(" LIMIT %d OFFSET %d", pageSize, offset)
 	}
-	
+
 	fmt.Println("getMembers: ", query)
 	err = db.Select(&members, query)
 	if err != nil {
@@ -209,7 +209,7 @@ func getWall(db *sqlx.DB, gid int, page int, pageSize int, search string, order 
 		offset := (page - 1) * pageSize
 		query += fmt.Sprintf(" LIMIT %d OFFSET %d", pageSize, offset)
 	}
-	
+
 	fmt.Println("getWall: ", query)
 	err = db.Select(&wall, query)
 	if err != nil {
@@ -217,4 +217,23 @@ func getWall(db *sqlx.DB, gid int, page int, pageSize int, search string, order 
 		return nil, err
 	}
 	return wall, nil
+}
+
+func getCommonFriends(db *sqlx.DB, uid int) ([]User, error) {
+	var users []User
+	query := fmt.Sprintf(
+		`SELECT uid, name FROM users JOIN friends ON 
+		(users.uid = friends.uid1 AND %d = friends.uid2) OR
+ 		(users.uid = friends.uid2 AND %d = friends.uid1) 
+		 WHERE users.uid = %d`, App.config.MyID, App.config.MyID, uid)
+	err := db.Select(&users, query)
+	if err != nil {
+		fmt.Println("getMembers error: ", err)
+		return nil, err
+	}
+	return users, nil
+}
+
+func getCommonGroups(db *sqlx.DB, uid int) ([]Group, error) {
+	return nil, nil
 }

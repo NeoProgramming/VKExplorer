@@ -1,8 +1,8 @@
 package core
 
 import (
-	"fmt"
 	"database/sql"
+	"fmt"
 	"time"
 )
 
@@ -16,7 +16,7 @@ func (app *Application) worker() {
 
 		// take the task from the queue (do not delete yet)
 		var task Task
-		err := app.db.Get(&task, "SELECT * FROM tasks"); 
+		err := app.db.Get(&task, "SELECT * FROM tasks")
 		if err != nil {
 			if err == sql.ErrNoRows {
 				// Handle "record not found" error
@@ -25,6 +25,7 @@ func (app *Application) worker() {
 				break
 			} else {
 				// Handle other errors
+				fmt.Println("Task extracting error: ", err)
 			}
 		}
 
@@ -46,9 +47,9 @@ func (app *Application) worker() {
 
 		// task completed; delete the record from the "tasks" table
 		fmt.Println("Deleting task: ", task.Name)
-		_, err = app.db.Exec("DELETE FROM tasks WHERE id = ?", task.Id) 
+		_, err = app.db.Exec("DELETE FROM tasks WHERE id = ?", task.Id)
 		if err != nil {
-			fmt.Println("worker delete task error: ", err)			
+			fmt.Println("worker delete task error: ", err)
 		} else {
 			app.completeCounter++
 		}
@@ -78,6 +79,8 @@ func (app *Application) executeTask(task *Task) {
 	case TT_UserWall:
 		app.loadUserWall(task)
 
+	case TT_MyDataByName:
+		app.loadMyData(task)
 	case TT_UserDataByName:
 		app.loadUserDataByName(task)
 	case TT_UserFriendsByName:

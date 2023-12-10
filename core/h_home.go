@@ -9,6 +9,8 @@ import (
 type ViewHome struct {
 	views.Menu
 	Title       string
+	MyID        int
+	MyDomain    string
 	AppID       string
 	AppURL      string
 	RecentIP    string
@@ -23,11 +25,13 @@ type ViewHome struct {
 func (app *Application) home(w http.ResponseWriter, r *http.Request) {
 
 	// data to pass to the template; any type, reflection in the handler anyway
-	data := ViewHome {
-		Menu: views.Menu {
-			MainMenu:    0,
+	data := ViewHome{
+		Menu: views.Menu{
+			MainMenu: 0,
 		},
 		Title:       "This is Users List page",
+		MyID:        app.config.MyID,
+		MyDomain:    app.config.MyDomain,
 		AppID:       app.config.AppID,
 		AppURL:      app.config.AccessToken,
 		RecentIP:    app.config.RecentIP,

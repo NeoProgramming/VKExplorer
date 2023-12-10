@@ -62,6 +62,12 @@ func extractName(w http.ResponseWriter, r *http.Request, n string) string {
 
 // CREATING UPDATE TASKS
 
+func (app *Application) updateMyData(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("updateMyData")
+	//uid := extractName(w, r, "id")
+	app.QueueByType(TT_MyDataByName, "MyData")
+}
+
 // AJAX - setting the task "update my friends list"
 func (app *Application) updateMyFriends(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("updateMyFriends")

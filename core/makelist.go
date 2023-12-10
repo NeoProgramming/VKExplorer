@@ -31,37 +31,32 @@ func makeList(w http.ResponseWriter, r *http.Request, files *[]string, args *Arg
 	t.TagsStr = args.tags
 	t.AndOr = args.andor
 
-	//
+	// arg for pagination
 	if args.search != "" {
-		t.SearchArg = "&search=" + args.search
+		t.PageExtraArg = "&search=" + args.search
 	}
 	if args.sort != "" {
-		t.SearchArg += "&sort=" + args.sort
-		t.SearchArg += "&desc=" + Btoa(args.desc)
-	}
-
-	query := fmt.Sprintf("page=%d", args.page)
-	if args.search != "" {
-		query += "&search="
-		query += args.search
+		t.PageExtraArg += "&sort=" + args.sort
+		t.PageExtraArg += "&desc=" + Btoa(args.desc)
 	}
 	if args.tags != "" {
-		query += "&tags="
-		query += args.tags
+		t.PageExtraArg += "&tags=" + args.tags
+	}
+
+	// arg for sort
+	sortExtraArg := fmt.Sprintf("page=%d", args.page)
+	if args.search != "" {
+		sortExtraArg += "&search=" + args.search
+	}
+	if args.tags != "" {
+		sortExtraArg += "&tags=" + args.tags
 	}
 
 	// columns
-	t.Columns = make([]views.Column, 4)
-	t.Columns[0].Name = "gid"
-	t.Columns[0].Title = "URL"
-	t.Columns[1].Name = "name"
-	t.Columns[1].Title = "Name"
-	t.Columns[2].Title = "Oldest"
-	t.Columns[2].Name = "oldest"
-	t.Columns[3].Title = "Newest"
-	t.Columns[3].Name = "newest"
+	t.Columns = make([]views.Column, len(args.colunms))
 	for i, _ := range t.Columns {
-		t.Columns[i].Query = &query
+		t.Columns[i].Name = args.colunms[i]
+		t.Columns[i].SortExtraArg = &sortExtraArg
 	}
 
 	// execute templates
@@ -75,10 +70,12 @@ func (app *Application) makeGroupList(w http.ResponseWriter, r *http.Request, fi
 	var t views.NameList
 
 	// group-specific
+	args.colunms = []string{"gid", "name", "attrs", "oldest", "newest"}
 	t.Items = make([]views.NameRec, len(*groups))
 	for i, elem := range *groups {
 		t.Items[i].Id = elem.Gid
 		t.Items[i].Name = elem.Name
+		t.Items[i].Attrs = AttrsToStr(elem.Attrs)
 		t.Items[i].Oldest = Tmtoa(elem.Oldest)
 		t.Items[i].Newest = Tmtoa(elem.Newest)
 	}
@@ -91,10 +88,12 @@ func (app *Application) makeUserList(w http.ResponseWriter, r *http.Request, fil
 	var t views.NameList
 
 	// user-specific
+	args.colunms = []string{"uid", "name", "attrs", "oldest", "newest"}
 	t.Items = make([]views.NameRec, len(*users))
 	for i, elem := range *users {
 		t.Items[i].Id = elem.Uid
 		t.Items[i].Name = elem.Name
+		t.Items[i].Attrs = AttrsToStr(elem.Attrs)
 		t.Items[i].Oldest = Tmtoa(elem.Oldest)
 		t.Items[i].Newest = Tmtoa(elem.Newest)
 	}

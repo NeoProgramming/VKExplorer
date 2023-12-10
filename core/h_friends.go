@@ -14,6 +14,7 @@ func (app *Application) friends(w http.ResponseWriter, r *http.Request) {
 		"./ui/fragments/usermenu.tmpl",
 		"./ui/fragments/search.tmpl",
 		"./ui/fragments/tags.tmpl",
+		"./ui/fragments/filters.tmpl",
 		"./ui/fragments/pagination.tmpl",
 		"./ui/fragments/userlist.tmpl",
 		"./ui/fragments/sort.tmpl",

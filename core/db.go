@@ -19,6 +19,7 @@ const (
 	TT_GroupWall
 	TT_UserWall
 
+	TT_MyDataByName
 	TT_UserDataByName
 	TT_UserFriendsByName
 	TT_UserGroupsByName
@@ -30,11 +31,12 @@ const (
 
 type Task struct {
 	Id     int    `db:"id"`
+	Url    string `db:"url"`
 	TType  int    `db:"type"`
-	Name   string `db:"name"`
-	Xid    int    `db:"xid"`
 	Offs   int    `db:"offs"`
+	Name   string `db:"name"`
 	Status int    `db:"status"`
+	Xid    int    `db:"xid"`
 }
 
 const SQLITE_SCHEMA_Tasks string = `CREATE TABLE IF NOT EXISTS "tasks" (

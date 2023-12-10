@@ -41,6 +41,7 @@ func (app *Application) routes() *http.ServeMux {
 	mux.HandleFunc("/start-worker", app.startWorker)
 	mux.HandleFunc("/stop-worker", app.stopWorker)
 
+	mux.HandleFunc("/update-my-data", app.updateMyData)
 	mux.HandleFunc("/update-my-friends", app.updateMyFriends)
 	mux.HandleFunc("/update-my-groups", app.updateMyGroups)
 	mux.HandleFunc("/update-my-bookmarks", app.updateMyBookmarks)

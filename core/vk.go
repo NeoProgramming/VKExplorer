@@ -13,12 +13,36 @@ type RecordAttrs int
 
 const (
 	RA_MY        = 0x1  // my friend or my group
-	RA_FAV       = 0x2  // bookmarked user of group
+	RA_BOOKMARK  = 0x2  // bookmarked user of group
 	RA_FRIEND    = 0x4  // my friend's friend; or my friend's group
 	RA_MEMBER    = 0x8  // member of some group
 	RA_LIKER     = 0x10 // liker of some record
 	RA_COMMENTER = 0x20 // commenter of some record
 )
+
+func AttrsToStr(a int) string {
+	var s string
+	if (a & RA_MY) != 0 {
+		s += "M"
+	}
+	if (a & RA_BOOKMARK) != 0 {
+		s += "B"
+	}
+	if (a & RA_FRIEND) != 0 {
+		s += "F"
+	}
+	if (a & RA_MEMBER) != 0 {
+		s += "G"
+	}
+	if (a & RA_LIKER) != 0 {
+		s += "L"
+	}
+	if (a & RA_COMMENTER) != 0 {
+		s += "C"
+	}
+
+	return s
+}
 
 func InitVK() {
 	fmt.Println("VK API library initializing...")
@@ -74,8 +98,37 @@ func extractAccessToken(urlStr string) string {
 	return accessToken
 }
 
+func (app *Application) loadMyData(task *Task) int {
+	fmt.Println("Request for my data ", task.Name)
+	data, err := app.vk.UsersGet(api.Params{
+		"fields": "id,first_name,last_name,about,city,domain,photo_max_orig,is_closed,can_access_closed",
+	})
+	if err != nil {
+		fmt.Println(err)
+		return 0
+	}
+	size := len(data)
+	fmt.Println("Received: ", size)
+	if size == 0 {
+		return 0
+	}
+	app.UpsertUser(data[0].ID, data[0].FirstName+" "+data[0].LastName, data[0].About, data[0].City.Title, data[0].Domain, data[0].PhotoMaxOrig, 0)
+
+	fmt.Println("My data: ", data[0].ID, " ", data[0].Domain)
+	App.config.MyID = data[0].ID
+	App.config.MyDomain = data[0].Domain
+	SaveConfig()
+
+	fmt.Println("Me updated")
+	return data[0].ID
+}
+
 func (app *Application) loadUserDataByName(task *Task) int {
-	fmt.Println("Request for user data ")
+	fmt.Println("Request for user data ", task.Name)
+	if task.TType == TT_MyDataByName {
+		task.Name = "1"
+		fmt.Println("my")
+	}
 	data, err := app.vk.UsersGet(api.Params{
 		"user_ids": task.Name,
 		"fields":   "id,first_name,last_name,about,city,domain,photo_max_orig,is_closed,can_access_closed",
@@ -90,6 +143,12 @@ func (app *Application) loadUserDataByName(task *Task) int {
 		return 0
 	}
 	app.UpsertUser(data[0].ID, data[0].FirstName+" "+data[0].LastName, data[0].About, data[0].City.Title, data[0].Domain, data[0].PhotoMaxOrig, 0)
+	if task.TType == TT_MyDataByName {
+		fmt.Println("My data: ", data[0].ID, " ", data[0].Domain)
+		App.config.MyID = data[0].ID
+		App.config.MyDomain = data[0].Domain
+		SaveConfig()
+	}
 	fmt.Println("User updated")
 	return data[0].ID
 }

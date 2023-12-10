@@ -4,4 +4,8 @@
 <p>Friends Updated: {{.FriendsUpdated}}</p>
 <p>Groups Updated: {{.GroupsUpdated}}</p>
 <p>Wall Updated: {{.WallUpdated}}</p>
+<p>Common Friends</p>
+{{range .CommonFriends}}
+<a href="/user/{{.Id}}">&nbsp;{{.Name}}</a>,
+{{end}}
 {{end}}

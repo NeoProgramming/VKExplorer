@@ -4,7 +4,7 @@
         <th><input type="checkbox" id="all" name="all" onclick="checkAll()"/>
             <a href="?page={{.CurrentPage}}{{.SearchStr}}{{.TagsStr}}"><img src="/static/images/no.png"></a></th>
         {{range .Columns}}
-        <th>{{.Title}} {{template "sort" . }}</th>
+        <th>{{.Name}} {{template "sort" . }}</th>
         {{end}}
     </tr>
     {{range .Items}}
@@ -12,6 +12,7 @@
         <td><input type="checkbox" id="{{.Id}}" name="{{.Id}}"/></td>
         <td><a href="https://vk.com/id{{.Id}}" target="_blank">{{.Id}}</a></td>
         <td><a href="/user/{{.Id}}">&nbsp;{{.Name}}</a></td>
+        <td>{{.Attrs}}</td>
         <td>{{.Oldest}}</td>
         <td>{{.Newest}}</td>
     </tr>

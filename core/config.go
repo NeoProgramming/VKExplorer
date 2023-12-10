@@ -7,6 +7,8 @@ import (
 )
 
 type Configuration struct {
+	MyID        int
+	MyDomain    string
 	AppID       string
 	AccessToken string
 	RecentIP    string

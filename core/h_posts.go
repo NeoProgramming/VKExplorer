@@ -27,7 +27,7 @@ func (app *Application) posts(w http.ResponseWriter, r *http.Request) {
 	searchStr := r.URL.Query().Get("search")
 	andOr := Atoi(r.URL.Query().Get("andor"))
 	tagsStr := r.URL.Query().Get("tags")
-	
+
 	fmt.Println("page = ", page)
 	fmt.Println("search = ", searchStr)
 	fmt.Println("tags = ", tagsStr)
@@ -68,7 +68,7 @@ func (app *Application) posts(w http.ResponseWriter, r *http.Request) {
 	t.TagsStr = tagsStr
 	t.AndOr = andOr
 	if searchStr != "" {
-		t.SearchArg = "&search=" + searchStr
+		t.PageExtraArg = "&search=" + searchStr
 	}
 
 	// execute templates
