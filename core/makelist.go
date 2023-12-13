@@ -39,6 +39,9 @@ func makeList(w http.ResponseWriter, r *http.Request, files *[]string, args *Arg
 		t.PageExtraArg += "&sort=" + args.sort
 		t.PageExtraArg += "&desc=" + Btoa(args.desc)
 	}
+	if args.filters != "" {
+		t.PageExtraArg += "&filters=" + args.filters
+	}
 	if args.tags != "" {
 		t.PageExtraArg += "&tags=" + args.tags
 	}
@@ -47,6 +50,9 @@ func makeList(w http.ResponseWriter, r *http.Request, files *[]string, args *Arg
 	sortExtraArg := fmt.Sprintf("page=%d", args.page)
 	if args.search != "" {
 		sortExtraArg += "&search=" + args.search
+	}
+	if args.filters != "" {
+		sortExtraArg += "&filters=" + args.filters
 	}
 	if args.tags != "" {
 		sortExtraArg += "&tags=" + args.tags

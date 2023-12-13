@@ -75,16 +75,21 @@ function openTestURL(ibase) {
 }
 
 function setSearch(currPage) {
-
    // Get the name from the form
-   var text = document.getElementById('search').value;
-   var currentUrl = window.location.href.split('?')[0];
+   let text = document.getElementById('search').value;
+   let currentUrl = window.location.href.split('?')[0];
    window.location.href = currentUrl + '?page=' + currPage + "&search=" + encodeURIComponent(text);
 }
 
 function clearSearch(currPage) {
-	var currentUrl = window.location.href.split('?')[0];
+    let currentUrl = window.location.href.split('?')[0];
 	window.location.href = currentUrl + '?page=' + currPage;
+}
+
+function applyFilters() {
+    let currentUrl = window.location.href.split('?')[0];
+    let arg = '?filters=' + getChk('f_my') +  getChk('f_fr') + getChk('f_gr') + getChk('f_lk') + getChk('f_cm');
+    window.location.href = currentUrl + arg;
 }
 
 //
@@ -231,4 +236,15 @@ document.addEventListener("DOMContentLoaded", function(event) {
     });
 });
 
+function ts(cb) {
+    if (cb.readOnly) cb.checked=cb.readOnly=false;
+    else if (!cb.checked) cb.readOnly=cb.indeterminate=true;
+}
+
+function getChk(id) {
+    let cb = document.getElementById(id);
+    if(cb.indeterminate) return 2;
+    if(cb.checked) return 1;
+    return 0;
+}
 

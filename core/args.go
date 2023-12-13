@@ -1,7 +1,6 @@
 package core
 
 import (
-	"fmt"
 	"net/http"
 )
 
@@ -16,6 +15,7 @@ type Args struct {
 	size    int    // page size
 	search  string
 	tags    string
+	filters string
 	andor   int
 	sort    string
 	desc    bool
@@ -31,7 +31,5 @@ func (args *Args) extractArgs(r *http.Request) {
 	args.tags = r.URL.Query().Get("tags")
 	args.sort = r.URL.Query().Get("sort")
 	args.desc = Atoi(r.URL.Query().Get("desc")) != 0
-
-	fmt.Println("search = ", args.search)
-	fmt.Println("tags = ", args.tags)
+	args.filters = r.URL.Query().Get("filters")
 }
