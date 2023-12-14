@@ -1,8 +1,9 @@
 {{define "filters"}}
 <div class="navbar">
     <span>Filters:</span>
-    <button type="button" onclick="applyFilters( args('search','{{.Search}}','sort','{{.Sort}}','tags','{{.Tags}}') )">Apply</button>
+    <button type="button" onclick="applyFilters( pkArgs('search','{{.Search}}','sort','{{.Sort}}','tags','{{.Tags}}') )">Apply</button>
     <input type="checkbox" id="f_my" onclick="ts(this)">MY</input>
+    <input type="checkbox" id="f_bm" onclick="ts(this)">Bookmarked</input>
     <input type="checkbox" id="f_fr" onclick="ts(this)">Friend's mate</input>
     <input type="checkbox" id="f_gr" onclick="ts(this)">Group's mate</input>
     <input type="checkbox" id="f_lk" onclick="ts(this)">Liker</input>
@@ -10,9 +11,10 @@
 </div>
 <script>
 	setChk('f_my', '{{.Filters}}'[0]);
-	setChk('f_fr', '{{.Filters}}'[1]);
-	setChk('f_gr', '{{.Filters}}'[2]);
-	setChk('f_lk', '{{.Filters}}'[3]);
-	setChk('f_cm', '{{.Filters}}'[4]);
+    setChk('f_bm', '{{.Filters}}'[1]);
+	setChk('f_fr', '{{.Filters}}'[2]);
+	setChk('f_gr', '{{.Filters}}'[3]);
+	setChk('f_lk', '{{.Filters}}'[4]);
+	setChk('f_cm', '{{.Filters}}'[5]);
 </script>
 {{end}}

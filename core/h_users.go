@@ -27,7 +27,7 @@ func (app *Application) users(w http.ResponseWriter, r *http.Request) {
 	args.count = getUsersCount(app.db)
 
 	// get Users list
-	users, err := getUsers(app.db, args.page, args.size, args.search, args.sort, args.desc)
+	users, err := getUsers(app.db, args.page, args.size, args.search, args.filters, args.sort, args.desc)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

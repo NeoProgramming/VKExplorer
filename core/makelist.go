@@ -23,12 +23,12 @@ func makeList(w http.ResponseWriter, r *http.Request, files *[]string, args *Arg
 	t.Name = args.name
 	t.Title = args.title
 	t.Count = args.count
-	t.CurrentPage = args.page
+	t.Page = args.page
 	t.NextPage = args.page + 1
 	t.PrevPage = args.page - 1
 	t.TotalPages = int(math.Ceil(float64(t.Count) / float64(args.size)))
-	t.SearchStr = args.search
-	t.TagsStr = args.tags
+	t.Search = args.search
+	t.Tags = args.tags
 	t.AndOr = args.andor
 	t.Filters = args.filters
 

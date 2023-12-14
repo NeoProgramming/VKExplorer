@@ -21,7 +21,7 @@ const (
 )
 
 func AttrsToStr(a int) string {
-	var s string
+	var s string = fmt.Sprintf("%02X: ", a)
 	if (a & RA_MY) != 0 {
 		s += "M"
 	}

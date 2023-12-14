@@ -79,7 +79,7 @@ function setSearch(extraArgs) {
    // Get the name from the form
    let text = document.getElementById('search').value;
    let currentUrl = window.location.href.split('?')[0];
-   window.location.href = currentUrl + makeGet('search', encodeURIComponent(text), extraArgs);
+   window.location.href = currentUrl + '?' +pkArgs('search', encodeURIComponent(text), extraArgs);
 }
 
 function clearSearch(extraArgs) {
@@ -89,11 +89,11 @@ function clearSearch(extraArgs) {
 
 function applyFilters(extraArgs) {
     let currentUrl = window.location.href.split('?')[0];
-    let arg = getChk('f_my') +  getChk('f_fr') + getChk('f_gr') + getChk('f_lk') + getChk('f_cm');
-    if(filtersIsEmpty(arg))
+    let code = getChk('f_my') +  getChk('f_bm') + getChk('f_fr') + getChk('f_gr') + getChk('f_lk') + getChk('f_cm');
+    if(filtersIsEmpty(code))
 		window.location.href = currentUrl + '?' +extraArgs;
 	else
-		window.location.href = currentUrl + makeGet('filters', arg, extraArgs);
+		window.location.href = currentUrl + '?' +pkArgs('filters', code, extraArgs);
 }
 
 //
@@ -271,23 +271,24 @@ function filtersIsEmpty(str) {
 	return true;
 }
 
-function args() {
+function pkArgs() {
+    let i = 0;
 	let res = '';
-	for (let i = 0; i < arguments.length-1; i+=2) { 
+    // pairs
+	for (i = 0; i < arguments.length-1; i+=2) {
 		if(arguments[i+1] != '') {
 			if(i>0)
 				res += '&';
 			res += arguments[i];
-			res += '=';
-			res += arguments[i+1];
-		} 
-    } 
+            res += '=';
+            res += arguments[i + 1];
+		}
+    }
+    // trailing argument
+    if(i < arguments.length) {
+        if(i>0)
+            res += '&';
+        res += arguments[i];
+    }
 	return res;
 }
-
-function makeGet(n, v, e) {
-	if(e!='')
-		return '?' + e + '&' + n + '=' + v;
-	return '?' + n + '=' + v;
-}
-

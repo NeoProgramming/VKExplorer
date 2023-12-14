@@ -1,6 +1,7 @@
 package core
 
 import (
+	"fmt"
 	"math"
 	"strconv"
 	"time"
@@ -63,4 +64,20 @@ func maxTime(t ...int64) int64 {
 		}
 	}
 	return mt
+}
+
+func decodeFilterMasks(filters string) (int, int) {
+	m := 0
+	im := 0
+
+	for i := 0; i < len(filters); i++ {
+		if filters[i] == '1' {
+			m |= 1 << i
+		}
+		if filters[i] == '2' {
+			im |= 1 << i
+		}
+	}
+	fmt.Printf("decodeFilterMasks: %s  => %02X %02X\n", filters, m, im)
+	return m, im
 }

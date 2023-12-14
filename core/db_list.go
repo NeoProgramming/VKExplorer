@@ -33,7 +33,13 @@ func getUsers(db *sqlx.DB, page int, pageSize int, search string, filters string
 		query += fmt.Sprintf(" WHERE Name LIKE '%%%s%%'", search)
 	}
 	if filters != "" {
-		
+		m, im := decodeFilterMasks(filters)
+		if search != "" {
+			query += " AND"
+		} else {
+			query += " WHERE"
+		}
+		query += fmt.Sprintf(" attrs & %d = %d AND attrs & %d = 0", m, m, im)
 	}
 	if order != "" {
 		query += fmt.Sprintf(" ORDER BY %s", order)

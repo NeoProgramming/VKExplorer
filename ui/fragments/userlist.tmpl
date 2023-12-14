@@ -2,7 +2,7 @@
 <table border='1' style='border-collapse: collapse;' width='100%'>
     <tr>
         <th><input type="checkbox" id="all" name="all" onclick="checkAll()"/>
-            <a href="?page={{.CurrentPage}}{{.SearchStr}}{{.TagsStr}}"><img src="/static/images/no.png"></a></th>
+            <a href="?page={{.Page}}{{.Search}}{{.Tags}}"><img src="/static/images/no.png"></a></th>
         {{template "sort" . }}
     </tr>
     {{range .Items}}

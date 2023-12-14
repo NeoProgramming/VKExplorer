@@ -6,8 +6,8 @@
       <input type="range" id="andor" style="width:30px;" name="andor" min="0" max="1" />
       <label for="andor">OR</label>
     </span>
-    <button type="button" onclick="clearSearch(args('filters','{{.Filters}}','sort','{{.Sort}}'))">Clear</button>
-    <button type="button" onclick="setSearch(args('filters','{{.Filters}}','sort','{{.Sort}}'))">Search</button>
-    <input type="text" id="search" placeholder="Enter searched text" value="{{.SearchStr}}" style="width:70%"></input>    
+    <button type="button" onclick="clearSearch(pkArgs('filters','{{.Filters}}','sort','{{.Sort}}'))">Clear</button>
+    <button type="button" onclick="setSearch(pkArgs('filters','{{.Filters}}','sort','{{.Sort}}'))">Search</button>
+    <input type="text" id="search" placeholder="Enter searched text" value="{{.Search}}" style="width:70%"></input>
 </div>
 {{end}}

@@ -60,12 +60,12 @@ func (app *Application) posts(w http.ResponseWriter, r *http.Request) {
 	}
 	t.Title = "Posts"
 	t.Count = getPostsCount(app.db)
-	t.CurrentPage = page
+	t.Page = page
 	t.NextPage = page + 1
 	t.PrevPage = page - 1
 	t.TotalPages = int(math.Ceil(float64(t.Count) / float64(pageSize)))
-	t.SearchStr = searchStr
-	t.TagsStr = tagsStr
+	t.Search = searchStr
+	t.Tags = tagsStr
 	t.AndOr = andOr
 	if searchStr != "" {
 		t.PageExtraArg = "&search=" + searchStr

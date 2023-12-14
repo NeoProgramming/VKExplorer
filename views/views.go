@@ -7,26 +7,21 @@ type Menu struct {
 	SubMenu  int
 }
 
-type Pagination struct {
-	Count       int
-	CurrentPage int
-	TotalPages  int
-	PrevPage    int
-	NextPage    int
-	PageExtraArg string
-}
+type Navigation struct {
+	Count      int
+	Page       int
+	TotalPages int
+	PrevPage   int
+	NextPage   int
+	Search     string
+	AndOr      int
+	Filters    string
+	Sort       string
+	Desc       int
+	Tags       string
 
-type Search struct {
-	SearchStr    string
-	AndOr        int
+	PageExtraArg string // to remove?
 	SortExtraArg string
-	Filters      string
-	Sort         string
-	Desc         int
-}
-
-type Tags struct {
-	TagsStr string
 }
 
 // common data
@@ -40,14 +35,12 @@ type NameRec struct {
 }
 
 type Column struct {
-	Name         string
+	Name string
 }
 
 type NameList struct {
 	Menu
-	Pagination
-	Search
-	Tags
+	Navigation
 	Title   string
 	Id      int
 	Name    string
@@ -65,9 +58,7 @@ type PostRec struct {
 
 type PostsList struct {
 	Menu
-	Pagination
-	Search
-	Tags
+	Navigation
 	Title string
 	Id    int
 	Name  string
