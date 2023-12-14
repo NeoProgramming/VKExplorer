@@ -74,22 +74,26 @@ function openTestURL(ibase) {
     window.open(url, "_blank");
 }
 
-function setSearch(currPage) {
+function setSearch(extraArgs) {
+	console.log("setSearch ", extraArgs);
    // Get the name from the form
    let text = document.getElementById('search').value;
    let currentUrl = window.location.href.split('?')[0];
-   window.location.href = currentUrl + '?page=' + currPage + "&search=" + encodeURIComponent(text);
+   window.location.href = currentUrl + makeGet('search', encodeURIComponent(text), extraArgs);
 }
 
-function clearSearch(currPage) {
+function clearSearch(extraArgs) {
     let currentUrl = window.location.href.split('?')[0];
-	window.location.href = currentUrl + '?page=' + currPage;
+	window.location.href = currentUrl + '?' + extraArgs;
 }
 
-function applyFilters() {
+function applyFilters(extraArgs) {
     let currentUrl = window.location.href.split('?')[0];
-    let arg = '?filters=' + getChk('f_my') +  getChk('f_fr') + getChk('f_gr') + getChk('f_lk') + getChk('f_cm');
-    window.location.href = currentUrl + arg;
+    let arg = getChk('f_my') +  getChk('f_fr') + getChk('f_gr') + getChk('f_lk') + getChk('f_cm');
+    if(filtersIsEmpty(arg))
+		window.location.href = currentUrl + '?' +extraArgs;
+	else
+		window.location.href = currentUrl + makeGet('filters', arg, extraArgs);
 }
 
 //
@@ -243,8 +247,47 @@ function ts(cb) {
 
 function getChk(id) {
     let cb = document.getElementById(id);
-    if(cb.indeterminate) return 2;
-    if(cb.checked) return 1;
-    return 0;
+    if(cb.indeterminate) return '2';
+    if(cb.checked) return '1';
+    return '0';
+}
+
+function setChk(id, st) {
+    let cb = document.getElementById(id);
+    if(st=='2') {
+		cb.readOnly=cb.indeterminate=true;
+	} else if(st=='1') {
+		cb.readOnly=false;
+		cb.checked=true;
+	} else if(st=='0') {
+		cb.checked=cb.readOnly=false;
+	}
+}
+
+function filtersIsEmpty(str) {
+	for (let i = 0; i<str.length; i++)
+		if(str[i]!='0')
+			return false;
+	return true;
+}
+
+function args() {
+	let res = '';
+	for (let i = 0; i < arguments.length-1; i+=2) { 
+		if(arguments[i+1] != '') {
+			if(i>0)
+				res += '&';
+			res += arguments[i];
+			res += '=';
+			res += arguments[i+1];
+		} 
+    } 
+	return res;
+}
+
+function makeGet(n, v, e) {
+	if(e!='')
+		return '?' + e + '&' + n + '=' + v;
+	return '?' + n + '=' + v;
 }
 

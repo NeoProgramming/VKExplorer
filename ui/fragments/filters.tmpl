@@ -1,11 +1,18 @@
 {{define "filters"}}
 <div class="navbar">
     <span>Filters:</span>
-    <button type="button" id="set" onclick="applyFilters()">Apply</button>
+    <button type="button" onclick="applyFilters( args('search','{{.Search}}','sort','{{.Sort}}','tags','{{.Tags}}') )">Apply</button>
     <input type="checkbox" id="f_my" onclick="ts(this)">MY</input>
     <input type="checkbox" id="f_fr" onclick="ts(this)">Friend's mate</input>
     <input type="checkbox" id="f_gr" onclick="ts(this)">Group's mate</input>
     <input type="checkbox" id="f_lk" onclick="ts(this)">Liker</input>
     <input type="checkbox" id="f_cm" onclick="ts(this)">Commenter</input>
 </div>
+<script>
+	setChk('f_my', '{{.Filters}}'[0]);
+	setChk('f_fr', '{{.Filters}}'[1]);
+	setChk('f_gr', '{{.Filters}}'[2]);
+	setChk('f_lk', '{{.Filters}}'[3]);
+	setChk('f_cm', '{{.Filters}}'[4]);
+</script>
 {{end}}

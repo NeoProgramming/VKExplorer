@@ -13,12 +13,16 @@ type Pagination struct {
 	TotalPages  int
 	PrevPage    int
 	NextPage    int
+	PageExtraArg string
 }
 
 type Search struct {
 	SearchStr    string
 	AndOr        int
-	PageExtraArg string
+	SortExtraArg string
+	Filters      string
+	Sort         string
+	Desc         int
 }
 
 type Tags struct {
@@ -37,7 +41,6 @@ type NameRec struct {
 
 type Column struct {
 	Name         string
-	SortExtraArg *string
 }
 
 type NameList struct {

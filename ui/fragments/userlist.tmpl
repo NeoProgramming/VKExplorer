@@ -3,9 +3,7 @@
     <tr>
         <th><input type="checkbox" id="all" name="all" onclick="checkAll()"/>
             <a href="?page={{.CurrentPage}}{{.SearchStr}}{{.TagsStr}}"><img src="/static/images/no.png"></a></th>
-        {{range .Columns}}
-        <th>{{.Name}} {{template "sort" . }}</th>
-        {{end}}
+        {{template "sort" . }}
     </tr>
     {{range .Items}}
     <tr>

@@ -24,13 +24,16 @@ func getTasks(db *sqlx.DB, page int, pageSize int) ([]Task, error) {
 	return tasks, nil
 }
 
-func getUsers(db *sqlx.DB, page int, pageSize int, search string, order string, desc bool) ([]User, error) {
+func getUsers(db *sqlx.DB, page int, pageSize int, search string, filters string, order string, desc bool) ([]User, error) {
 	var users []User
 	var err error
 	query := fmt.Sprintf("SELECT uid, name, attrs, type, oldest, newest FROM users")
 
 	if search != "" {
 		query += fmt.Sprintf(" WHERE Name LIKE '%%%s%%'", search)
+	}
+	if filters != "" {
+		
 	}
 	if order != "" {
 		query += fmt.Sprintf(" ORDER BY %s", order)

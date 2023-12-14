@@ -1,6 +1,12 @@
 {{define "sort"}}
+{{ $topLevel := . }}
+{{range .Columns}}
+<th>{{.Name}}
 &nbsp;
-<a href="?{{.SortExtraArg}}&sort={{.Name}}&desc=0"><img src="/static/images/up.png"></a>
+<a href="?{{$topLevel.SortExtraArg}}&sort={{.Name}}&desc=0"><img src="/static/images/up.png"></a>
 &nbsp;
-<a href="?{{.SortExtraArg}}&sort={{.Name}}&desc=1"><img src="/static/images/dn.png"></a>
+<a href="?{{$topLevel.SortExtraArg}}&sort={{.Name}}&desc=1"><img src="/static/images/dn.png"></a>
+</th>
+{{end}}
+
 {{end}}

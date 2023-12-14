@@ -30,6 +30,7 @@ func makeList(w http.ResponseWriter, r *http.Request, files *[]string, args *Arg
 	t.SearchStr = args.search
 	t.TagsStr = args.tags
 	t.AndOr = args.andor
+	t.Filters = args.filters
 
 	// arg for pagination
 	if args.search != "" {
@@ -47,22 +48,21 @@ func makeList(w http.ResponseWriter, r *http.Request, files *[]string, args *Arg
 	}
 
 	// arg for sort
-	sortExtraArg := fmt.Sprintf("page=%d", args.page)
+	t.SortExtraArg = fmt.Sprintf("page=%d", args.page)
 	if args.search != "" {
-		sortExtraArg += "&search=" + args.search
+		t.SortExtraArg += "&search=" + args.search
 	}
 	if args.filters != "" {
-		sortExtraArg += "&filters=" + args.filters
+		t.SortExtraArg += "&filters=" + args.filters
 	}
 	if args.tags != "" {
-		sortExtraArg += "&tags=" + args.tags
+		t.SortExtraArg += "&tags=" + args.tags
 	}
 
 	// columns
 	t.Columns = make([]views.Column, len(args.colunms))
 	for i, _ := range t.Columns {
 		t.Columns[i].Name = args.colunms[i]
-		t.Columns[i].SortExtraArg = &sortExtraArg
 	}
 
 	// execute templates
