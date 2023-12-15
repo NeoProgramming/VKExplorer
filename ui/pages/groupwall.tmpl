@@ -4,8 +4,8 @@
 <div>
 <button type="button" onclick="sendUpdateQueryCB('/update-checked-posts')">Update Checked Posts</button>
 <button type="button" onclick="sendUpdateQueryCB('/update-checked-likes')">Update Checked Likes</button>
-<button type="button" onclick="updateAllPosts()">Update All Posts</button>
-<button type="button" onclick="updateAllLikes()">Update All Likes</button>
+<button type="button" onclick="sendUpdateQueryARG('/update-group-posts', {{ .Id }})">Update All Posts</button>
+<button type="button" onclick="sendUpdateQueryARG('/update-group-likes', {{ .Id }})">Update All Likes</button>
 </div>
 {{template "search" .}}
 {{template "tags" .}}

@@ -179,7 +179,7 @@ type PostWithUsername struct {
 }
 
 // like to object
-type Reaction struct {
+type Like struct {
 	ID   uint
 	Type int // object type (post, comment, image, video...)
 	Oid  int // object owner id (user, group)
@@ -211,6 +211,7 @@ func InitDatabase() {
 	App.db.Exec("PRAGMA synchronous = normal")
 	App.db.Exec("PRAGMA temp_store = memory")
 	App.db.Exec("PRAGMA mmap_size = 30000000000")
+	App.db.Exec("PRAGMA case_sensitive_like = false")
 
 	fmt.Println("Database vk.db opened")
 }
@@ -223,5 +224,5 @@ func quitDatabase() {
 }
 
 type TableInfo struct {
-	Name string `gorm:"column:name"`
+	Name string 
 }

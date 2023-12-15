@@ -1,6 +1,10 @@
 {{define "content"}}
 {{template "usermenu" .}}
 <h1>USER: <a target="_blank" href="https://vk.com/id{{.Id}}">{{.Id}}</a> {{ .Name }}</h1>
+<button type="button" onclick="sendUpdateQueryARG('/update-user-friends', {{ .Id }})">Update All Friends</button>
+<button type="button" onclick="sendUpdateQueryARG('/update-user-membership', {{ .Id }})">Update All Membership</button>
+<button type="button" onclick="sendUpdateQueryARG('/update-user-posts', {{ .Id }})">Update All Posts</button>
+<button type="button" onclick="sendUpdateQueryARG('/update-user-likes', {{ .Id }})">Update All Likes</button>
 <p>Friends Updated: {{.FriendsUpdated}}</p>
 <p>Groups Updated: {{.GroupsUpdated}}</p>
 <p>Wall Updated: {{.WallUpdated}}</p>

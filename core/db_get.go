@@ -10,8 +10,9 @@ import (
 func getTableNames(db *sqlx.DB) ([]string, error) {
 	// get a list of tables as an array
 	var tableInfos []TableInfo
-	err := db.Select(tableInfos, "SELECT name FROM sqlite_master WHERE type='table';")
+	err := db.Select(&tableInfos, "SELECT name FROM sqlite_master WHERE type='table';")
 	if err != nil {
+		fmt.Println("getTableNames error: ", err)
 		return nil, err
 	}
 
