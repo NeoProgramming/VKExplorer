@@ -7,7 +7,7 @@ regenerate=false
 type=All
 
 [files]
-file0=ui/fragments/sort.tmpl
+file0=.geanyprj
 file1=ui/pages/tasks.tmpl
 file2=ui/pages/users.tmpl
 file3=ui/pages/user.tmpl
@@ -69,3 +69,4 @@ file58=ui/fragments/tags.tmpl
 file59=core/makelist.go
 file60=ui/fragments/filters.tmpl
 file61=core/args.go
+file62=ui/fragments/sort.tmpl
